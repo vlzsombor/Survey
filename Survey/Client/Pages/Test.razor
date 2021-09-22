@@ -1,0 +1,14 @@
+﻿@page "/test"
+@inject CardApiRepository CardApiRepository
+@using Survey.Shared.Model
+
+<TestIn sajatEvent="@methodom"></TestIn>
+
+@code {
+
+    public void methodom()
+    {
+        Console.WriteLine("outer adx");
+    }
+
+}
