@@ -40,12 +40,8 @@ namespace Survey.Server.Controllers
         [Route("UpdateCardRating")]
         public async Task<int> UpdateCardRating([FromBody] CardModel card)
         {
-            Program.CardList.Where(x => x.Id == card.Id).FirstOrDefault().Rating = card.Rating;
-
-            Program.CardList.ForEach(x => Console.WriteLine(x.Rating));
-
-            
-
+            _context.Update(card);
+            await _context.SaveChangesAsync();
             return 0;
         }
 
@@ -53,7 +49,8 @@ namespace Survey.Server.Controllers
         public async Task<int> AddCard([FromBody] CardModel cardModel)
         {
 
-            Program.CardList.Add(cardModel);
+            _context.Add(cardModel);
+            await _context.SaveChangesAsync();
 
             return cardModel.Id;
         }

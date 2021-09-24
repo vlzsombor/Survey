@@ -23,6 +23,6 @@
 
     async void OnChange(int value)
     {
-        await OnRatingChanges.InvokeAsync((CardModel.Id,value));
+        await OnRatingChanges.InvokeAsync((CardModel.Id-1,value));
     }
 }
