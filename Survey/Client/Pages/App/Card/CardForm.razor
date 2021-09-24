@@ -1,0 +1,17 @@
+﻿@using Survey.Shared.Model 
+
+
+<EditForm Model="cardModel" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">Example textarea</label>
+        <InputText @bind-Value="@cardModel.Title" class="form-control" id="cardModel.Title" ></InputText>
+        <InputTextArea @bind-Value="@cardModel.Text" class="form-control" id="cardModel.Text" rows="3"></InputTextArea>
+        <ValidationMessage For="@(() => cardModel.Text)" />
+    </div>
+    <button class="btn btn-success" type="submit">Save changes</button>
+</EditForm>
+@code {
+    [Parameter] public CardModel cardModel { get; set; }
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+}

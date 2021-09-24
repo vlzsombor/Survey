@@ -1,0 +1,52 @@
+﻿@page "/app"
+@using Survey.Client.Unit
+@using Survey.Shared.Model
+@using Survey.Client.Pages.App.Card
+@inject ICardRepository cardRepository
+<h3>MainPage</h3>
+
+<Survey.Client.Pages.App.Card.CardForm cardModel="@cardModel" OnValidSubmit="@Create" />
+
+
+@foreach (var cardItem in CardList)
+{
+    <CardSimple OnRatingChanges="@((args)=> OnRateChange(((int id,int rating))args))" CardModel="cardItem"></CardSimple>
+}
+
+@code {
+    public List<CardModel> CardList { get; set; } = new List<CardModel>();
+
+    private CardModel cardModel = new CardModel();
+
+    private async void Create()
+    {
+        cardModel.Id = CardList.Count;
+        await cardRepository.CreateCard(cardModel);
+        await loadCard();
+    }
+
+
+    private async Task loadCard()
+    {
+        CardList = await cardRepository.GetAllCards();
+        StateHasChanged();
+
+    }
+
+    protected async override void OnInitialized()
+    {
+        await loadCard();
+    }
+
+    public void OnRateChange((int id, int rating) args)
+    {
+        CardModel card = CardList[args.id];
+        card.Rating = args.rating;
+        cardRepository.UpdateCardRating(card);
+        Console.WriteLine($"az {args.Item1} has changed with the value of{args.Item2}");
+    }
+
+}
+
+
+
