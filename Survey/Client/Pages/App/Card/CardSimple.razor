@@ -1,6 +1,11 @@
 ﻿@using Survey.Shared.Model
 
 <div class="card" style="width: 18rem;">
+    <div class="float-right">
+        <button class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <div class="card-body">
         <h5 class="card-title">@CardModel.Title</h5>
         <h6 class="card-subtitle mb-2 text-muted">@(CardModel.Text.ToUpper())</h6>
