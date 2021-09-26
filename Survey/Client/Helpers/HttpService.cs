@@ -34,6 +34,13 @@ namespace Survey.Client.Helpers
             var stringContent = new StringContent(dataJson, Encoding.UTF8, "application/json");
             var response = await httpClient.PutAsync(url, stringContent);
             return new HttpResponseWrapper<object>(null, response.IsSuccessStatusCode, response);
+        }        
+        public async Task<HttpResponseWrapper<object>> Delete<T>(string url, T data)
+        {
+            var dataJson = JsonSerializer.Serialize(data);
+            var stringContent = new StringContent(dataJson, Encoding.UTF8, "application/json");
+            var response = await httpClient.PutAsync(url, stringContent);
+            return new HttpResponseWrapper<object>(null, response.IsSuccessStatusCode, response);
         }
 
         public async Task<HttpResponseWrapper<T>> Get<T>(string url)
@@ -55,6 +62,29 @@ namespace Survey.Client.Helpers
         {
             var responseString = await httpResponse.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<T>(responseString, options);
+        }
+
+        public async Task<HttpResponseWrapper<object>> Delete(string url)
+        {
+            var responseHTTP = await httpClient.DeleteAsync(url);
+            return new HttpResponseWrapper<object>(null, responseHTTP.IsSuccessStatusCode, responseHTTP);
+        }
+
+
+        public async Task<HttpResponseWrapper<TResponse>> Post<T, TResponse>(string url, T data)
+        {
+            var dataJson = JsonSerializer.Serialize(data);
+            var stringContent = new StringContent(dataJson, Encoding.UTF8, "application/json");
+            var response = await httpClient.PostAsync(url, stringContent);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseDeserialized = await Deserialize<TResponse>(response, defaultJsonSerializerOptions);
+                return new HttpResponseWrapper<TResponse>(responseDeserialized, true, response);
+            }
+            else
+            {
+                return new HttpResponseWrapper<TResponse>(default, false, response);
+            }
         }
     }
 }

@@ -10,7 +10,7 @@
 
 @foreach (var cardItem in CardList)
 {
-    <CardSimple OnRatingChanges="@((args)=> OnRateChange(((int id,int rating))args))" CardModel="cardItem"></CardSimple>
+    <CardSimple OnClose="((args) => OnClose((int) args))" OnRatingChanges="@((args)=> OnRateChange(((int id,int rating))args))" CardModel="cardItem"></CardSimple>
 }
 
 @code {
@@ -24,6 +24,13 @@
         await loadCard();
     }
 
+
+    private async Task OnClose(int id)
+    {
+        await cardRepository.DeleteCard(CardList[id]);
+        StateHasChanged();
+
+    }
 
     private async Task loadCard()
     {

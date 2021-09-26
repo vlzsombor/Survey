@@ -30,6 +30,16 @@ namespace Survey.Client.Repository
             }
         }
 
+        public async Task DeleteCard(CardModel card)
+        {
+            var response = await httpService.Delete($"{url}/{card.Id}");
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+
+        }
+
         public async Task<List<CardModel>> GetAllCards()
         {
             var response = await httpService.Get<List<CardModel>>(url + "/Cards");

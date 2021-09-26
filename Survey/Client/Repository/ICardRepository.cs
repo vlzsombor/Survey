@@ -11,5 +11,6 @@ namespace Survey.Client.Repository
         public Task<List<CardModel>> GetAllCards();
         public Task CreateCard(CardModel card);
         public Task UpdateCardRating(CardModel card);
+        public Task DeleteCard(CardModel card);
     }
 }

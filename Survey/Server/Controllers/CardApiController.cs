@@ -55,7 +55,19 @@ namespace Survey.Server.Controllers
             return cardModel.Id;
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var movie = _context.CardModel.FirstOrDefault(x => x.Id == id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
 
+            _context.Remove(movie);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
 
         [HttpGet]
         [Route("test")]

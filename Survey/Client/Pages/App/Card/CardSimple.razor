@@ -2,15 +2,17 @@
 
 <div class="card" style="width: 18rem;">
     <div class="float-right">
-        <button class="close" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+        <button @onclick="Close" class="close" aria-label="Close">
+            <span aria-hidden="true">
+                &times;
+            </span>
         </button>
     </div>
     <div class="card-body">
         <h5 class="card-title">@CardModel.Title</h5>
         <h6 class="card-subtitle mb-2 text-muted">@(CardModel.Text.ToUpper())</h6>
         <p class="card-text">@CardModel.Text</p>
-        <RadzenRating Stars="7" Change=@(args => OnChange(args)) Value="CardModel.Rating"/>
+        <RadzenRating Stars="7" Change=@(args => OnChange(args)) Value="CardModel.Rating" />
     </div>
 </div>
 <div class="row">
@@ -23,11 +25,19 @@
     public CardModel CardModel { get; set; }
 
     [Parameter]
-    public EventCallback<(int,int)> OnRatingChanges { get; set; }
+    public EventCallback<(int, int)> OnRatingChanges { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnClose { get; set; }
 
 
-    async void OnChange(int value)
+    private async void Close()
     {
-        await OnRatingChanges.InvokeAsync((CardModel.Id-1,value));
+        await OnClose.InvokeAsync(CardModel.Id);
+    }
+
+    private async void OnChange(int value)
+    {
+        await OnRatingChanges.InvokeAsync((CardModel.Id - 1, value));
     }
 }
