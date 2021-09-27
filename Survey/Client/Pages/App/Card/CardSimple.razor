@@ -25,7 +25,7 @@
     public CardModel CardModel { get; set; }
 
     [Parameter]
-    public EventCallback<(int, int)> OnRatingChanges { get; set; }
+    public EventCallback<CardModel> OnRatingChanges { get; set; }
 
     [Parameter]
     public EventCallback<int> OnClose { get; set; }
@@ -38,6 +38,9 @@
 
     private async void OnChange(int value)
     {
-        await OnRatingChanges.InvokeAsync((CardModel.Id - 1, value));
+
+        CardModel.Rating = value;
+
+        await OnRatingChanges.InvokeAsync(CardModel);
     }
 }
