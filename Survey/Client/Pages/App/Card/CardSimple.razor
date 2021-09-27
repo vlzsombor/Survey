@@ -2,7 +2,7 @@
 
 <div class="card" style="width: 18rem;">
     <div class="float-right">
-        <button @onclick="Close" class="close" aria-label="Close">
+        <button @onclick="Delete" class="close" aria-label="Close">
             <span aria-hidden="true">
                 &times;
             </span>
@@ -28,12 +28,12 @@
     public EventCallback<CardModel> OnRatingChanges { get; set; }
 
     [Parameter]
-    public EventCallback<int> OnClose { get; set; }
+    public EventCallback<CardModel> OnDelete { get; set; }
 
 
-    private async void Close()
+    private async void Delete()
     {
-        await OnClose.InvokeAsync(CardModel.Id);
+        await OnDelete.InvokeAsync(CardModel);
     }
 
     private async void OnChange(int value)
