@@ -21,33 +21,31 @@
     private async void Create()
     {
         await cardRepository.CreateCard(cardModel);
-        await loadCard();
+        await LoadCard();
     }
-
 
     private async Task OnDelete(CardModel card)
     {
+        //CardList.Remove(CardList.Where(cardLambda => cardLambda.Id == card.Id).FirstOrDefault());
         await cardRepository.DeleteCard(card);
-        await loadCard();
 
-    }
-
-    private async Task loadCard()
-    {
-        CardList = await cardRepository.GetAllCards();
-        StateHasChanged();
-
+        await LoadCard();
     }
 
     protected async override void OnInitialized()
     {
-        await loadCard();
+        await LoadCard();
     }
 
     public void OnRateChange(CardModel args)
     {
-        
         cardRepository.UpdateCardRating(args);
+    }
+
+    private async Task LoadCard()
+    {
+        CardList = await cardRepository.GetAllCards();
+        StateHasChanged();
     }
 
 }

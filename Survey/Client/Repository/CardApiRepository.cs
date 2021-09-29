@@ -52,6 +52,10 @@ namespace Survey.Client.Repository
         public async Task UpdateCardRating(CardModel card)
         {
             var response = await httpService.Put<CardModel>(url + "/UpdateCardRating", card);
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
         }
 
     }
