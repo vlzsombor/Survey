@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Survey.Client.Repository
 {
-    interface ICardRepository
+    public interface ICardRepository
     {
         public Task<List<CardModel>> GetAllCards();
         public Task CreateCard(CardModel card);

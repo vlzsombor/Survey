@@ -1,7 +1,4 @@
-﻿@using Survey.Shared.Model 
-
-
-<EditForm Model="cardModel" OnValidSubmit="OnValidSubmit">
+﻿<EditForm Model="cardModel" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     <div class="form-group">
         <label for="exampleFormControlTextarea1">Example textarea</label>
@@ -11,7 +8,3 @@
     </div>
     <button class="btn btn-success" type="submit">Save changes</button>
 </EditForm>
-@code {
-    [Parameter] public CardModel cardModel { get; set; }
-    [Parameter] public EventCallback OnValidSubmit { get; set; }
-}

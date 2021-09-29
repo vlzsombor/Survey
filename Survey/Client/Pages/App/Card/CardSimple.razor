@@ -1,6 +1,4 @@
-﻿@using Survey.Shared.Model
-
-<div class="card" style="width: 18rem;">
+﻿<div class="card" style="width: 18rem;">
     <div class="float-right">
         <button @onclick="Delete" class="close" aria-label="Close">
             <span aria-hidden="true">
@@ -19,28 +17,3 @@
     <div class="col-xl-6">
     </div>
 </div>
-
-@code {
-    [Parameter]
-    public CardModel CardModel { get; set; }
-
-    [Parameter]
-    public EventCallback<CardModel> OnRatingChanges { get; set; }
-
-    [Parameter]
-    public EventCallback<CardModel> OnDelete { get; set; }
-
-
-    private async void Delete()
-    {
-        await OnDelete.InvokeAsync(CardModel);
-    }
-
-    private async void OnChange(int value)
-    {
-
-        CardModel.Rating = value;
-
-        await OnRatingChanges.InvokeAsync(CardModel);
-    }
-}
