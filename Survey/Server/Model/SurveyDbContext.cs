@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Survey.Shared.Model;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Survey.Server.Model
 {
-    public class SurveyDbContext : DbContext
+    public class SurveyDbContext : IdentityDbContext
     {
         public SurveyDbContext(DbContextOptions<SurveyDbContext> options) : base(options)
         {
