@@ -1,14 +1,10 @@
 ﻿@page "/test"
-@inject CardApiRepository CardApiRepository
-@using Survey.Shared.Model
 
-<TestIn sajatEvent="@methodom"></TestIn>
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        authorized @context.User.Identity.Name
+    </Authorized>
+</AuthorizeView>
 
-@code {
 
-    public void methodom()
-    {
-        Console.WriteLine("outer adx");
-    }
-
-}
+<h1>ALMA</h1>
