@@ -1,0 +1,18 @@
+﻿@page "/logout"
+<h3>Logout</h3>
+
+@inject ILoginService loginService 
+@inject NavigationManager navigationManager
+
+@using Survey.Client.Auth
+
+<text>Log out..</text>
+
+
+@code {
+    protected async override Task OnInitializedAsync()
+    {
+        await loginService.Logout();
+        navigationManager.NavigateTo("");
+    }
+}

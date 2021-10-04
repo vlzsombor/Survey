@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using Survey.Server.Model;
 using Survey.Shared.Model;
@@ -11,6 +13,7 @@ namespace Survey.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
     public class CardApiController : ControllerBase
     {
 
@@ -26,6 +29,7 @@ namespace Survey.Server.Controllers
 
         [HttpGet]
         [Route("Cards")]
+        [AllowAnonymous]
         public List<CardModel> GetCardsAsync()
         {
             return _context.CardModel.ToList();

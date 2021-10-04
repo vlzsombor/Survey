@@ -1,0 +1,44 @@
+﻿@page "/register"
+@inject IAccountsRepository accountsRepository
+@inject NavigationManager navigationManager
+@inject ILoginService loginService
+
+@using Survey.Client.Auth
+@using Survey.Shared.Model
+@using Survey.Shared.DTOs
+
+<EditForm Model="userInfo" OnValidSubmit="CreateUser">
+    <DataAnnotationsValidator />
+
+    <div class="form-group">
+        <label>Email:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@userInfo.Email"></InputText>
+            <ValidationMessage For="@(() => userInfo.Email)"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Password:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@userInfo.Password"></InputText>
+            <ValidationMessage For="@(() => userInfo.Password)"/>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Register</button>
+
+</EditForm>
+
+@code{
+    private UserInfo userInfo = new UserInfo();
+    private async Task CreateUser()
+    {
+        UserToken userToken = await accountsRepository.Register(userInfo);
+        await loginService.Login(userToken.Token);
+        navigationManager.NavigateTo("");
+    }
+
+
+}
+
+

@@ -32,16 +32,22 @@ namespace Survey.Client
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<ICardRepository,CardApiRepository>();
-            services.AddScoped<IHttpService,HttpService>();
+            services.AddScoped<ICardRepository, CardApiRepository>();
+            services.AddScoped<IHttpService, HttpService>();
 
 
             services.AddAuthorizationCore();
 
 
 
-            services.AddScoped<AuthenticationStateProvider, DummyAuthProvider>();
-
+            services.AddScoped<JWTAuthenticationStateProvider>();
+            services.AddScoped<AuthenticationStateProvider, JWTAuthenticationStateProvider>(
+                provider => provider.GetRequiredService<JWTAuthenticationStateProvider>()
+                );
+            services.AddScoped<ILoginService, JWTAuthenticationStateProvider>(
+                provider => provider.GetRequiredService<JWTAuthenticationStateProvider>()
+                );
+            services.AddScoped<IAccountsRepository, AccountsRepository>();
         }
 
     }
