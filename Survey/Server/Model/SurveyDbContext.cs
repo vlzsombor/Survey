@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 
-namespace Survey.Server.Model
+namespace Survey.Server.Model 
 {
     public class SurveyDbContext : IdentityDbContext
     {

@@ -25,8 +25,6 @@ namespace Survey.Server.Controllers
         }
 
 
-        List<CardModel> CardList = Program.CardList;
-
         [HttpGet]
         [Route("Cards")]
         [AllowAnonymous]
@@ -34,12 +32,7 @@ namespace Survey.Server.Controllers
         {
             return _context.CardModel.ToList();
         }
-        [HttpGet]
-        [Route("Card")]
-        public CardModel GetCardAsync(int numberOfPost, int starindex)
-        {
-            return CardList[1];
-        }
+
         [HttpPut]
         [Route("UpdateCardRating")]
         public async Task<int> UpdateCardRating([FromBody] CardModel card)

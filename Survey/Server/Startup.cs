@@ -27,9 +27,13 @@ namespace Survey.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-
-
-            //services.AddDbContextFactory<SurveyDbContext>(opt => opt.UseSqlite($"Data Source=../MyBlog.db"));
+            //todo set appropiate CORS policy
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+                );
+            });
 
             services.AddDbContext<SurveyDbContext>(option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -45,11 +49,20 @@ namespace Survey.Server
                         ValidateAudience = false,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration["Jwt:Issuer"],
+                        ValidAudience = Configuration["Jwt:Issuer"],
                         IssuerSigningKey = new SymmetricSecurityKey(
-                            Encoding.UTF8.GetBytes(Configuration["jwt:key"])),
-                        ClockSkew = TimeSpan.Zero
+                            Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
                     }
             );
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new() { Title = "Server", Version = "v1" });
+            });
+
+
+            services.AddRouting(options => options.LowercaseUrls = true);
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -70,16 +83,21 @@ namespace Survey.Server
                 app.UseHsts();
             }
 
+            //todo might need to place into dev only isDevelopment
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Server v1"));
+
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
 
             app.UseRouting();
+            // needs to be an exact match with the corsplolicy
+            app.UseCors("CorsPolicy");
 
 
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
