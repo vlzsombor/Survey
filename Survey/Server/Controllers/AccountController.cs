@@ -66,11 +66,12 @@ namespace Survey.Server.Controllers
                 UserName = username
             };
 
-            IdentityResult identityResult = await _userManager.CreateAsync(identityUser, password);
+            IdentityResult userIdentityResult = await _userManager.CreateAsync(identityUser, password);
+            IdentityResult roleIdentityResult = await _userManager.AddToRoleAsync(identityUser, "Administrator");
 
-            if (identityResult.Succeeded)
+            if (userIdentityResult.Succeeded && roleIdentityResult.Succeeded)
             {
-                return Ok(new { identityResult.Succeeded });
+                return Ok(new { userIdentityResult.Succeeded });
             }
             else
             {
@@ -78,7 +79,7 @@ namespace Survey.Server.Controllers
 
                 string errorsToReturn = "Register failder with the following errors";
 
-                foreach (var errors in identityResult.Errors)
+                foreach (var errors in userIdentityResult.Errors)
                 {
                     errorsToReturn += Environment.NewLine;
                     errorsToReturn += $"Error code: {errors.Code} - {errors.Description}";

@@ -47,7 +47,7 @@ else
     {
         _attempToRegisterFailed = false;
 
-        HttpResponseMessage httpResponseMessage = await HttpClient.PostAsJsonAsync("https://localhost:44379/api/account/register", _userToRegister);
+        HttpResponseMessage httpResponseMessage = await HttpClient.PostAsJsonAsync(APIEndpoints.s_register, _userToRegister);
 
         if (httpResponseMessage.IsSuccessStatusCode)
         {

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Survey.Server.Data;
 using Survey.Server.Model;
 using System;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace Survey.Server
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
+        public async void ConfigureServices(IServiceCollection services)
         {
             //todo set appropiate CORS policy
             services.AddCors(options =>
@@ -62,10 +63,17 @@ namespace Survey.Server
             });
 
 
+
             services.AddRouting(options => options.LowercaseUrls = true);
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+
+            RoleManager<IdentityRole> roleManager = services.BuildServiceProvider().GetService<RoleManager<IdentityRole>>();
+            UserManager<IdentityUser> userManager = services.BuildServiceProvider().GetService<UserManager<IdentityUser>>();
+
+            await SeedAdministratorAndUser.Seed(roleManager, userManager);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

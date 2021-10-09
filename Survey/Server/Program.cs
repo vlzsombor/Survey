@@ -23,7 +23,5 @@ namespace Survey.Server
                 {
                     webBuilder.UseStartup<Startup>();
                 });
-
-
     }
 }

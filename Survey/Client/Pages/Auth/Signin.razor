@@ -1,0 +1,78 @@
+﻿
+
+@page "/signin"
+
+@using Blazored.LocalStorage
+@using Survey.Client.Helpers.Providers
+
+
+@if (!_siginSuccessful)
+{
+    <EditForm Model="_userToSigin" OnValidSubmit="SiginUser">
+        <DataAnnotationsValidator />
+        <div class="form-group my-3">
+            <label for="email">Email address</label>
+            <InputText @bind-Value="_userToSigin.EmailAddress" id="email" class="form-control" />
+            <ValidationMessage For="@(()=>_userToSigin.EmailAddress)" />
+        </div>
+        <div class="form-group my-3">
+            <label for="password">Password</label>
+            <InputText @bind-Value="_userToSigin.Password" type="password" id="password" class="form-control" />
+            <ValidationMessage For="@(()=>_userToSigin.Password)" />
+        </div>
+        <ValidationSummary />
+
+        <button type="submit" class="btn btn-primary btn-lg">Sig in</button>
+
+        @if (_attempToSiginFailed)
+        {
+            <p class="my-3 text-danger">Sign in failed. Please check your user name or password and try again</p>
+        }
+    </EditForm>
+}
+else
+{
+    <h4>Sigin successful</h4>
+    <a href="/signin" class="btn btn-primary btn-lg">Sign in</a>
+}
+
+@code{
+    [Inject] HttpClient HttpClient { get; set; }
+    [Inject] ILocalStorageService LocalStorageService { get; set; }
+    [Inject] AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+    private User _userToSigin = new User();
+
+    private bool _siginSuccessful = false;
+    private bool _attempToSiginFailed = false;
+    private string? _attemptToSiginFailedErrorMessage = null;
+
+
+    private async Task SiginUser()
+    {
+        _attempToSiginFailed = false;
+
+        HttpResponseMessage httpResponseMessage = await HttpClient.PostAsJsonAsync(APIEndpoints.s_signIn, _userToSigin);
+
+        if (httpResponseMessage.IsSuccessStatusCode)
+        {
+            string jsonWebToken = await httpResponseMessage.Content.ReadAsStringAsync();
+
+            await LocalStorageService.SetItemAsStringAsync("bearerToken", jsonWebToken);
+
+            await ((AppAuthenticationStateProvider)AuthenticationStateProvider).SignIn();
+
+            HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", jsonWebToken);
+
+            _siginSuccessful = true;
+        }
+        else
+        {
+            _attempToSiginFailed = true;
+        }
+
+
+    }
+
+}
+
+

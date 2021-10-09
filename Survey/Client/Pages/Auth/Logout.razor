@@ -1,10 +1,13 @@
 ﻿@page "/logout"
-<h3>Logout</h3>
-
-@inject ILoginService loginService 
-@inject NavigationManager navigationManager
-
 @using Survey.Client.Auth
+@using Blazored.LocalStorage;
+@using Survey.Client.Helpers.Providers;
+
+<h3>Logout</h3>
+@inject NavigationManager navigationManager
+@inject ILocalStorageService LocalStorageService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
 
 <text>Log out..</text>
 
@@ -12,7 +15,12 @@
 @code {
     protected async override Task OnInitializedAsync()
     {
-        await loginService.Logout();
-        navigationManager.NavigateTo("");
+        if (await LocalStorageService.ContainKeyAsync("bearerToken"))
+        {
+            await LocalStorageService.RemoveItemAsync("bearerToken");
+            ((AppAuthenticationStateProvider)AuthenticationStateProvider).SignOut();
+        }
+        StateHasChanged();
+        NavigationManager.NavigateTo("");
     }
 }

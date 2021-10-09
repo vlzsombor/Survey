@@ -34,10 +34,10 @@
         </li>
         <AuthorizeView>
             <Authorized>
-                <div class="nav-item px-3">
-                    <button class="btn btn-primary btn-lg">
+                <div class="nav-item px-3" href="logout">
+                    <NavLink class="nav-link" href="logout">
                         <span class="oi oi-account-logout"></span> Sign out
-                    </button>
+                    </NavLink>
                 </div>
             </Authorized>
             <NotAuthorized>
@@ -45,7 +45,7 @@
                     <NavLink class="nav-link" href="signin">
                         <span class="oi oi-account-login" aria-hidden="true"></span> Sign in
                     </NavLink>
-                </div>                
+                </div>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="register">
                         <span class="oi oi-person" aria-hidden="true"></span> Register
@@ -56,13 +56,11 @@
     </ul>
 </div>
 
-@code {
-    private bool collapseNavMenu = true;
+@code { private bool collapseNavMenu = true;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
-    }
-}
+    } }
