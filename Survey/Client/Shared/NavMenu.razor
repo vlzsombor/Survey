@@ -32,6 +32,27 @@
                 <span class="oi oi-list-rich" aria-hidden="true"></span> test
             </NavLink>
         </li>
+        <AuthorizeView>
+            <Authorized>
+                <div class="nav-item px-3">
+                    <button class="btn btn-primary btn-lg">
+                        <span class="oi oi-account-logout"></span> Sign out
+                    </button>
+                </div>
+            </Authorized>
+            <NotAuthorized>
+                <div class="nav-item px-3" href="signin">
+                    <NavLink class="nav-link" href="signin">
+                        <span class="oi oi-account-login" aria-hidden="true"></span> Sign in
+                    </NavLink>
+                </div>                
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="register">
+                        <span class="oi oi-person" aria-hidden="true"></span> Register
+                    </NavLink>
+                </div>
+            </NotAuthorized>
+        </AuthorizeView>
     </ul>
 </div>
 

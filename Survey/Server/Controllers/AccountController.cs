@@ -15,7 +15,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using System;
 
 namespace Survey.Server.Controllers
 {
@@ -52,7 +51,7 @@ namespace Survey.Server.Controllers
             }
         }
 
-        //todo yourdomain.com/api/user/regster
+        //todo yourdomain.com/api/user/register
         [Route("register")]
         [AllowAnonymous]
         [HttpPost]
@@ -153,12 +152,12 @@ namespace Survey.Server.Controllers
             {
                 return BuildToken(userInfo);
             }
-            else
-            {
-                return BadRequest("Invalid login attempt");
-            }
+
+            return BadRequest("Invalid login attempt");
         }
 
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         private UserToken BuildToken(UserInfo userInfo)
         {
             var claims = new List<Claim>()

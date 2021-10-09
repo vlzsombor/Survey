@@ -1,43 +1,68 @@
 ﻿@page "/register"
-@inject IAccountsRepository accountsRepository
-@inject NavigationManager navigationManager
-@inject ILoginService loginService
 
-@using Survey.Client.Auth
-@using Survey.Shared.Model
-@using Survey.Shared.DTOs
-
-<EditForm Model="userInfo" OnValidSubmit="CreateUser">
-    <DataAnnotationsValidator />
-
-    <div class="form-group">
-        <label>Email:</label>
-        <div>
-            <InputText class="form-control" @bind-Value="@userInfo.Email"></InputText>
-            <ValidationMessage For="@(() => userInfo.Email)"/>
+@if (!_registerSuccessful)
+{
+    <EditForm Model="_userToRegister" OnValidSubmit="RegisterUser">
+        <DataAnnotationsValidator />
+        <div class="form-group my-3">
+            <label for="email">Email address</label>
+            <InputText @bind-Value="_userToRegister.EmailAddress" id="email" class="form-control" />
+            <ValidationMessage For="@(()=>_userToRegister.EmailAddress)" />
         </div>
-    </div>
-    <div class="form-group">
-        <label>Password:</label>
-        <div>
-            <InputText class="form-control" @bind-Value="@userInfo.Password"></InputText>
-            <ValidationMessage For="@(() => userInfo.Password)"/>
+        <div class="form-group my-3">
+            <label for="password">Password</label>
+            <InputText @bind-Value="_userToRegister.Password" type="password" id="password" class="form-control" />
+            <ValidationMessage For="@(()=>_userToRegister.Password)" />
         </div>
-    </div>
+        <ValidationSummary />
 
-    <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary btn-lg">Register</button>
 
-</EditForm>
+        @if (_attempToRegisterFailed)
+        {
+            <p class="my-3 text-danger">@_attemptToRegisterFailedErrorMessage</p>
+        }
+    </EditForm>
+}
+else
+{
+    <h4>Register successful</h4>
+    <a href="/signin" class="btn btn-primary btn-lg">Sign in</a>
+}
 
 @code{
-    private UserInfo userInfo = new UserInfo();
-    private async Task CreateUser()
+    [Inject] HttpClient HttpClient { get; set; }
+    private User _userToRegister = new User()
     {
-        UserToken userToken = await accountsRepository.Register(userInfo);
-        await loginService.Login(userToken.Token);
-        navigationManager.NavigateTo("");
-    }
+        EmailAddress = "user@example.com",
+        Password = "Password1!"
+    };
 
+    private bool _registerSuccessful = false;
+    private bool _attempToRegisterFailed = false;
+    private string? _attemptToRegisterFailedErrorMessage = null;
+
+
+    private async Task RegisterUser()
+    {
+        _attempToRegisterFailed = false;
+
+        HttpResponseMessage httpResponseMessage = await HttpClient.PostAsJsonAsync("https://localhost:44379/api/account/register", _userToRegister);
+
+        if (httpResponseMessage.IsSuccessStatusCode)
+        {
+            _registerSuccessful = true;
+        }
+        else
+        {
+            string serverErrorMessages = await httpResponseMessage.Content.ReadAsStringAsync();
+
+            _attemptToRegisterFailedErrorMessage = $"{serverErrorMessages} Please change the input and try again";
+            _attempToRegisterFailed = true;
+        }
+
+
+    }
 
 }
 
