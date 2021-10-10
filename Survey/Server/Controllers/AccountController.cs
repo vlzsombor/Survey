@@ -35,22 +35,6 @@ namespace Survey.Server.Controllers
             _signInManager = signInManager;
             _configuration = configuration;
         }
-
-        [HttpPost("Create")]
-        public async Task<ActionResult<UserToken>> CreateUser([FromBody] UserInfo model)
-        {
-            var user = new IdentityUser { UserName = model.Email, Email = model.Email };
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (result.Succeeded)
-            {
-                return BuildToken(model);
-            }
-            else
-            {
-                return BadRequest("Username or password invalid");
-            }
-        }
-
         //todo yourdomain.com/api/user/register
         [Route("register")]
         [AllowAnonymous]
@@ -144,18 +128,6 @@ namespace Survey.Server.Controllers
             return new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
         }
 
-        [HttpPost("Login")]
-        public async Task<ActionResult<UserToken>> Login([FromBody] UserInfo userInfo)
-        {
-            var result = await _signInManager.PasswordSignInAsync(userInfo.Email, userInfo.Password, isPersistent: false, lockoutOnFailure: false);
-
-            if (result.Succeeded)
-            {
-                return BuildToken(userInfo);
-            }
-
-            return BadRequest("Invalid login attempt");
-        }
 
         [NonAction]
         [ApiExplorerSettings(IgnoreApi = true)]

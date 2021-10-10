@@ -6,17 +6,22 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Claims;
+using Survey.Client.Auth;
+using System.Net.Http;
 
 namespace Survey.Client.Helpers.Providers
 {
     public class AppAuthenticationStateProvider : AuthenticationStateProvider
     {
         private readonly ILocalStorageService _localStorageService;
+        private readonly HttpClient _httpClient;
         private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
+        private AuthenticationState Anonymous => new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
 
-        public AppAuthenticationStateProvider(ILocalStorageService localStorageService)
+        public AppAuthenticationStateProvider(ILocalStorageService localStorageService, HttpClient httpClient)
         {
             _localStorageService = localStorageService;
+            _httpClient = httpClient;
         }
 
 
@@ -76,8 +81,10 @@ namespace Survey.Client.Helpers.Providers
         {
             ClaimsPrincipal nobody = new ClaimsPrincipal(new ClaimsIdentity());
             Task<AuthenticationState> authentication = Task.FromResult(new AuthenticationState(nobody));
+            _httpClient.DefaultRequestHeaders.Authorization = null;
             NotifyAuthenticationStateChanged(authentication);
         }
+
 
     }
 }

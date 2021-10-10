@@ -11,6 +11,8 @@ namespace Survey.Client.Repository
     {
         public Task<UserToken> Register(UserInfo userInfo);
         public Task<UserToken> Login(UserInfo userInfo);
+        public Task<bool> SignIn(User userInfo);
+        public Task<UserToken> Register2(UserInfo userInfo);
 
     }
 }

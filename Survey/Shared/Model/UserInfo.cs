@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace Survey.Shared.Model
 {
+
+    //todo delete this
     public class UserInfo
     {
         public string Email { get; set; }
