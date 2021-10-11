@@ -18,6 +18,7 @@ namespace Survey.Server.Model
         }
 
         public DbSet<CardModel> CardModel { get; set; }
+        public DbSet<BoardModel> BoardModel { get; set; }
     }
 
 

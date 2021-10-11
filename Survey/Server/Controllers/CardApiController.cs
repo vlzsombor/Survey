@@ -13,7 +13,7 @@ namespace Survey.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CardApiController : ControllerBase
     {
 
@@ -70,12 +70,21 @@ namespace Survey.Server.Controllers
         [Route("test")]
         public async Task<string> test()
         {
-            _context.Add(new CardModel { Rating = 2, Text = "dafasd", Title = "fasfdfs" });
+            _context.Add(new CardModel { Rating = 2, Text = "Contextes hozzaadas", Title = "fasfdfs" });
 
+            _context.CardModel.Add(new CardModel { Rating = 1, Text = "CardModelel hozzadas", Title = "CardModelel hozzadas" });
+            _context.SaveChanges();
             await _context.SaveChangesAsync();
-
             var a = _context.CardModel.ToList();
 
+            BoardModel boardModel = new BoardModel()
+            {
+                Cards = a,
+                OwnerUser = new User() { EmailAddress = "ezaz@gmail.com", Password="almafa" }
+            };
+            _context.BoardModel.Add(boardModel);
+
+            _context.SaveChanges();
             return "hello";
         }
 

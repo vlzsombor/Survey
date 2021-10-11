@@ -17,6 +17,8 @@ namespace Survey.Client.Helpers
         public HttpService(HttpClient httpClient)
         {
             this.httpClient = httpClient;
+            //todo why? how to automatise this
+            this.httpClient.BaseAddress = new Uri("https://localhost:44379/");
         }
 
 

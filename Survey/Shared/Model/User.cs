@@ -9,6 +9,9 @@ namespace Survey.Shared.Model
 {
     public class User
     {
+        [Key]
+        public Guid Id { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email address")]
