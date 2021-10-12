@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +33,9 @@ namespace Survey.Client
 
         private static void ConfigureServices(IServiceCollection services)
         {
+            services.AddBlazoredLocalStorage();
+
+
             services.AddScoped<ICardRepository, CardApiRepository>();
             services.AddScoped<IHttpService, HttpService>();
 

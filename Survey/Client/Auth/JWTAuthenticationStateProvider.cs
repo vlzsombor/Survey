@@ -8,27 +8,28 @@ using Survey.Client.Helpers;
 using System.Security.Claims;
 using System.Net.Http;
 using System.Text.Json;
+using Blazored.LocalStorage;
 
 namespace Survey.Client.Auth
 {
     public class JWTAuthenticationStateProvider : AuthenticationStateProvider, ILoginService
     {
-        private IJSRuntime js;
+        private ILocalStorageService _localStorageService { get; set; }
+
         private HttpClient httpClient;
         private readonly string TOKENKEY = "TOKENKEY";
         private AuthenticationState Anonymous => new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
 
-        public JWTAuthenticationStateProvider(IJSRuntime js, HttpClient httpClient)
+        public JWTAuthenticationStateProvider(HttpClient httpClient, ILocalStorageService localStorageService)
         {
-            this.js = js;
             this.httpClient = httpClient;
+            _localStorageService = localStorageService;
         }
 
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var token = await js.GetFromLocalStorage(TOKENKEY);
-
+            var token = await _localStorageService.GetItemAsync<string>(TOKENKEY);
 
             if (string.IsNullOrEmpty(token))
             {
@@ -40,7 +41,6 @@ namespace Survey.Client.Auth
         public AuthenticationState BuildAuthenticationState(string token)
         {
             httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", token);
-            //05:08 7-resz
             return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt")));
         }
 
@@ -88,7 +88,7 @@ namespace Survey.Client.Auth
 
         public async Task Login(string token)
         {
-            await js.SetInLocalStorage(TOKENKEY, token);
+            await _localStorageService.SetItemAsStringAsync(TOKENKEY, token);
             var authState = BuildAuthenticationState(token);
             NotifyAuthenticationStateChanged(Task.FromResult(authState));
 
@@ -96,7 +96,7 @@ namespace Survey.Client.Auth
 
         public async Task Logout()
         {
-            await js.RemoveItem(TOKENKEY);
+            await _localStorageService.RemoveItemAsync(TOKENKEY);
 
             httpClient.DefaultRequestHeaders.Authorization = null;
             NotifyAuthenticationStateChanged(Task.FromResult(Anonymous));
