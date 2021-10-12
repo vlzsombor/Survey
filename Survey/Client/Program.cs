@@ -43,7 +43,6 @@ namespace Survey.Client
             services.AddAuthorizationCore();
 
 
-
             services.AddScoped<JWTAuthenticationStateProvider>();
             services.AddScoped<AuthenticationStateProvider, JWTAuthenticationStateProvider>(
                 provider => provider.GetRequiredService<JWTAuthenticationStateProvider>()

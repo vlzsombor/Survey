@@ -30,6 +30,7 @@ namespace Survey.Client.Repository
             return response.Response;
 
         }
+
         public async Task<UserToken> Login(UserInfo userInfo)
         {
             var response = await httpService.Post<UserInfo, UserToken>($"{baseURL}/login", userInfo);

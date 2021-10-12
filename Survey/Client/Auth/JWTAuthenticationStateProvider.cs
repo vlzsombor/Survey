@@ -9,12 +9,14 @@ using System.Security.Claims;
 using System.Net.Http;
 using System.Text.Json;
 using Blazored.LocalStorage;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Survey.Client.Auth
 {
     public class JWTAuthenticationStateProvider : AuthenticationStateProvider, ILoginService
     {
         private ILocalStorageService _localStorageService { get; set; }
+        private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
 
         private HttpClient httpClient;
         private readonly string TOKENKEY = "TOKENKEY";
@@ -41,49 +43,17 @@ namespace Survey.Client.Auth
         public AuthenticationState BuildAuthenticationState(string token)
         {
             httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", token);
-            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt")));
+            JwtSecurityToken jwtSecurityToken = _jwtSecurityTokenHandler.ReadJwtToken(token);
+            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(ParseClaims(jwtSecurityToken), "jwt")));
         }
 
-        private IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
+        private IEnumerable<Claim> ParseClaims(JwtSecurityToken jwtSecurityToken)
         {
-            var claims = new List<Claim>();
-            var payload = jwt.Split('.')[1];
-            var jsonBytes = ParseBase64WithoutPadding(payload);
-            var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
+            IList<Claim> claims = jwtSecurityToken.Claims.ToList();
+            //The value of tokenContent.Subject is the user's email
 
-            keyValuePairs.TryGetValue(ClaimTypes.Role, out object roles);
-
-            if(roles != null)
-            {
-                if(roles.ToString().Trim().StartsWith("["))
-                {
-                    var parsedRoles = JsonSerializer.Deserialize<string[]>(roles.ToString());
-
-                    foreach (var parsedRole in parsedRoles)
-                    {
-                        claims.Add(new Claim(ClaimTypes.Role, parsedRole));
-                    }
-
-
-                }
-                else
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, roles.ToString()));
-                }
-                keyValuePairs.Remove(ClaimTypes.Role);
-            }
-            claims.AddRange(keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString())));
+            //claims.Add(new Claim(ClaimTypes.Name, jwtSecurityToken.Subject));
             return claims;
-        }
-
-        private byte[] ParseBase64WithoutPadding(string base64)
-        {
-            switch (base64.Length % 4)
-            {
-                case 2: base64 += "=="; break;
-                case 3: base64 += "="; break;
-            }
-            return Convert.FromBase64String(base64);
         }
 
         public async Task Login(string token)

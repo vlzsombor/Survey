@@ -67,9 +67,10 @@ namespace Survey.Server.Controllers
         {
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Name, userInfo.Email),
+                new Claim(ClaimTypes.Name, "test"),
                 new Claim(ClaimTypes.Email, userInfo.Email),
-                new Claim(ClaimTypes.Email, userInfo.Email)
+                new Claim("alma", "korte"),
+                new Claim(ClaimTypes.Role, "Admin")
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -85,8 +86,7 @@ namespace Survey.Server.Controllers
 
             return new UserToken()
             {
-                Token = new JwtSecurityTokenHandler().WriteToken(token),
-                Expiration = expiration
+                Token = new JwtSecurityTokenHandler().WriteToken(token)
             };
 
         }

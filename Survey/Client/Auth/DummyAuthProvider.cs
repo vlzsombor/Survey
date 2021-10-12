@@ -16,7 +16,7 @@ namespace Survey.Client.Auth
             {
                 new Claim("key1", "value1"),
                 new Claim(ClaimTypes.Name, "Zsombor"),
-                new Claim(ClaimTypes.Role, "Admin2")
+                new Claim(ClaimTypes.Role, "Admin")
             });
             return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(anonymous)));
         }
