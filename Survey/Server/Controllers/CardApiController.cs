@@ -15,7 +15,7 @@ using System.Linq;
 namespace Survey.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CardApiController : ControllerBase
     {

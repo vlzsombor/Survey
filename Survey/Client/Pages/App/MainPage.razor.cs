@@ -37,7 +37,7 @@ namespace Survey.Client.Pages.App
 
         protected async override void OnInitialized()
         {
-            await cardRepository.Test();
+            //await cardRepository.Test();
             await LoadCard();
         }
 

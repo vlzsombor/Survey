@@ -14,7 +14,7 @@ namespace Survey.Client.Repository
     {
         private readonly IHttpService httpService;
 
-        private string url = "CardApi";
+        private string url = "api/cardapi";
 
         public CardApiRepository(IHttpService httpService)
         {
