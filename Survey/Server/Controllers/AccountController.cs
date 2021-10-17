@@ -32,34 +32,42 @@ namespace Survey.Server.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost("Create")]
+        [HttpPost("create")]
         public async Task<ActionResult<UserToken>> CreateUser([FromBody] UserInfo model)
         {
             var user = new IdentityUser { UserName = model.Email, Email = model.Email };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                return BuildToken(model);
+                return Ok(BuildToken(model));
             }
             else
             {
-                return BadRequest("Username or password invalid");
+                string errorsToReturn = "Register failder with the following errors";
+
+                foreach (var errors in result.Errors)
+                {
+                    errorsToReturn += Environment.NewLine;
+                    errorsToReturn += $"Error code: {errors.Code} - {errors.Description}";
+                }
+
+                return BadRequest(errorsToReturn);
             }
         }
 
 
-        [HttpPost("Login")]
+        [HttpPost("login")]
         public async Task<ActionResult<UserToken>> Login([FromBody] UserInfo userInfo)
         {
             var result = await _signInManager.PasswordSignInAsync(userInfo.Email, userInfo.Password, isPersistent: false, lockoutOnFailure: false);
-
+            
             if (result.Succeeded)
             {
                 return BuildToken(userInfo);
             }
             else
             {
-                return BadRequest("Invalid login attempt");
+                return Unauthorized(userInfo);
             }
         }
 
@@ -67,9 +75,8 @@ namespace Survey.Server.Controllers
         {
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Name, "test"),
+                new Claim(ClaimTypes.Name, userInfo.Email),
                 new Claim(ClaimTypes.Email, userInfo.Email),
-                new Claim("alma", "korte"),
                 new Claim(ClaimTypes.Role, "Admin")
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"]));

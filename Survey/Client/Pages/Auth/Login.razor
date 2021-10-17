@@ -11,21 +11,18 @@
 
 <EditForm Model="userInfo" OnValidSubmit="CreateUser">
     <DataAnnotationsValidator />
+    <div class="form-group my-3">
+        <label for="password">Email</label>
+        <InputText @bind-Value="userInfo.Email" type="email" id="email" class="form-control" />
+        <ValidationMessage For="@(()=>userInfo.Email)" />
+    </div>
 
-    <div class="form-group">
-        <label>Email:</label>
-        <div>
-            <InputText class="form-control" @bind-Value="@userInfo.Email"></InputText>
-            <ValidationMessage For="@(() => userInfo.Email)" />
-        </div>
+    <div class="form-group my-3">
+        <label for="password">Password</label>
+        <InputText @bind-Value="userInfo.Password" type="password" id="password" class="form-control" />
+        <ValidationMessage For="@(()=>userInfo.Password)" />
     </div>
-    <div class="form-group">
-        <label>Password:</label>
-        <div>
-            <InputText class="form-control" @bind-Value="@userInfo.Password"></InputText>
-            <ValidationMessage For="@(() => userInfo.Password)" />
-        </div>
-    </div>
+    <ValidationSummary />
 
     <button type="submit" class="btn btn-primary">Login</button>
 

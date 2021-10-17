@@ -49,6 +49,12 @@ namespace Survey.Client.Repository
             }
             return response.Response;
         }
+
+        public async Task Test()
+        {
+            var response = await httpService.Get<List<CardModel>>("/CardApi/test");
+        }
+
         public async Task UpdateCardRating(CardModel card)
         {
             var response = await httpService.Put<CardModel>(url + "/UpdateCardRating", card);

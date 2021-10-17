@@ -12,5 +12,6 @@ namespace Survey.Client.Repository
         public Task CreateCard(CardModel card);
         public Task UpdateCardRating(CardModel card);
         public Task DeleteCard(CardModel card);
+        public Task Test();
     }
 }
