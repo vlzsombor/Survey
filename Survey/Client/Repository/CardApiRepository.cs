@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using Newtonsoft.Json;
 using Survey.Client.Helpers;
+using Survey.Client.Repository.Interfaces;
 
 namespace Survey.Client.Repository
 {
@@ -15,6 +16,7 @@ namespace Survey.Client.Repository
         private readonly IHttpService httpService;
 
         private string url = "api/cardapi";
+
 
         public CardApiRepository(IHttpService httpService)
         {

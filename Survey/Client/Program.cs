@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Survey.Client.Auth;
 using Survey.Client.Helpers;
 using Survey.Client.Repository;
+using Survey.Client.Repository.Interfaces;
 using Survey.Client.Unit;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,7 @@ namespace Survey.Client
 
             services.AddScoped<ICardRepository, CardApiRepository>();
             services.AddScoped<IHttpService, HttpService>();
+            services.AddScoped<IBoardRepository, BoardRepository>();
 
 
             services.AddAuthorizationCore();

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Survey.Client.Repository
+namespace Survey.Client.Repository.Interfaces
 {
     public interface ICardRepository
     {

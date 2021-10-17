@@ -15,8 +15,7 @@ namespace Survey.Server.Model
         public SurveyDbContext(DbContextOptions<SurveyDbContext> options) : base(options)
         {
             //Database.EnsureDeleted();
-            //Database.EnsureCreated();
-
+            Database.EnsureCreated();
         }
 
         public DbSet<CardModel> CardModel { get; set; }

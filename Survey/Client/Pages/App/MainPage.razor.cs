@@ -7,6 +7,7 @@ using Survey.Client.Unit;
 using Survey.Shared.Model;
 using Survey.Client.Pages.App.Card;
 using Survey.Client.Repository;
+using Survey.Client.Repository.Interfaces;
 
 namespace Survey.Client.Pages.App
 {
