@@ -2,7 +2,7 @@
 
 <AuthorizeView Roles="Admin">
     <Authorized>
-        authorized @context.User.Identity.Name
+        authorized @context.User.Identity?.Name
         @foreach (var x in @context.User.Claims)
         {
             Console.WriteLine(x);

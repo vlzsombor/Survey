@@ -8,7 +8,7 @@ namespace Survey.Client.Repository
 {
     public class HttpResponseWrapper<T>
     {
-        public HttpResponseWrapper(T response, bool success, HttpResponseMessage httpResponseMessage)
+        public HttpResponseWrapper(T? response, bool success, HttpResponseMessage httpResponseMessage)
         {
             Success = success;
             Response = response;
@@ -16,7 +16,7 @@ namespace Survey.Client.Repository
         }
 
         public bool Success { get; set; }
-        public T Response { get; set; }
+        public T? Response { get; set; }
         public HttpResponseMessage HttpResponseMessage { get; set; }
 
         public async Task<string> GetBody()

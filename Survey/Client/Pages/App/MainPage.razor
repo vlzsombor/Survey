@@ -1,9 +1,11 @@
 ﻿@page "/app"
 @using Survey.Client.Pages.App.Card
+@using System.Linq
+@using Survey.Shared.Model
 <h3>MainPage</h3>
 
 <Survey.Client.Pages.App.Card.CardForm cardModel="@cardModel" OnValidSubmit="@Create" />
-@foreach (var cardItem in CardList)
+@foreach (var cardItem in CardList ?? Enumerable.Empty<CardModel>())
 {
     <CardSimple OnDelete="@(OnDelete)" OnRatingChanges="@(OnRateChange)" CardModel="cardItem"></CardSimple>
 }

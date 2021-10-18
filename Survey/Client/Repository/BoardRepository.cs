@@ -19,7 +19,7 @@ namespace Survey.Client.Repository
             this.httpService = httpService;
         }
 
-        public async Task<List<BoardModel>> GetAllCards()
+        public async Task<List<BoardModel>?> GetAllCards()
         {
             var response = await httpService.Get<List<BoardModel>>(baseURL);
             if (!response.Success)

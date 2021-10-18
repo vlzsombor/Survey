@@ -30,8 +30,11 @@
     private UserInfo userInfo = new UserInfo();
     private async Task CreateUser()
     {
-        UserToken userToken = await accountsRepository.Register(userInfo);
-        await loginService.Login(userToken.Token);
+        UserToken? userToken = await accountsRepository.Register(userInfo);
+        if (userToken != null)
+        {
+            await loginService.Login(userToken.Token);
+        }
         navigationManager.NavigateTo("");
     }
 

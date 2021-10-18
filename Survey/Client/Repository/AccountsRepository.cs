@@ -18,7 +18,7 @@ namespace Survey.Client.Repository
             this.httpService = httpService;
         }
 
-        public async Task<UserToken> Register(UserInfo userInfo)
+        public async Task<UserToken?> Register(UserInfo userInfo)
         {
             var response = await httpService.Post<UserInfo, UserToken>($"{baseURL}/create", userInfo);
 
@@ -31,7 +31,7 @@ namespace Survey.Client.Repository
 
         }
 
-        public async Task<UserToken> Login(UserInfo userInfo)
+        public async Task<UserToken?> Login(UserInfo userInfo)
         {
             var response = await httpService.Post<UserInfo, UserToken>($"{baseURL}/login", userInfo);
 

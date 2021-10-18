@@ -18,8 +18,8 @@ namespace Survey.Server.Model
             Database.EnsureCreated();
         }
 
-        public DbSet<CardModel> CardModel { get; set; }
-        public DbSet<BoardModel> BoardModel { get; set; }
+        public DbSet<CardModel> CardModel => Set<CardModel>();
+        public DbSet<BoardModel> BoardModel => Set<BoardModel>();
     }
 
 

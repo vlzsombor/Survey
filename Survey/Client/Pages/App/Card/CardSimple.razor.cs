@@ -9,8 +9,12 @@ namespace Survey.Client.Pages.App.Card
 {
     public partial class CardSimple : ComponentBase
     {
+        public CardSimple()
+        {
+        }
+
         [Parameter]
-        public CardModel CardModel { get; set; }
+        public CardModel CardModel { get; set; } = default!;
 
         [Parameter]
         public EventCallback<CardModel> OnRatingChanges { get; set; }

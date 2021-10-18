@@ -14,11 +14,9 @@ namespace Survey.Client.Pages.App
     public partial class MainPage : ComponentBase
     {
         [Inject]
-        public ICardRepository cardRepository { get; set; }
+        public ICardRepository cardRepository { get; set; } = default!;
 
-
-
-        public List<CardModel> CardList { get; set; } = new List<CardModel>();
+        public List<CardModel>? CardList { get; set; } = new List<CardModel>();
 
         private CardModel cardModel = new CardModel();
 

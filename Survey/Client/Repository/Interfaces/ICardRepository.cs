@@ -8,7 +8,7 @@ namespace Survey.Client.Repository.Interfaces
 {
     public interface ICardRepository
     {
-        public Task<List<CardModel>> GetAllCards();
+        public Task<List<CardModel>?> GetAllCards();
         public Task CreateCard(CardModel card);
         public Task UpdateCardRating(CardModel card);
         public Task DeleteCard(CardModel card);

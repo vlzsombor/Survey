@@ -58,7 +58,7 @@ namespace Survey.Client.Helpers
             }
         }
 
-        private async Task<T> Deserialize<T>(HttpResponseMessage httpResponse, JsonSerializerOptions options)
+        private async Task<T?> Deserialize<T>(HttpResponseMessage httpResponse, JsonSerializerOptions options)
         {
             var responseString = await httpResponse.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<T>(responseString, options);

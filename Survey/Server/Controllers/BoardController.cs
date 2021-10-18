@@ -22,7 +22,6 @@ namespace Survey.Server.Controllers
     public class BoardController : ControllerBase
     {
         private readonly SurveyDbContext _context;
-
         public BoardController(SurveyDbContext surveyDbContext)
         {
             this._context = surveyDbContext;

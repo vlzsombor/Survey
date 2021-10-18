@@ -42,7 +42,7 @@ namespace Survey.Client.Repository
 
         }
 
-        public async Task<List<CardModel>> GetAllCards()
+        public async Task<List<CardModel>?> GetAllCards()
         {
             var response = await httpService.Get<List<CardModel>>(url + "/Cards");
             if (!response.Success)

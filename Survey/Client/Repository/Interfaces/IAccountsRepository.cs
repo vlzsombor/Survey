@@ -9,8 +9,8 @@ namespace Survey.Client.Repository.Interfaces
 {
     public interface IAccountsRepository
     {
-        public Task<UserToken> Register(UserInfo userInfo);
-        public Task<UserToken> Login(UserInfo userInfo);
+        public Task<UserToken?> Register(UserInfo userInfo);
+        public Task<UserToken?> Login(UserInfo userInfo);
 
     }
 }

@@ -9,8 +9,12 @@ namespace Survey.Client.Pages.App.Card
 {
     public partial class CardForm : ComponentBase
     {
-        [Parameter] 
-        public CardModel cardModel { get; set; }
+        public CardForm()
+        {
+        }
+
+        [Parameter]
+        public CardModel cardModel { get; set; } = default!;
         [Parameter] 
         public EventCallback OnValidSubmit { get; set; }
     }

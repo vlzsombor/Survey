@@ -3,6 +3,8 @@
 @inject IBoardRepository BoardRepository
 @using Microsoft.AspNetCore.Authorization
 @using Survey.Shared.Model
+@using System.Linq
+
 @attribute [Authorize]
 <AuthorizeView>
     <Authorized>
@@ -10,9 +12,9 @@
         <button class="btn btn-primary" @onclick="MakeNewSurveyBoard">Make a new Survey board</button>
     </Authorized>
 </AuthorizeView>
-@foreach (var board in BoardList)
+@foreach (var board in BoardList ?? Enumerable.Empty<BoardModel>())
 {
-    <h2 style="background-color:rebeccapurple">@board.OwnerUser.Email</h2>
+    <h2 style="background-color:rebeccapurple">@board.OwnerUser?.Email</h2>
 }
 
 
@@ -23,7 +25,7 @@
         await BoardRepository.CreateBoard(new Survey.Shared.Model.BoardModel());
     }
 
-    public List<BoardModel> BoardList { get; set; } = new List<BoardModel>();
+    public List<BoardModel>? BoardList { get; set; } = new List<BoardModel>();
 
     private async Task LoadCard()
     {
