@@ -10,7 +10,7 @@ using Survey.Server.Model;
 namespace Survey.Server.Migrations
 {
     [DbContext(typeof(SurveyDbContext))]
-    [Migration("20211017112934_test")]
+    [Migration("20211018163411_test")]
     partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

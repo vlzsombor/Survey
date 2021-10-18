@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Survey.Server.Data;
-
+using Survey.Server.Model;
 
 namespace Survey.Server
 {
@@ -19,5 +21,9 @@ namespace Survey.Server
                 "BoardAdmin",
                 "BoardFiller"
             };
+
+
+        public static IdentityUser GetIdentityUserByEmail(SurveyDbContext _context, HttpContext httpContext) => _context.Users.Where(x => x.Email == httpContext.User.Identity.Name).FirstOrDefault();
+
     }
 }

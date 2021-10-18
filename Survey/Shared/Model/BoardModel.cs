@@ -12,7 +12,7 @@ namespace Survey.Shared.Model
     {
         [Key]
         public int Id { get; set; }
-        public IdentityUser OwnerUser { get; set; }
+        public virtual IdentityUser OwnerUser { get; set; }
         // todo kitolto user tipust letrehozni atnevezni
         //public ICollection<User> surveyFillingUser { get; set; }
         public ICollection<CardModel> Cards { get; set; }

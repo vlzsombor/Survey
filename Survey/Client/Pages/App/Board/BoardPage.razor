@@ -1,7 +1,8 @@
 ﻿@page "/board"
 @using Survey.Client.Repository.Interfaces
-@inject IBoardRepository iBoardRepository
+@inject IBoardRepository BoardRepository
 @using Microsoft.AspNetCore.Authorization
+@using Survey.Shared.Model
 @attribute [Authorize]
 <AuthorizeView>
     <Authorized>
@@ -9,15 +10,30 @@
         <button class="btn btn-primary" @onclick="MakeNewSurveyBoard">Make a new Survey board</button>
     </Authorized>
 </AuthorizeView>
+@foreach (var board in BoardList)
+{
+    <h2 style="background-color:rebeccapurple">@board.OwnerUser.Email</h2>
+}
 
 
 @code {
 
     private async void MakeNewSurveyBoard()
     {
-        await iBoardRepository.CreateBoard(new Survey.Shared.Model.BoardModel());
+        await BoardRepository.CreateBoard(new Survey.Shared.Model.BoardModel());
     }
 
+    public List<BoardModel> BoardList { get; set; } = new List<BoardModel>();
 
+    private async Task LoadCard()
+    {
+        BoardList = await BoardRepository.GetAllCards();
+        StateHasChanged();
+    }
+    protected async override void OnInitialized()
+    {
+        //await cardRepository.Test();
+        await LoadCard();
+    }
 
 }

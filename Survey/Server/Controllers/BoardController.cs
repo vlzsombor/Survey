@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Survey.Server;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -31,7 +32,10 @@ namespace Survey.Server.Controllers
         [HttpGet]
         public List<BoardModel> Get()
         {
-            return _context.BoardModel.ToList();
+            return _context.BoardModel
+                .Include(r => r.OwnerUser)
+                .Where(x => x.OwnerUser == Constants.GetIdentityUserByEmail(_context,HttpContext))
+                .ToList();
         }
 
         // GET api/<BoardController>/5
@@ -45,7 +49,8 @@ namespace Survey.Server.Controllers
         [HttpPost]
         public void Post([FromBody] BoardModel bm)
         {
-            IdentityUser user = Unit.GetIdentityUserByEmail(_context, HttpContext);
+            IdentityUser user = Constants.GetIdentityUserByEmail(_context, HttpContext);
+            bm.Cards = _context.CardModel.ToList();
             bm.OwnerUser = user;
             _context.BoardModel.Add(bm);
             _context.SaveChanges();
