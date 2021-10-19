@@ -51,8 +51,8 @@
 
             @foreach (var x in userToken.ErrorDict)
             {
+                <li style="background-color:rebeccapurple">@x.Key</li>
                 <li>@x.Value</li>
-                <li>@x.Key</li>
             }
 
         }

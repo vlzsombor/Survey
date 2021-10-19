@@ -28,33 +28,14 @@ namespace Survey.Client.Repository
 
             if (!response.Success)
             {
+                var errorsDictionarySerialized = await response.HttpResponseMessage.Content.ReadAsStringAsync();
 
-                string a = "[\r\n  {\r\n    \"Code\": \"PasswordRequiresNonAlphanumeric\",\r\n    \"Description\": \"Passwords must have at least one non alphanumeric character.\"\r\n  },\r\n  {\r\n    \"Code\": \"PasswordRequiresDigit\",\r\n    \"Description\": \"Passwords must have at least one digit ('0'-'9').\"\r\n  },\r\n  {\r\n    \"Code\": \"PasswordRequiresUpper\",\r\n    \"Description\": \"Passwords must have at least one uppercase ('A'-'Z').\"\r\n  }\r\n]";
-                //var a = await response.HttpResponseMessage.Content.ReadAsStringAsync();
-                var b = await response.HttpResponseMessage.Content.ReadAsStringAsync();
-                //var b = await response.GetBody();
-                var asdfsda = "fasdfsa";
-                
-                //var values = (Newtonsoft.Json.Linq.JArray) JsonConvert.DeserializeObject(b);
+                var errorDictionary = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(errorsDictionarySerialized);
 
-                var fadsf = "adsfsd";
-                var asdfdsa = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(b);
-
-                //var aaadsfds = values["detail"];
-
-                //foreach (var x in values)
-                //{
-                //    Console.WriteLine((x));
-                //}
-                foreach (KeyValuePair<string, string> entry in asdfdsa)
-                {
-                    Console.WriteLine(entry.Key);
-                    Console.WriteLine(entry.Value);
-                }
 
                 return new UserToken()
                 {
-                    Error = "fadsfda",
+                    ErrorDict = errorDictionary
                 };
 
 

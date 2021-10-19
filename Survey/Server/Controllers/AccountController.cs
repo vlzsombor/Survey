@@ -45,28 +45,16 @@ namespace Survey.Server.Controllers
             }
             else
             {
-                string errorsToReturn = "Register failder with the following errors";
-
-
-
-                Dictionary<string, string> test = new Dictionary<string, string>();
+                Dictionary<string, string> errorsDictionary = new Dictionary<string, string>();
 
                 foreach (var errors in result.Errors)
                 {
-                    errorsToReturn += Environment.NewLine;
-                    errorsToReturn += $"Error code: {errors.Code} - {errors.Description}";
-                    test.Add(errors.Code, errors.Description);
+                    errorsDictionary.Add(errors.Code, errors.Description);
 
                 }
-                UserToken userToken = new UserToken()
-                {
-                    Error = errorsToReturn,
-                };
-
                 
-                string json = JsonConvert.SerializeObject(test);
-                string jsonString = System.Text.Json.JsonSerializer.Serialize(test);
-                return BadRequest(json);
+                string errorsDictionarySerialized = JsonConvert.SerializeObject(errorsDictionary);
+                return BadRequest(errorsDictionarySerialized);
             }
         }
 

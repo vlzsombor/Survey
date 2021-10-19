@@ -34,7 +34,7 @@
     private async Task CreateUser()
     {
         UserToken? userToken = await accountsRepository.Login(userInfo);
-        if (userToken != null)
+        if (userToken?.Token != null)
         {
             await loginService.Login(userToken.Token);
             navigationManager.NavigateTo("");

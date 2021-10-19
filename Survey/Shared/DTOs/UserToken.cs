@@ -13,7 +13,7 @@ namespace Survey.Shared.DTOs
         public string? Token { get; set; }
         public string? Error { get; set; }
         public JArray? ErrorList { get; set; }
-        public IDictionary<string, object>? ErrorDict { get; set; }
+        public IDictionary<string, string>? ErrorDict { get; set; }
 
     }
 }
