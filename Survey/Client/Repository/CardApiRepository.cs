@@ -13,22 +13,26 @@ namespace Survey.Client.Repository
 {
     public class CardApiRepository : ICardRepository
     {
+
+
         private readonly IHttpService httpService;
+        private HttpClient _httpClient { get; set; }
 
         private string url = "api/cardapi";
 
 
-        public CardApiRepository(IHttpService httpService)
+        public CardApiRepository(IHttpService httpService, HttpClient httpClient)
         {
             this.httpService = httpService;
+            _httpClient = httpClient;
         }
 
         public async Task CreateCard(CardModel card)
         {
-            var response = await httpService.Post(url, card);
-            if (!response.Success)
+            var response = await _httpClient.PostAsJsonAsync<CardModel>(url, card);
+            if (!response.IsSuccessStatusCode)
             {
-                throw new ApplicationException(await response.GetBody());
+                throw new ApplicationException(await response.Content.ReadAsStringAsync());
             }
         }
 
@@ -44,12 +48,16 @@ namespace Survey.Client.Repository
 
         public async Task<List<CardModel>?> GetAllCards()
         {
-            var response = await httpService.Get<List<CardModel>>(url + "/Cards");
-            if (!response.Success)
+            var response = await _httpClient.GetAsync(url + "/Cards");
+            if (!response.IsSuccessStatusCode)
             {
-                throw new ApplicationException(await response.GetBody());
+                throw new ApplicationException(await response.Content.ReadAsStringAsync());
             }
-            return response.Response;
+
+
+            return JsonConvert.DeserializeObject<List<CardModel>?>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
+
+            //return response.;
         }
 
         public async Task Test()
