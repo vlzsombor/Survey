@@ -23,19 +23,62 @@
     <ValidationSummary />
 
     <button type="submit" class="btn btn-primary">Register</button>
+    @if (userToken?.Error != null)
+    {
+        <h1>@userToken.Error</h1>
+
+
+    }
+
+
+    <ul>
+        @if (userToken?.ErrorList != null)
+        {
+
+
+            @foreach (var x in userToken.ErrorList)
+            {
+                <li>@x.</li>
+            }
+
+        }
+
+    </ul>
+    <ul>
+        @if (userToken?.ErrorDict != null)
+        {
+
+
+            @foreach (var x in userToken.ErrorDict)
+            {
+                <li>@x.Value</li>
+                <li>@x.Key</li>
+            }
+
+        }
+
+    </ul>
+
+   
+
+
 
 </EditForm>
 
 @code{
     private UserInfo userInfo = new UserInfo();
+    UserToken? userToken;
+
     private async Task CreateUser()
     {
-        UserToken? userToken = await accountsRepository.Register(userInfo);
-        if (userToken != null)
+        userToken = await accountsRepository.Register(userInfo);
+        if (userToken?.Token != null)
         {
             await loginService.Login(userToken.Token);
+            navigationManager.NavigateTo("");
         }
-        navigationManager.NavigateTo("");
+
+
     }
 
 

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using Survey.Shared.DTOs;
 using Survey.Shared.Model;
 using System;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace Survey.Server.Controllers
 {
@@ -45,13 +47,26 @@ namespace Survey.Server.Controllers
             {
                 string errorsToReturn = "Register failder with the following errors";
 
+
+
+                Dictionary<string, string> test = new Dictionary<string, string>();
+
                 foreach (var errors in result.Errors)
                 {
                     errorsToReturn += Environment.NewLine;
                     errorsToReturn += $"Error code: {errors.Code} - {errors.Description}";
-                }
+                    test.Add(errors.Code, errors.Description);
 
-                return BadRequest(errorsToReturn);
+                }
+                UserToken userToken = new UserToken()
+                {
+                    Error = errorsToReturn,
+                };
+
+                
+                string json = JsonConvert.SerializeObject(test);
+                string jsonString = System.Text.Json.JsonSerializer.Serialize(test);
+                return BadRequest(json);
             }
         }
 
