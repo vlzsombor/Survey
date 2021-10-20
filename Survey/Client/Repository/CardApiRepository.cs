@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Json;
 using Newtonsoft.Json;
-using Survey.Client.Helpers;
 using Survey.Client.Repository.Interfaces;
 
 namespace Survey.Client.Repository

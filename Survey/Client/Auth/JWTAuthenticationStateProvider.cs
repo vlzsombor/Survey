@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.JSInterop;
-using Survey.Client.Helpers;
 using System.Security.Claims;
 using System.Net.Http;
 using System.Text.Json;

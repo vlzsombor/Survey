@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Survey.Client.Auth;
-using Survey.Client.Helpers;
 using Survey.Client.Repository;
 using Survey.Client.Repository.Interfaces;
 using Survey.Client.Unit;

@@ -20,13 +20,10 @@ namespace Survey.Server.Controllers
     {
 
         private readonly SurveyDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
 
-        public CardApiController(SurveyDbContext context, UserManager<IdentityUser> userManager)
+        public CardApiController(SurveyDbContext context)
         {
             _context = context;
-            _userManager = userManager;
-
         }
 
         [HttpGet]
