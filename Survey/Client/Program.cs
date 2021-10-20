@@ -38,7 +38,7 @@ namespace Survey.Client
 
 
             services.AddScoped<ICardRepository, CardApiRepository>();
-            services.AddScoped<IHttpService, HttpService>();
+            //services.AddScoped<IHttpService, HttpService>();
             services.AddScoped<IBoardRepository, BoardRepository>();
 
 

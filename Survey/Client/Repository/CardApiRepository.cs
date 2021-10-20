@@ -15,15 +15,13 @@ namespace Survey.Client.Repository
     {
 
 
-        private readonly IHttpService httpService;
         private HttpClient _httpClient { get; set; }
 
         private string url = "api/cardapi";
 
 
-        public CardApiRepository(IHttpService httpService, HttpClient httpClient)
+        public CardApiRepository(HttpClient httpClient)
         {
-            this.httpService = httpService;
             _httpClient = httpClient;
         }
 
@@ -38,10 +36,10 @@ namespace Survey.Client.Repository
 
         public async Task DeleteCard(CardModel card)
         {
-            var response = await httpService.Delete($"{url}/{card.Id}");
-            if (!response.Success)
+            var response = await _httpClient.DeleteAsync($"{url}/{card.Id}");
+            if (!response.IsSuccessStatusCode)
             {
-                throw new ApplicationException(await response.GetBody());
+                throw new ApplicationException(await response.Content.ReadAsStringAsync());
             }
 
         }
@@ -53,24 +51,20 @@ namespace Survey.Client.Repository
             {
                 throw new ApplicationException(await response.Content.ReadAsStringAsync());
             }
-
-
-            return JsonConvert.DeserializeObject<List<CardModel>?>(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
-
-            //return response.;
+            return JsonConvert.DeserializeObject<List<CardModel>?>(await response.Content.ReadAsStringAsync());
         }
 
         public async Task Test()
         {
-            var response = await httpService.Get<List<CardModel>>("/CardApi/test");
+            var response = await _httpClient.GetAsync("/CardApi/test");
         }
 
         public async Task UpdateCardRating(CardModel card)
         {
-            var response = await httpService.Put<CardModel>(url + "/UpdateCardRating", card);
-            if (!response.Success)
+            var response = await _httpClient.PutAsJsonAsync<CardModel>(url + "/UpdateCardRating", card);
+            if (!response.IsSuccessStatusCode)
             {
-                throw new ApplicationException(await response.GetBody());
+                throw new ApplicationException(await response.Content.ReadAsStringAsync());
             }
         }
 

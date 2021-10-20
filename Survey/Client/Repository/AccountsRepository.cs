@@ -9,26 +9,28 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
 
 namespace Survey.Client.Repository
 {
     public class AccountsRepository : IAccountsRepository
     {
-        private readonly IHttpService httpService;
         private readonly string baseURL = StaticClass.API_ACCOUNT_URL;
+        private HttpClient _httpClient { get; set; }
 
-        public AccountsRepository(IHttpService httpService)
+        public AccountsRepository(HttpClient httpClient)
         {
-            this.httpService = httpService;
+            _httpClient = httpClient;
         }
 
         public async Task<UserToken?> Register(UserInfo userInfo)
         {
-            var response = await httpService.Post<UserInfo, UserToken>($"{baseURL}/create", userInfo);
+            var response = await _httpClient.PostAsJsonAsync($"{baseURL}/create", userInfo);
 
-            if (!response.Success)
+            if (!response.IsSuccessStatusCode)
             {
-                var errorsDictionarySerialized = await response.HttpResponseMessage.Content.ReadAsStringAsync();
+                var errorsDictionarySerialized = await response.Content.ReadAsStringAsync();
 
                 var errorDictionary = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(errorsDictionarySerialized);
 
@@ -38,26 +40,21 @@ namespace Survey.Client.Repository
                     ErrorDict = errorDictionary
                 };
 
-
-                throw new ApplicationException(await response.GetBody());
+                throw new ApplicationException(await response.Content.ReadAsStringAsync());
 
             }
-
-            return response.Response;
-
+            return JsonConvert.DeserializeObject<UserToken?>(await response.Content.ReadAsStringAsync());
         }
 
         public async Task<UserToken?> Login(UserInfo userInfo)
         {
-            var response = await httpService.Post<UserInfo, UserToken>($"{baseURL}/login", userInfo);
+            var response = await _httpClient.PostAsJsonAsync($"{baseURL}/login", userInfo);
 
-            if (!response.Success)
+            if (!response.IsSuccessStatusCode)
             {
-                throw new ApplicationException(await response.GetBody());
+                throw new ApplicationException(await response.Content.ReadAsStringAsync());
             }
-
-            return response.Response;
-
+            return JsonConvert.DeserializeObject<UserToken?>(await response.Content.ReadAsStringAsync());
         }
     }
 }

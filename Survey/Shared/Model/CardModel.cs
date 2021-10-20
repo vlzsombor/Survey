@@ -11,9 +11,9 @@ namespace Survey.Shared.Model
     {
         public int Id { get; set; }
         [Required]
-        public string Title { get; set; }
+        public string Title { get; set; } = default!;
         [Required]
-        public string Text { get; set; }
+        public string Text { get; set; } = default!;
 
 
         public int Rating { get; set; }
@@ -23,7 +23,7 @@ namespace Survey.Shared.Model
             Title = title;
             Text = text;
             Id = id;
-        }        
+        }
         public CardModel(int id, string title, string text, int rating)
         {
             Title = title;
