@@ -7,10 +7,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Survey.Server.Data;
 using Survey.Server.Model;
 using System;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Survey.Server
 {
@@ -58,7 +60,7 @@ namespace Survey.Server
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -88,6 +90,17 @@ namespace Survey.Server
                 endpoints.MapControllers();
                 endpoints.MapFallbackToFile("index.html");
             });
+
+            await Seeding(app);
+
+        }
+
+        private static async Task Seeding(IApplicationBuilder app)
+        {
+            RoleManager<IdentityRole> roleManager = app.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            UserManager<IdentityUser> userManager = app.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+            await SeedAdministratorAndUser.Seed(roleManager, userManager);
         }
     }
 }
