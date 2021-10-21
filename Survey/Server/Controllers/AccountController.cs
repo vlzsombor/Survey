@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 
+
 namespace Survey.Server.Controllers
 {
     [ApiController]
@@ -39,9 +40,11 @@ namespace Survey.Server.Controllers
         {
             var user = new IdentityUser { UserName = model.Email, Email = model.Email };
             var result = await _userManager.CreateAsync(user, model.Password);
-            if (result.Succeeded)
+
+            IdentityResult roleIdentityResult = await _userManager.AddToRoleAsync(user, "Admin");
+            if (result.Succeeded && roleIdentityResult.Succeeded)
             {
-                return Ok(BuildToken(model));
+                return Ok(BuildToken(user));
             }
             else
             {
@@ -66,7 +69,9 @@ namespace Survey.Server.Controllers
             
             if (result.Succeeded)
             {
-                return BuildToken(userInfo);
+                IdentityUser identityUser = await _userManager.FindByNameAsync(userInfo.Email);
+
+                return await BuildToken(identityUser);
             }
             else
             {
@@ -74,16 +79,19 @@ namespace Survey.Server.Controllers
             }
         }
 
-        private UserToken BuildToken(UserInfo userInfo)
+        private async Task<UserToken> BuildToken(IdentityUser identityUser)
         {
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Name, userInfo.Email),
-                new Claim(ClaimTypes.Email, userInfo.Email),
-                new Claim(ClaimTypes.Role, "Admin")
+                new Claim(ClaimTypes.Name, identityUser.Email),
+                new Claim(ClaimTypes.Email, identityUser.Email),
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            IList<string> roleNames = await _userManager.GetRolesAsync(identityUser);
+            claims.AddRange(roleNames.Select(roleName => new Claim(ClaimsIdentity.DefaultRoleClaimType, roleName)));
+
 
             var expiration = DateTime.UtcNow.AddYears(1);
             JwtSecurityToken token = new JwtSecurityToken(
