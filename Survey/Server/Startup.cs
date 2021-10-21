@@ -26,7 +26,7 @@ namespace Survey.Server
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public async void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             //todo set appropiate CORS policy
             services.AddCors(options =>
@@ -70,14 +70,14 @@ namespace Survey.Server
             services.AddRazorPages();
 
 
-            RoleManager<IdentityRole> roleManager = services.BuildServiceProvider().GetService<RoleManager<IdentityRole>>();
-            UserManager<IdentityUser> userManager = services.BuildServiceProvider().GetService<UserManager<IdentityUser>>();
+            //RoleManager<IdentityRole> roleManager = services.BuildServiceProvider().GetService<RoleManager<IdentityRole>>();
+            //UserManager<IdentityUser> userManager = services.BuildServiceProvider().GetService<UserManager<IdentityUser>>();
 
-            await SeedAdministratorAndUser.Seed(roleManager, userManager);
+            //await SeedAdministratorAndUser.Seed(roleManager, userManager);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -112,6 +112,13 @@ namespace Survey.Server
                 endpoints.MapControllers();
                 endpoints.MapFallbackToFile("index.html");
             });
+
+
+            RoleManager<IdentityRole> roleManager = app.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            UserManager<IdentityUser> userManager = app.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+            await SeedAdministratorAndUser.Seed(roleManager, userManager);
+
         }
     }
 }
