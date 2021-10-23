@@ -44,7 +44,7 @@ namespace Survey.Server.Controllers
             IdentityResult roleIdentityResult = await _userManager.AddToRoleAsync(user, "Admin");
             if (result.Succeeded && roleIdentityResult.Succeeded)
             {
-                return Ok(BuildToken(user));
+                return Ok(await BuildToken(user));
             }
             else
             {
