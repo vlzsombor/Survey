@@ -21,48 +21,17 @@
         <ValidationMessage For="@(()=>userInfo.Password)" />
     </div>
     <ValidationSummary />
-
     <button type="submit" class="btn btn-primary">Register</button>
-    @if (userToken?.Error != null)
-    {
-        <h1>@userToken.Error</h1>
-
-
-    }
-
-
-    <ul>
-        @if (userToken?.ErrorList != null)
-        {
-
-
-            @foreach (var x in userToken.ErrorList)
-            {
-                <li>@x.</li>
-            }
-
-        }
-
-    </ul>
     <ul>
         @if (userToken?.ErrorDict != null)
         {
-
-
             @foreach (var x in userToken.ErrorDict)
             {
                 <li style="background-color:rebeccapurple">@x.Key</li>
                 <li>@x.Value</li>
             }
-
         }
-
     </ul>
-
-   
-
-
-
 </EditForm>
 
 @code{

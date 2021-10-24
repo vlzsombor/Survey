@@ -56,8 +56,8 @@ namespace Survey.Server.Controllers
 
                 }
                 
-                string errorsDictionarySerialized = JsonConvert.SerializeObject(errorsDictionary);
-                return BadRequest(errorsDictionarySerialized);
+                //string errorsDictionarySerialized = JsonConvert.SerializeObject(errorsDictionary);
+                return BadRequest(errorsDictionary);
             }
         }
 
