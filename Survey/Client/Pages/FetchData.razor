@@ -37,10 +37,23 @@ else
 
 @code {
     private WeatherForecast[]? forecasts;
+    [CascadingParameter]
+    public Error Error { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
+
+        Console.WriteLine("hello");
+
+        var a = await Http.GetAsync("WeatherForecast");
+
+        if (!a.IsSuccessStatusCode)
+        {
+            Error.ProcessError(a);
+            return;
+        }
         forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+
     }
 
 }

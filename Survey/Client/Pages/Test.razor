@@ -19,27 +19,9 @@
 
 <h1>ALMA</h1>
 
-<button @onclick="alma">asdfdsa</button>
-
 @code{
     [CascadingParameter]
     public Error Error { get; set; } = default!;
 
 
-    public void alma()
-    {
-        //throw new Exception("baj van");
-        //try
-        //{
-        //    throw new Exception("baj van");
-        //}
-        //catch (Exception ex)
-        //{
-        //    Error?.ProcessError(ex);
-        //}
-
-
-        Error.ProcessError(new UnauthorizedAccessException("bajvan"));
-
-    }
 }
