@@ -38,9 +38,6 @@ namespace Survey.Client.Repository
                 {
                     ErrorDict = errorDictionary
                 };
-
-                throw new ApplicationException(await response.Content.ReadAsStringAsync());
-
             }
             return JsonConvert.DeserializeObject<UserToken?>(await response.Content.ReadAsStringAsync());
         }
@@ -51,7 +48,13 @@ namespace Survey.Client.Repository
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new ApplicationException(await response.Content.ReadAsStringAsync());
+                var errorsDictionarySerialized = await response.Content.ReadAsStringAsync();
+                var errorDictionary = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(errorsDictionarySerialized);
+
+                return new UserToken()
+                {
+                    ErrorDict = errorDictionary
+                };
             }
             return JsonConvert.DeserializeObject<UserToken?>(await response.Content.ReadAsStringAsync());
         }

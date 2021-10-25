@@ -42,7 +42,7 @@ namespace Survey.Client
             //services.AddScoped<IHttpService, HttpService>();
             services.AddScoped<IBoardRepository, BoardRepository>();
 
-
+            services.AddScoped<ICardRepository, CardApiRepository>();
             services.AddAuthorizationCore();
 
 

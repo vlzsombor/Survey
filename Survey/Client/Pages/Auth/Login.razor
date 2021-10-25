@@ -26,20 +26,30 @@
     <ValidationSummary />
 
     <button type="submit" class="btn btn-primary">Login</button>
+    @if (userToken?.ErrorDict != null)
+    {
+        @foreach (var x in userToken.ErrorDict)
+        {
 
+            <div class="alert alert-danger" role="alert">
+                @x.Value
+            </div>
+        }
+    }
 </EditForm>
 
 @code{
     private UserInfo userInfo = new UserInfo();
+    private UserToken? userToken;
+
     private async Task CreateUser()
     {
-        UserToken? userToken = await accountsRepository.Login(userInfo);
+        userToken = await accountsRepository.Login(userInfo);
         if (userToken?.Token != null)
         {
             await loginService.Login(userToken.Token);
             navigationManager.NavigateTo("");
         }
-
     }
 
 

@@ -22,16 +22,16 @@
     </div>
     <ValidationSummary />
     <button type="submit" class="btn btn-primary">Register</button>
-    <ul>
-        @if (userToken?.ErrorDict != null)
+    @if (userToken?.ErrorDict != null)
+    {
+        @foreach (var x in userToken.ErrorDict)
         {
-            @foreach (var x in userToken.ErrorDict)
-            {
-                <li style="background-color:rebeccapurple">@x.Key</li>
-                <li>@x.Value</li>
-            }
+
+            <div class="alert alert-danger" role="alert">
+                @x.Value
+            </div>
         }
-    </ul>
+    }
 </EditForm>
 
 @code{

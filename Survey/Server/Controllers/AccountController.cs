@@ -40,7 +40,7 @@ namespace Survey.Server.Controllers
         {
             var user = new IdentityUser { UserName = model.Email, Email = model.Email };
             var result = await _userManager.CreateAsync(user, model.Password);
-
+            
             IdentityResult roleIdentityResult = await _userManager.AddToRoleAsync(user, "Admin");
             if (result.Succeeded && roleIdentityResult.Succeeded)
             {
@@ -75,7 +75,11 @@ namespace Survey.Server.Controllers
             }
             else
             {
-                return Unauthorized(userInfo);
+                Dictionary<string, string> errorsDictionary = new Dictionary<string, string>();
+
+                errorsDictionary.Add("Bad credentials", "Please give correct credentials");
+                //string errorsDictionarySerialized = JsonConvert.SerializeObject(errorsDictionary);
+                return BadRequest(errorsDictionary);
             }
         }
 

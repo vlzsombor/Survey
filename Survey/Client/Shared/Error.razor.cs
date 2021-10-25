@@ -19,21 +19,18 @@ namespace Survey.Client.Shared
         private ILogger<Error> Logger { get; set; } = default!;
         [Inject]
         private NavigationManager NavigationManager { get; set; } = default!;
-
-
-        private Exception? errorObject;
-        private string? ex;
+        string generalErrorMessage = "Something went wrong please refresh the page";
 
         public void ProcessError(HttpResponseMessage message)
         {
-
+            string exceptionMessage = generalErrorMessage;
             if (message.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
-                ex = "Unauthorized please login";
+                exceptionMessage = "Unauthorized please login";
                 NavigationManager.NavigateTo("login");
             }
 
-            toastServive.ShowError(ex);
+            toastServive.ShowError(exceptionMessage);
             StateHasChanged();
         }
 
@@ -42,9 +39,8 @@ namespace Survey.Client.Shared
             Logger.LogError("Error:ProcessError - Type: {Type} Message: {Message}",
                 ex.GetType(), ex.Message);
 
-            errorObject = ex;
 
-            toastServive.ShowError("boom");
+            toastServive.ShowError("Something went wrong please refresh the page");
             StateHasChanged();
         }
 
