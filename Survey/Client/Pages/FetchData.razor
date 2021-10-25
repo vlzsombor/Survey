@@ -45,7 +45,7 @@ else
 
         Console.WriteLine("hello");
 
-        var a = await Http.GetAsync("WeatherForecast");
+        HttpResponseMessage a = await Http.GetAsync("WeatherForecast");
 
         if (!a.IsSuccessStatusCode)
         {

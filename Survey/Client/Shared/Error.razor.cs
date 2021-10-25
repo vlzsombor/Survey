@@ -14,21 +14,26 @@ namespace Survey.Client.Shared
         [Parameter]
         public RenderFragment? ChildContent { get; set; }
         [Inject]
-        public IToastService toastServive { get; set; } = default!;
+        private IToastService toastServive { get; set; } = default!;
+        [Inject]
+        private ILogger<Error> Logger { get; set; } = default!;
+        [Inject]
+        private NavigationManager NavigationManager { get; set; } = default!;
+
 
         private Exception? errorObject;
         private string? ex;
 
         public void ProcessError(HttpResponseMessage message)
         {
-            System.Net.HttpStatusCode a = message.StatusCode;
 
-            if (a == System.Net.HttpStatusCode.Unauthorized)
+            if (message.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
                 ex = "Unauthorized please login";
+                NavigationManager.NavigateTo("login");
             }
 
-            toastServive.ShowError("boom");
+            toastServive.ShowError(ex);
             StateHasChanged();
         }
 

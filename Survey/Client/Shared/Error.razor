@@ -1,20 +1,7 @@
 ﻿@using Microsoft.Extensions.Logging
-@inject ILogger<Error> Logger
-@using System.Web
-
 <CascadingValue Value=this>
     @ChildContent
-    @if (errorObject != null)
-    {
-        <h1 style="background-color:red">sry hiba van te$$</h1>
-        <h1>@errorObject.Message</h1>
-    }
-    @if (!string.IsNullOrEmpty(ex))
-    {
-        <h1>@ex</h1>
-    }
 </CascadingValue>
-
 @code {
 
 
