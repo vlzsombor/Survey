@@ -1,4 +1,6 @@
 using Blazored.LocalStorage;
+using Blazored.Toast;
+using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -34,9 +36,9 @@ namespace Survey.Client
         private static void ConfigureServices(IServiceCollection services)
         {
             services.AddBlazoredLocalStorage();
+            services.AddBlazoredToast();
+            //services.AddSingleton<IToastService, ToastService>();
 
-
-            services.AddScoped<ICardRepository, CardApiRepository>();
             //services.AddScoped<IHttpService, HttpService>();
             services.AddScoped<IBoardRepository, BoardRepository>();
 

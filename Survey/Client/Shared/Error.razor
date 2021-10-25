@@ -1,6 +1,7 @@
 ﻿@using Microsoft.Extensions.Logging
 @inject ILogger<Error> Logger
 @using System.Web
+
 <CascadingValue Value=this>
     @ChildContent
     @if (errorObject != null)
@@ -15,8 +16,6 @@
 </CascadingValue>
 
 @code {
-
-
 
 
 }

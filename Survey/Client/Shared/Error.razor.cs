@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ namespace Survey.Client.Shared
     {
         [Parameter]
         public RenderFragment? ChildContent { get; set; }
+        [Inject]
+        public IToastService toastServive { get; set; } = default!;
 
         private Exception? errorObject;
         private string? ex;
@@ -25,16 +28,21 @@ namespace Survey.Client.Shared
                 ex = "Unauthorized please login";
             }
 
-
+            toastServive.ShowError("boom");
             StateHasChanged();
         }
+
         public void ProcessError(Exception ex)
         {
             Logger.LogError("Error:ProcessError - Type: {Type} Message: {Message}",
                 ex.GetType(), ex.Message);
 
             errorObject = ex;
+
+            toastServive.ShowError("boom");
             StateHasChanged();
         }
+
+
     }
 }
