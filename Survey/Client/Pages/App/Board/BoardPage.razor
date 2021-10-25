@@ -1,9 +1,10 @@
-﻿@page "/board"
+﻿@page "/board/manager"
 @using Survey.Client.Repository.Interfaces
 @inject IBoardRepository BoardRepository
 @using Microsoft.AspNetCore.Authorization
 @using Survey.Shared.Model
 @using System.Linq
+@inject NavigationManager NavigationManager
 
 @attribute [Authorize]
 <AuthorizeView>
@@ -15,6 +16,8 @@
 @foreach (var board in BoardList ?? Enumerable.Empty<BoardModel>())
 {
     <h2 style="background-color:rebeccapurple">@board.OwnerUser?.Email</h2>
+    <a @onclick="@(() => { NavigationManager.NavigateTo("board/" + board.Id); })" class="btn btn-info" role="button">Link Button</a>
+
 }
 
 
@@ -22,14 +25,21 @@
 
     private async void MakeNewSurveyBoard()
     {
-        await BoardRepository.CreateBoard(new Survey.Shared.Model.BoardModel());
+        BoardModel boardModel = new BoardModel();
+
+        bool ifSucceded = await BoardRepository.CreateBoard(new Survey.Shared.Model.BoardModel());
+        if (ifSucceded)
+        {
+            BoardList?.Add(boardModel);
+        }
+        await LoadCard();
     }
 
     public List<BoardModel>? BoardList { get; set; } = new List<BoardModel>();
 
     private async Task LoadCard()
     {
-        BoardList = await BoardRepository.GetAllCards();
+        BoardList = await BoardRepository.GetBoardOfUser();
         StateHasChanged();
     }
     protected async override void OnInitialized()

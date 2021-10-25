@@ -18,7 +18,7 @@ namespace Survey.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class BoardController : ControllerBase
     {
         private readonly SurveyDbContext _context;
@@ -38,10 +38,15 @@ namespace Survey.Server.Controllers
         }
 
         // GET api/<BoardController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{guidString}")]
+        public BoardModel GetByGuid(string guidString)
         {
-            return "value";
+            var a = _context.BoardModel
+                .Where(board => 
+                board.OwnerUser == Constants.GetIdentityUserByEmail(_context, HttpContext) && 
+                board.Id.ToString() == guidString).FirstOrDefault();
+
+            return a;
         }
 
         // POST api/<BoardController>

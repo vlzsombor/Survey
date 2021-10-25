@@ -21,7 +21,7 @@ namespace Survey.Client.Repository
             _httpClient = httpClient;
         }
 
-        public async Task<List<BoardModel>?> GetAllCards()
+        public async Task<List<BoardModel>?> GetBoardOfUser()
         {
             HttpResponseMessage response = await _httpClient.GetAsync(baseURL);
             if (!response.IsSuccessStatusCode)
@@ -30,13 +30,15 @@ namespace Survey.Client.Repository
             }
             return JsonConvert.DeserializeObject<List<BoardModel>?>(await response.Content.ReadAsStringAsync());
         }
-        public async Task CreateBoard(BoardModel bm)
+        public async Task<bool> CreateBoard(BoardModel bm)
         {
             var response = await _httpClient.PostAsJsonAsync(baseURL, bm);
             if (!response.IsSuccessStatusCode)
             {
                 throw new ApplicationException(await response.Content.ReadAsStringAsync());
             }
+
+            return true;
         }
     }
 }

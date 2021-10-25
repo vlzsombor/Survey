@@ -29,8 +29,9 @@ namespace Survey.Server.Controllers
         [HttpGet]
         [Route("Cards")]
         [AllowAnonymous]
-        public List<CardModel> GetCardsAsync()
+        public List<CardModel> GetCardsAsync(string? boardGuid)
         {
+            
             return _context.CardModel.ToList();
         }
 

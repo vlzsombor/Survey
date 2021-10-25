@@ -41,7 +41,7 @@ namespace Survey.Server.Controllers
             var user = new IdentityUser { UserName = model.Email, Email = model.Email };
             var result = await _userManager.CreateAsync(user, model.Password);
             
-            IdentityResult roleIdentityResult = await _userManager.AddToRoleAsync(user, "Admin");
+            IdentityResult roleIdentityResult = await _userManager.AddToRoleAsync(user, Survey.Shared.Constants.ROLE_NAMES[1]);
             if (result.Succeeded && roleIdentityResult.Succeeded)
             {
                 return Ok(await BuildToken(user));
@@ -53,7 +53,6 @@ namespace Survey.Server.Controllers
                 foreach (var errors in result.Errors)
                 {
                     errorsDictionary.Add(errors.Code, errors.Description);
-
                 }
                 
                 //string errorsDictionarySerialized = JsonConvert.SerializeObject(errorsDictionary);

@@ -8,7 +8,7 @@ namespace Survey.Client.Repository.Interfaces
 {
     interface IBoardRepository
     {
-        Task CreateBoard(BoardModel bm);
-        Task<List<BoardModel>?> GetAllCards();
+        Task<bool> CreateBoard(BoardModel bm);
+        Task<List<BoardModel>?> GetBoardOfUser();
     }
 }

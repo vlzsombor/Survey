@@ -11,7 +11,7 @@ namespace Survey.Shared.Model
     public class BoardModel
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public virtual IdentityUser? OwnerUser { get; set; }
         // todo kitolto user tipust letrehozni atnevezni
         //public ICollection<User> surveyFillingUser { get; set; }

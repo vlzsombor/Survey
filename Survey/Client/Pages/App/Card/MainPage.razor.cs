@@ -9,7 +9,7 @@ using Survey.Client.Pages.App.Card;
 using Survey.Client.Repository;
 using Survey.Client.Repository.Interfaces;
 
-namespace Survey.Client.Pages.App
+namespace Survey.Client.Pages.App.Card
 {
     public partial class MainPage : ComponentBase
     {
@@ -20,6 +20,9 @@ namespace Survey.Client.Pages.App
 
         private CardModel cardModel = new CardModel();
 
+        [Parameter]
+        public string? boardGuid { get; set; }
+
         private async void Create()
         {
             await cardRepository.CreateCard(cardModel);
@@ -28,16 +31,15 @@ namespace Survey.Client.Pages.App
 
         private async Task OnDelete(CardModel card)
         {
-            //CardList.Remove(CardList.Where(cardLambda => cardLambda.Id == card.Id).FirstOrDefault());
             await cardRepository.DeleteCard(card);
-
             await LoadCard();
         }
 
         protected async override void OnInitialized()
         {
-            //await cardRepository.Test();
             await LoadCard();
+            Console.WriteLine(boardGuid);
+
         }
 
         public void OnRateChange(CardModel args)
@@ -47,7 +49,7 @@ namespace Survey.Client.Pages.App
 
         private async Task LoadCard()
         {
-            CardList = await cardRepository.GetAllCards();
+            CardList = await cardRepository.GetAllCardsOfUser(boardGuid);
             StateHasChanged();
         }
 

@@ -16,11 +16,7 @@ namespace Survey.Server
         /// Order dependent, the default Admin user is linked to the zeroth element of the List in the
         /// <see cref="SeedAdministratorAndUser.SeedAdministratorUser"/>
         /// </summary>
-        public static readonly IList<string> ROLE_NAMES = new List<string>(){
-                "Admin",
-                "BoardAdmin",
-                "BoardFiller"
-            };
+
 
 
         public static IdentityUser GetIdentityUserByEmail(SurveyDbContext _context, HttpContext httpContext)

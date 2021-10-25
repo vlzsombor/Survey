@@ -43,19 +43,15 @@ namespace Survey.Client.Repository
 
         }
 
-        public async Task<List<CardModel>?> GetAllCards()
+        public async Task<List<CardModel>?> GetAllCardsOfUser(string guid)
         {
-            var response = await _httpClient.GetAsync(url + "/Cards");
-            if (!response.IsSuccessStatusCode)
+            var response = await _httpClient.GetAsync(url + "/Cards" );
+            var response2 = await _httpClient.GetAsync("api/Board/" + guid);
+            if (!response2.IsSuccessStatusCode)
             {
-                throw new ApplicationException(await response.Content.ReadAsStringAsync());
+                throw new ApplicationException(await response2.Content.ReadAsStringAsync());
             }
-            return JsonConvert.DeserializeObject<List<CardModel>?>(await response.Content.ReadAsStringAsync());
-        }
-
-        public async Task Test()
-        {
-            var response = await _httpClient.GetAsync("/CardApi/test");
+            return JsonConvert.DeserializeObject<List<CardModel>?>(await response2.Content.ReadAsStringAsync());
         }
 
         public async Task UpdateCardRating(CardModel card)
