@@ -15,9 +15,9 @@ namespace Survey.Shared.Model
         [Required]
         public string Text { get; set; } = default!;
 
-
         public int Rating { get; set; }
 
+        public BoardModel? BoardModel { get; set; }
         public CardModel(int id, string title, string text)
         {
             Title = title;

@@ -16,4 +16,19 @@
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="5.0.11" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="UrlPath.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>UrlPath.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="UrlPath.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UrlPath.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>

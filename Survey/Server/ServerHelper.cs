@@ -10,14 +10,12 @@ using Survey.Server.Model;
 
 namespace Survey.Server
 {
-    public static class Constants
+    public static class ServerHelper
     {
         /// <summary>
         /// Order dependent, the default Admin user is linked to the zeroth element of the List in the
         /// <see cref="SeedAdministratorAndUser.SeedAdministratorUser"/>
         /// </summary>
-
-
 
         public static IdentityUser GetIdentityUserByEmail(SurveyDbContext _context, HttpContext httpContext)
         {

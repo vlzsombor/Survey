@@ -13,7 +13,7 @@ namespace Survey.Client.Repository
 {
     public class BoardRepository : IBoardRepository
     {
-        private readonly string baseURL = StaticClass.API_BOARD_URL;
+        private readonly string baseURL = Survey.Shared.Constants.URL.API_BOARD_URL;
         private HttpClient _httpClient { get; set; }
 
         public BoardRepository(HttpClient httpClient)

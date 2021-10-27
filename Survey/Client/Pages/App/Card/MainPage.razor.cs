@@ -21,11 +21,11 @@ namespace Survey.Client.Pages.App.Card
         private CardModel cardModel = new CardModel();
 
         [Parameter]
-        public string? boardGuid { get; set; }
+        public string boardGuid { get; set; } = default!;
 
         private async void Create()
         {
-            await cardRepository.CreateCard(cardModel);
+            await cardRepository.CreateCard(cardModel, boardGuid);
             await LoadCard();
         }
 

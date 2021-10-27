@@ -16,7 +16,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Survey.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route(Survey.Shared.Constants.URL.API_BOARD_URL)]
     [ApiController]
     //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class BoardController : ControllerBase
@@ -27,46 +27,37 @@ namespace Survey.Server.Controllers
             this._context = surveyDbContext;
         }
 
-        // GET: api/<BoardController>
+        // read
         [HttpGet]
         public List<BoardModel> Get()
         {
             return _context.BoardModel
                 .Include(r => r.OwnerUser)
-                .Where(x => x.OwnerUser == Constants.GetIdentityUserByEmail(_context,HttpContext))
+                .Where(x => x.OwnerUser == ServerHelper.GetIdentityUserByEmail(_context,HttpContext))
                 .ToList();
         }
 
-        // GET api/<BoardController>/5
-        [HttpGet("{guidString}")]
-        public BoardModel GetByGuid(string guidString)
-        {
-            var a = _context.BoardModel
-                .Where(board => 
-                board.OwnerUser == Constants.GetIdentityUserByEmail(_context, HttpContext) && 
-                board.Id.ToString() == guidString).FirstOrDefault();
 
-            return a;
-        }
-
+        // create
         // POST api/<BoardController>
         [HttpPost]
         public void Post([FromBody] BoardModel bm)
-        {
-            IdentityUser user = Constants.GetIdentityUserByEmail(_context, HttpContext);
+        { 
+            IdentityUser user = ServerHelper.GetIdentityUserByEmail(_context, HttpContext);
             bm.Cards = _context.CardModel.ToList();
             bm.OwnerUser = user;
             _context.BoardModel.Add(bm);
             _context.SaveChanges();
 
         }
-
+        // update
         // PUT api/<BoardController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
+        // delete
         // DELETE api/<BoardController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)

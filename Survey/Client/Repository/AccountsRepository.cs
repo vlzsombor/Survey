@@ -15,7 +15,7 @@ namespace Survey.Client.Repository
 {
     public class AccountsRepository : IAccountsRepository
     {
-        private readonly string baseURL = StaticClass.API_ACCOUNT_URL;
+        private readonly string baseURL = Survey.Shared.Constants.URL.API_ACCOUNT_URL;
         private HttpClient _httpClient { get; set; }
 
         public AccountsRepository(HttpClient httpClient)

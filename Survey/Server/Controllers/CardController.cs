@@ -14,20 +14,21 @@ using System.Security.Principal;
 namespace Survey.Server.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route(Survey.Shared.Constants.URL.API_CARD_URL)]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class CardApiController : ControllerBase
+    public class CardController : ControllerBase
     {
 
         private readonly SurveyDbContext _context;
 
-        public CardApiController(SurveyDbContext context)
+        public CardController(SurveyDbContext context)
         {
             _context = context;
         }
 
+        //read
         [HttpGet]
-        [Route("Cards")]
+        [Route(Survey.Shared.Constants.URL.CARDS)]
         [AllowAnonymous]
         public List<CardModel> GetCardsAsync(string? boardGuid)
         {
@@ -35,8 +36,20 @@ namespace Survey.Server.Controllers
             return _context.CardModel.ToList();
         }
 
+        //read
+        [HttpGet("{guidString}")]
+        public ICollection<CardModel>? GetByGuid(string guidString)
+        {
+            var a = _context.BoardModel
+                .Where(board =>
+                board.OwnerUser == ServerHelper.GetIdentityUserByEmail(_context, HttpContext) &&
+                board.Id.ToString() == guidString).FirstOrDefault();
+            return a?.Cards;
+        }
+
+        //update, partly
         [HttpPut]
-        [Route("UpdateCardRating")]
+        [Route(Survey.Shared.Constants.URL.UPDATE_CARD_RATING)]
         public async Task<int> UpdateCardRating([FromBody] CardModel card)
         {
             _context.Update(card);
@@ -44,16 +57,19 @@ namespace Survey.Server.Controllers
             return 0;
         }
 
+        //create
         [HttpPost]
-        public async Task<int> AddCard([FromBody] CardModel cardModel)
+        [Route("{guidString}")]
+        public async Task<int> AddCard([FromBody] CardModel cardModel, string guidString)
         {
+            cardModel.BoardModel = _context.BoardModel.Where(x => x.Id.ToString() == guidString).FirstOrDefault();
 
             _context.Add(cardModel);
             await _context.SaveChangesAsync();
 
             return cardModel.Id;
         }
-
+        //delete
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

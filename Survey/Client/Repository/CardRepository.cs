@@ -10,7 +10,7 @@ using Survey.Client.Repository.Interfaces;
 
 namespace Survey.Client.Repository
 {
-    public class CardApiRepository : ICardRepository
+    public class CardRepository : ICardRepository
     {
 
 
@@ -19,14 +19,14 @@ namespace Survey.Client.Repository
         private string url = "api/cardapi";
 
 
-        public CardApiRepository(HttpClient httpClient)
+        public CardRepository(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
 
-        public async Task CreateCard(CardModel card)
+        public async Task CreateCard(CardModel card, string guid)
         {
-            var response = await _httpClient.PostAsJsonAsync<CardModel>(url, card);
+            var response = await _httpClient.PostAsJsonAsync<CardModel>(url+ "/"+guid, card);
             if (!response.IsSuccessStatusCode)
             {
                 throw new ApplicationException(await response.Content.ReadAsStringAsync());
@@ -45,8 +45,7 @@ namespace Survey.Client.Repository
 
         public async Task<List<CardModel>?> GetAllCardsOfUser(string guid)
         {
-            var response = await _httpClient.GetAsync(url + "/Cards" );
-            var response2 = await _httpClient.GetAsync("api/Board/" + guid);
+            var response2 = await _httpClient.GetAsync(Survey.Shared.Constants.URL.API_CARD_URL+ "/" + guid);
             if (!response2.IsSuccessStatusCode)
             {
                 throw new ApplicationException(await response2.Content.ReadAsStringAsync());

@@ -18,7 +18,7 @@ using System.Text.Json;
 namespace Survey.Server.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route(Survey.Shared.Constants.URL.API_ACCOUNT_URL)]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -35,7 +35,7 @@ namespace Survey.Server.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost("create")]
+        [HttpPost(Survey.Shared.Constants.URL.CREATE)]
         public async Task<ActionResult<UserToken>> CreateUser([FromBody] UserInfo model)
         {
             var user = new IdentityUser { UserName = model.Email, Email = model.Email };
@@ -61,7 +61,7 @@ namespace Survey.Server.Controllers
         }
 
 
-        [HttpPost("login")]
+        [HttpPost(Survey.Shared.Constants.URL.LOGIN)]
         public async Task<ActionResult<UserToken>> Login([FromBody] UserInfo userInfo)
         {
             var result = await _signInManager.PasswordSignInAsync(userInfo.Email, userInfo.Password, isPersistent: false, lockoutOnFailure: false);
