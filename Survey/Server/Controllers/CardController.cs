@@ -14,7 +14,7 @@ using System.Security.Principal;
 namespace Survey.Server.Controllers
 {
     [ApiController]
-    [Route(Survey.Shared.Constants.URL.API_CARD_URL)]
+    [Route(Survey.Shared.Constants.BACKEND_URL.API_CARD_URL)]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CardController : ControllerBase
     {
@@ -28,7 +28,7 @@ namespace Survey.Server.Controllers
 
         //read
         [HttpGet]
-        [Route(Survey.Shared.Constants.URL.CARDS)]
+        [Route(Survey.Shared.Constants.BACKEND_URL.CARDS)]
         [AllowAnonymous]
         public List<CardModel> GetCardsAsync(string? boardGuid)
         {
@@ -49,7 +49,7 @@ namespace Survey.Server.Controllers
 
         //update, partly
         [HttpPut]
-        [Route(Survey.Shared.Constants.URL.UPDATE_CARD_RATING)]
+        [Route(Survey.Shared.Constants.BACKEND_URL.UPDATE_CARD_RATING)]
         public async Task<int> UpdateCardRating([FromBody] CardModel card)
         {
             _context.Update(card);

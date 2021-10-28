@@ -8,12 +8,14 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Survey.Shared;
+
 
 namespace Survey.Client.Repository
 {
     public class BoardRepository : IBoardRepository
     {
-        private readonly string baseURL = Survey.Shared.Constants.URL.API_BOARD_URL;
+        private readonly string baseURL = Constants.BACKEND_URL.API_BOARD_URL;
         private HttpClient _httpClient { get; set; }
 
         public BoardRepository(HttpClient httpClient)

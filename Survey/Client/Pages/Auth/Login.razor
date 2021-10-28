@@ -1,4 +1,5 @@
-﻿@page "/login"
+﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.LOGIN)]
+
 @inject IAccountsRepository accountsRepository
 @inject NavigationManager navigationManager
 @inject ILoginService loginService

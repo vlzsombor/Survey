@@ -14,7 +14,7 @@ namespace Survey.Shared
                 "BoardFiller"
             };
 
-        public static class URL
+        public static class BACKEND_URL
         {
             #region url
             public const string API = "api";
@@ -22,14 +22,31 @@ namespace Survey.Shared
             public const string LOGIN = "login";
             public const string CARDS = "cards";
             public const string UPDATE_CARD_RATING = "update-card-rating";
-
+            #endregion
+            
             #region controller url
             public const string SLASH = "/";
             public const string API_BOARD_URL = API + SLASH + "board";
             public const string API_CARD_URL = API + SLASH + "card";
             public const string API_ACCOUNT_URL = API + SLASH + "account";
             #endregion
-            #endregion
+
+        }
+        public static class FRONTEND_URL
+        {
+
+            public const string BOARD = "board";
+            public const string MANAGER = "manager";
+
+
+            public const string test = "test";
+            public const string LOGIN = "login";
+            public const string LOGOUT = "logout";
+            public const string REGISTER = "register";
+            public const string BOARD_MANAGER = BOARD + "/manager";
+
+
+
 
         }
 

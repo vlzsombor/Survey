@@ -16,7 +16,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Survey.Server.Controllers
 {
-    [Route(Survey.Shared.Constants.URL.API_BOARD_URL)]
+    [Route(Survey.Shared.Constants.BACKEND_URL.API_BOARD_URL)]
     [ApiController]
     //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class BoardController : ControllerBase
@@ -33,7 +33,7 @@ namespace Survey.Server.Controllers
         {
             return _context.BoardModel
                 .Include(r => r.OwnerUser)
-                .Where(x => x.OwnerUser == ServerHelper.GetIdentityUserByEmail(_context,HttpContext))
+                .Where(x => x.OwnerUser == ServerHelper.GetIdentityUserByEmail(_context, HttpContext))
                 .ToList();
         }
 
@@ -42,7 +42,7 @@ namespace Survey.Server.Controllers
         // POST api/<BoardController>
         [HttpPost]
         public void Post([FromBody] BoardModel bm)
-        { 
+        {
             IdentityUser user = ServerHelper.GetIdentityUserByEmail(_context, HttpContext);
             bm.Cards = _context.CardModel.ToList();
             bm.OwnerUser = user;

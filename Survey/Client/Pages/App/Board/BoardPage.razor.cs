@@ -8,5 +8,7 @@ namespace Survey.Client.Pages.App.Board
 {
     public partial class BoardPage : ComponentBase
     {
+
+        
     }
 }

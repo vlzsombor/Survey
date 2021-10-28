@@ -1,4 +1,5 @@
-﻿@page "/board/manager"
+﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.BOARD_MANAGER)]
+
 @using Survey.Client.Repository.Interfaces
 @inject IBoardRepository BoardRepository
 @using Microsoft.AspNetCore.Authorization
@@ -16,13 +17,16 @@
 @foreach (var board in BoardList ?? Enumerable.Empty<BoardModel>())
 {
     <h2 style="background-color:rebeccapurple">@board.OwnerUser?.Email</h2>
-    <a @onclick="@(() => { NavigationManager.NavigateTo("board/" + board.Id); })" class="btn btn-info" role="button">Link Button</a>
+    <a @onclick="@(() => {
+                       NavigationManager.NavigateTo(Constants.FRONTEND_URL.BOARD_MANAGER +"/"+ board.Id);
+                   })" class="btn btn-info" role="button">Link Button</a>
 
 }
 
 
 @code {
 
+    string alma = "alma";
     private async void MakeNewSurveyBoard()
     {
         BoardModel boardModel = new BoardModel();
@@ -44,7 +48,6 @@
     }
     protected async override void OnInitialized()
     {
-        //await cardRepository.Test();
         await LoadCard();
     }
 

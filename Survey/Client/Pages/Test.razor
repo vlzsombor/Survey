@@ -1,27 +1,8 @@
-﻿@page "/test"
-
-<AuthorizeView Roles="Admin">
-    <Authorized>
-        authorized @context.User.Identity?.Name
-        @foreach (var x in @context.User.Claims)
-        {
-            Console.WriteLine(x);
-        }
-    </Authorized>
-
-    <NotAuthorized>
-        @foreach (var x in @context.User.Claims)
-        {
-            Console.WriteLine(x);
-        }
-    </NotAuthorized>
-</AuthorizeView>
-
-<h1>ALMA</h1>
+﻿
+@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.test )]
 
 @code{
-    [CascadingParameter]
-    public Error Error { get; set; } = default!;
-
-
+    public const string Href = "aaa";
 }
+
+<h1>test page asdfsfas</h1>

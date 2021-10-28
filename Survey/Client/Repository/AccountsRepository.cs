@@ -10,12 +10,12 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
-
+using Survey.Shared;
 namespace Survey.Client.Repository
 {
     public class AccountsRepository : IAccountsRepository
     {
-        private readonly string baseURL = Survey.Shared.Constants.URL.API_ACCOUNT_URL;
+        private readonly string baseURL = Constants.BACKEND_URL.API_ACCOUNT_URL;
         private HttpClient _httpClient { get; set; }
 
         public AccountsRepository(HttpClient httpClient)
@@ -25,7 +25,7 @@ namespace Survey.Client.Repository
 
         public async Task<UserToken?> Register(UserInfo userInfo)
         {
-            var response = await _httpClient.PostAsJsonAsync($"{baseURL}/create", userInfo);
+            var response = await _httpClient.PostAsJsonAsync(baseURL + "/" + Constants.BACKEND_URL.CREATE, userInfo);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -44,7 +44,7 @@ namespace Survey.Client.Repository
 
         public async Task<UserToken?> Login(UserInfo userInfo)
         {
-            var response = await _httpClient.PostAsJsonAsync($"{baseURL}/login", userInfo);
+            var response = await _httpClient.PostAsJsonAsync(baseURL + "/" + Constants.BACKEND_URL.LOGIN, userInfo);
 
             if (!response.IsSuccessStatusCode)
             {

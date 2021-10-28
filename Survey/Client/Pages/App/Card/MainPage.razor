@@ -1,4 +1,6 @@
-﻿@page "/board/{boardGuid}"
+﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.BOARD_MANAGER + "/{boardGuid}")]
+
+
 @using System.Linq
 @using Survey.Shared.Model
 <h3>MainPage</h3>

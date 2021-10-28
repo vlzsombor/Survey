@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-
+using Survey.Shared;
 namespace Survey.Client.Shared
 {
     public partial class Error : ComponentBase
@@ -27,7 +27,7 @@ namespace Survey.Client.Shared
             if (message.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
                 exceptionMessage = "Unauthorized please login";
-                NavigationManager.NavigateTo("login");
+                NavigationManager.NavigateTo(Constants.FRONTEND_URL.LOGIN);
             }
 
             toastServive.ShowError(exceptionMessage);
