@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using System.Security.Principal;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace Survey.Server.Controllers
 {
@@ -32,7 +32,7 @@ namespace Survey.Server.Controllers
         [AllowAnonymous]
         public List<CardModel> GetCardsAsync(string? boardGuid)
         {
-            
+
             return _context.CardModel.ToList();
         }
 
@@ -40,10 +40,13 @@ namespace Survey.Server.Controllers
         [HttpGet("{guidString}")]
         public ICollection<CardModel>? GetByGuid(string guidString)
         {
-            var a = _context.BoardModel
+            BoardModel? a = _context.BoardModel
+                .Include(b => b.Cards)
                 .Where(board =>
                 board.OwnerUser == ServerHelper.GetIdentityUserByEmail(_context, HttpContext) &&
                 board.Id.ToString() == guidString).FirstOrDefault();
+
+
             return a?.Cards;
         }
 
@@ -62,9 +65,14 @@ namespace Survey.Server.Controllers
         [Route("{guidString}")]
         public async Task<int> AddCard([FromBody] CardModel cardModel, string guidString)
         {
-            cardModel.BoardModel = _context.BoardModel.Where(x => x.Id.ToString() == guidString).FirstOrDefault();
+            BoardModel? boardModel = 
+                _context.BoardModel.Include(x=>x.Cards)
+                .Where(x => x.Id.ToString() == guidString)
+                .FirstOrDefault();
 
-            _context.Add(cardModel);
+            boardModel?.Cards?.Add(cardModel);
+
+            _context.Update(boardModel);
             await _context.SaveChangesAsync();
 
             return cardModel.Id;

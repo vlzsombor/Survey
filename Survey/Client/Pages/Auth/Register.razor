@@ -43,8 +43,7 @@
         userToken = await accountsRepository.Register(userInfo);
         if (userToken?.Token != null)
         {
-            await loginService.Login(userToken.Token);
-            navigationManager.NavigateTo("");
+            navigationManager.NavigateTo(Constants.FRONTEND_URL.LOGIN);
         }
     }
 

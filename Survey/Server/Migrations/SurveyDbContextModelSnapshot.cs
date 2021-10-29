@@ -238,7 +238,7 @@ namespace Survey.Server.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<Guid>("BoardModelId")
+                    b.Property<Guid?>("BoardModelId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Rating")
@@ -323,9 +323,7 @@ namespace Survey.Server.Migrations
                 {
                     b.HasOne("Survey.Shared.Model.BoardModel", "BoardModel")
                         .WithMany("Cards")
-                        .HasForeignKey("BoardModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BoardModelId");
 
                     b.Navigation("BoardModel");
                 });

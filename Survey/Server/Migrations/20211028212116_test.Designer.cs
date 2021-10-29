@@ -10,8 +10,8 @@ using Survey.Server.Model;
 namespace Survey.Server.Migrations
 {
     [DbContext(typeof(SurveyDbContext))]
-    [Migration("20211027103350_te")]
-    partial class te
+    [Migration("20211028212116_test")]
+    partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -240,7 +240,7 @@ namespace Survey.Server.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<Guid>("BoardModelId")
+                    b.Property<Guid?>("BoardModelId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Rating")
@@ -325,9 +325,7 @@ namespace Survey.Server.Migrations
                 {
                     b.HasOne("Survey.Shared.Model.BoardModel", "BoardModel")
                         .WithMany("Cards")
-                        .HasForeignKey("BoardModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BoardModelId");
 
                     b.Navigation("BoardModel");
                 });
