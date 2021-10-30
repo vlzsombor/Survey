@@ -1,0 +1,16 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+
+
+<h1>
+    @Body
+</h1>
+
+<a @onclick="@(() => {
+                       NavigationManager.NavigateTo("");
+                   })" class="btn btn-info" role="button">Link Button</a>
+
+
+@code {
+
+}
