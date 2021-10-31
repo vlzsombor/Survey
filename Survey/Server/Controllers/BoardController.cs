@@ -50,18 +50,6 @@ namespace Survey.Server.Controllers
             _context.SaveChanges();
 
         }
-        // update
-        // PUT api/<BoardController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
 
-        // delete
-        // DELETE api/<BoardController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

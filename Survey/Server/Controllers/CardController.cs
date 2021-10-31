@@ -78,7 +78,7 @@ namespace Survey.Server.Controllers
             return cardModel.Id;
         }
         //delete
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}")] 
         public async Task<ActionResult> Delete(int id)
         {
             var movie = _context.CardModel.FirstOrDefault(x => x.Id == id);
