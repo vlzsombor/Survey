@@ -18,7 +18,12 @@ namespace Survey.Server.Data
 
         private async static Task SeedRoles(RoleManager<IdentityRole> roleManager)
         {
-            IEnumerable<string> roleNames = Survey.Shared.Constants.ROLE_NAMES;
+            IEnumerable<string> roleNames = new List<string>()
+            {
+                Survey.Shared.Constants.ROLE_NAMES.ADMIN,
+                Survey.Shared.Constants.ROLE_NAMES.BOARD_ADMIN,
+                Survey.Shared.Constants.ROLE_NAMES.BOARD_FILLER
+            };
 
             foreach (var roleName in roleNames)
             {
@@ -58,7 +63,7 @@ namespace Survey.Server.Data
 
                 if (identityResult.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(administratorUser, Survey.Shared.Constants.ROLE_NAMES[0]);
+                    await userManager.AddToRoleAsync(administratorUser, Survey.Shared.Constants.ROLE_NAMES.ADMIN);
                 }
             }
 

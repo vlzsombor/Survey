@@ -29,7 +29,7 @@ namespace Survey.Server.Controllers
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme )]
         public IEnumerable<WeatherForecast> Get()
-        {
+        { 
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {

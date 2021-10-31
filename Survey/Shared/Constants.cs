@@ -8,11 +8,14 @@ namespace Survey.Shared
 {
     public static class Constants
     {
-        public static readonly IList<string> ROLE_NAMES = new List<string>(){
-                "Admin",
-                "BoardAdmin",
-                "BoardFiller"
-            };
+
+        public class ROLE_NAMES
+        {
+            public const string ADMIN = "Admin";
+            public const string BOARD_ADMIN = "BoardAdmin";
+            public const string BOARD_FILLER = "BoardFiller";
+                
+        }
 
         public static class BACKEND_URL
         {
