@@ -15,7 +15,8 @@ namespace Survey.Server.Model
         public SurveyDbContext(DbContextOptions<SurveyDbContext> options) : base(options)
         {
             //Database.EnsureDeleted();
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
+            //caused There is already an object named 'AspNetRoles' in the database
         }
 
         public DbSet<CardModel> CardModel => Set<CardModel>();

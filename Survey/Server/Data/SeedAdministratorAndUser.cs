@@ -50,16 +50,16 @@ namespace Survey.Server.Data
 
         private async static Task SeedAdministratorUser(UserManager<IdentityUser> userManager)
         {
-            bool administratorUserExists = await userManager.FindByEmailAsync("admin@example.com") != null;
+            bool administratorUserExists = await userManager.FindByEmailAsync("admin@a.hu") != null;
 
             if (!administratorUserExists)
             {
                 var administratorUser = new IdentityUser()
                 {
-                    UserName = "admin@example.com",
-                    Email = "admin@example.com"
+                    UserName = "admin@a.hu",
+                    Email = "admin@a.hu"
                 };
-                IdentityResult identityResult = await userManager.CreateAsync(administratorUser, "Password1!");
+                IdentityResult identityResult = await userManager.CreateAsync(administratorUser, "Aa123456!");
 
                 if (identityResult.Succeeded)
                 {

@@ -5,6 +5,11 @@
 @using Survey.Shared.Model
 <h3>MainPage</h3>
 
+<AuthorizeView Roles="Admin, BoardAdmin">
+    <a @onclick="GenerateAnonymousLink" class="btn btn-info" role="button">Link Button</a>
+</AuthorizeView>
+
+
 <Survey.Client.Pages.App.Card.CardForm cardModel="@cardModel" OnValidSubmit="@Create" />
 @foreach (var cardItem in CardList ?? Enumerable.Empty<CardModel>())
 {
