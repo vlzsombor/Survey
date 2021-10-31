@@ -9,6 +9,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Survey.Server.Data;
 using Survey.Server.Model;
+using Survey.Server.Services;
+using Survey.Server.Services.Interfaces;
 using System;
 using System.Linq;
 using System.Text;
@@ -36,6 +38,7 @@ namespace Survey.Server
             services.AddDbContext<SurveyDbContext>
                 (option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddScoped<IBoardService, BoardService>();
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<SurveyDbContext>()

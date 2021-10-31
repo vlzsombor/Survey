@@ -14,13 +14,15 @@ namespace Survey.Server.Model
     {
         public SurveyDbContext(DbContextOptions<SurveyDbContext> options) : base(options)
         {
-            //Database.EnsureDeleted();
-            //Database.EnsureCreated();
-            //caused There is already an object named 'AspNetRoles' in the database
+            // Database.EnsureDeleted();
+            // Database.EnsureCreated();
+            // caused There is already an object named 'AspNetRoles' in the database
         }
 
         public DbSet<CardModel> CardModel => Set<CardModel>();
         public DbSet<BoardModel> BoardModel => Set<BoardModel>();
+        public DbSet<BoardFiller> BoardFillers => Set<BoardFiller>();
+
     }
 
 

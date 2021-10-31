@@ -17,6 +17,11 @@ namespace Survey.Shared.Model
         //public ICollection<User> surveyFillingUser { get; set; }
         public ICollection<CardModel>? Cards { get; set; }
 
+        //// todo from the other side it should be required, so if BoardFiller exist, then the table must exist
+        //// but not the other way around
+        //public ICollection<BoardFiller>? BoardFillers { get; set; }
+
+
 
     }
 }

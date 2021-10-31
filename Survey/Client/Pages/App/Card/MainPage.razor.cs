@@ -56,9 +56,6 @@ namespace Survey.Client.Pages.App.Card
 
         private void GenerateAnonymousLink()
         {
-            // generate a random guid (lets call this G) and password (P)
-            // this G,P should be saved to the db !alert P should definetily be hashed
-            // if a request comes in with the G and corret password typed, then the page is shown
 
             Console.WriteLine("hello");
         }

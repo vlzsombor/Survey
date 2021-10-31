@@ -26,5 +26,10 @@ namespace Survey.Server
             }
             throw new UnauthorizedAccessException();
         }
+
+        public static string GenerateRandomNo(Random random)
+        {
+            return random.Next(0, 9999).ToString("D4");
+        }
     }
 }

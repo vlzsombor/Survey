@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Survey.Server.Model;
 
 namespace Survey.Server.Migrations
 {
     [DbContext(typeof(SurveyDbContext))]
-    partial class SurveyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211031173434_boardfiller")]
+    partial class boardfiller
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -221,19 +223,11 @@ namespace Survey.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BoardFillerGuid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("BoardModelId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("PinCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BoardModelId");
 
                     b.ToTable("BoardFillers");
                 });
@@ -331,15 +325,6 @@ namespace Survey.Server.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Survey.Shared.Model.BoardFiller", b =>
-                {
-                    b.HasOne("Survey.Shared.Model.BoardModel", "BoardModel")
-                        .WithMany()
-                        .HasForeignKey("BoardModelId");
-
-                    b.Navigation("BoardModel");
                 });
 
             modelBuilder.Entity("Survey.Shared.Model.BoardModel", b =>
