@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace Survey.Client.Repository.Interfaces
 {
-    interface IBoardRepository
+    public interface IBoardRepository
     {
         Task<bool> CreateBoard(BoardModel bm);
+        Task<List<CardModel>?> GetAllCardsOfUser(string guid);
         Task<List<BoardModel>?> GetBoardOfUser();
+        Task<List<CardModel>?> GetBoardWithAccessGuid(string accessGuid);
     }
 }

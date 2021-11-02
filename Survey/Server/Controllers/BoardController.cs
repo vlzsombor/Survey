@@ -13,12 +13,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Survey.Shared.DTOs;
 using Survey.Server.Services.Interfaces;
+using Survey.Shared;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Survey.Server.Controllers
 {
-    [Route(Survey.Shared.Constants.BACKEND_URL.API_BOARD_URL)]
+    [Route(Constants.BACKEND_URL.API_BOARD_URL)]
     [ApiController]
     //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class BoardController : ControllerBase
@@ -56,7 +57,7 @@ namespace Survey.Server.Controllers
 
         }
 
-        [HttpGet("{boardFillerGuid}")]
+        [HttpGet(Constants.BACKEND_URL.ACCESS_GUID + "/{boardFillerGuid}")]
         public List<CardModel>? GenerateTempUserId(string boardFillerGuid)
         {
             Guid guid = Guid.Parse(boardFillerGuid);
@@ -69,6 +70,19 @@ namespace Survey.Server.Controllers
 
         }
 
+        //read
+        [HttpGet("{guidString}")]
+        public ICollection<CardModel>? GetByGuid(string guidString)
+        {
+            BoardModel? a = _context.BoardModel
+                .Include(b => b.Cards)
+                .Where(board =>
+                board.OwnerUser == ServerHelper.GetIdentityUserByEmail(_context, HttpContext) &&
+                board.Id.ToString() == guidString).FirstOrDefault();
+
+
+            return a?.Cards;
+        }
 
         [HttpPost("test")]
         public string? GenerateTempUserId([FromBody] BoardFillerGenerationDto boardFillerGenerationDto)

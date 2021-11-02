@@ -30,6 +30,7 @@ namespace Survey.Shared
             #region controller url
             public const string SLASH = "/";
             public const string API_BOARD_URL = API + SLASH + "board";
+            public const string ACCESS_GUID = "acces-guid";
             public const string API_CARD_URL = API + SLASH + "card";
             public const string API_ACCOUNT_URL = API + SLASH + "account";
             #endregion

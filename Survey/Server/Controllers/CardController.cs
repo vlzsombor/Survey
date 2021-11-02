@@ -36,19 +36,7 @@ namespace Survey.Server.Controllers
             return _context.CardModel.ToList();
         }
 
-        //read
-        [HttpGet("{guidString}")]
-        public ICollection<CardModel>? GetByGuid(string guidString)
-        {
-            BoardModel? a = _context.BoardModel
-                .Include(b => b.Cards)
-                .Where(board =>
-                board.OwnerUser == ServerHelper.GetIdentityUserByEmail(_context, HttpContext) &&
-                board.Id.ToString() == guidString).FirstOrDefault();
 
-
-            return a?.Cards;
-        }
 
         //update, partly
         [HttpPut]

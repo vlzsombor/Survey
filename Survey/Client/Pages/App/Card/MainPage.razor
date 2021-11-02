@@ -1,4 +1,5 @@
-﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.BOARD_MANAGER + "/{boardGuid}")]
+﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.BOARD_MANAGER + "/{BoardGuid}")]
+@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.BOARD + "/{AccessGuid}")]
 
 
 @using System.Linq
@@ -8,8 +9,6 @@
 <AuthorizeView Roles="Admin, BoardAdmin">
     <a @onclick="GenerateAnonymousLink" class="btn btn-info" role="button">Link Button</a>
 </AuthorizeView>
-
-
 <Survey.Client.Pages.App.Card.CardForm cardModel="@cardModel" OnValidSubmit="@Create" />
 @foreach (var cardItem in CardList ?? Enumerable.Empty<CardModel>())
 {

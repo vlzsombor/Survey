@@ -37,11 +37,9 @@ namespace Survey.Client
         {
             services.AddBlazoredLocalStorage();
             services.AddBlazoredToast();
-            //services.AddSingleton<IToastService, ToastService>();
 
             //services.AddScoped<IHttpService, HttpService>();
             services.AddScoped<IBoardRepository, BoardRepository>();
-
             services.AddScoped<ICardRepository, CardRepository>();
             services.AddAuthorizationCore();
 

@@ -19,7 +19,6 @@ namespace Survey.Server
 
         public static IdentityUser GetIdentityUserByEmail(SurveyDbContext _context, HttpContext httpContext)
         {
-
             if (httpContext.User.Identity != null)
             {
                 return _context.Users.Where(x => x.Email == httpContext.User.Identity.Name).First();
