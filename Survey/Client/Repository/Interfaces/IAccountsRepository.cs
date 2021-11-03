@@ -11,6 +11,7 @@ namespace Survey.Client.Repository.Interfaces
     {
         public Task<UserToken?> Register(UserInfo userInfo);
         public Task<UserToken?> Login(UserInfo userInfo);
+        public Task<UserToken?> Login(BoardFillerDto boardFillerDto);
 
     }
 }

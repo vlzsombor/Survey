@@ -2,6 +2,14 @@
 @attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.BOARD + "/{AccessGuid}")]
 
 
+
+@using Survey.Client.Auth
+@using Survey.Shared.Model
+@using Survey.Shared.DTOs
+@inject ILoginService loginService
+@inject IAccountsRepository accountsRepository
+
+
 @using System.Linq
 @using Survey.Shared.Model
 <h3>MainPage</h3>
@@ -11,17 +19,55 @@
 </AuthorizeView>
 
 <AuthorizeView>
-    <Survey.Client.Pages.App.Card.CardForm cardModel="@cardModel" OnValidSubmit="@Create" />
-    @foreach (var cardItem in CardList ?? Enumerable.Empty<CardModel>())
-    {
-        <CardSimple OnDelete="@(OnDelete)" OnRatingChanges="@(OnRateChange)" CardModel="cardItem"></CardSimple>
-    }
+    <Authorized>
+        <Survey.Client.Pages.App.Card.CardForm cardModel="@cardModel" OnValidSubmit="@Create" />
+        @foreach (var cardItem in CardList ?? Enumerable.Empty<CardModel>())
+        {
+            <CardSimple OnDelete="@(OnDelete)" OnRatingChanges="@(OnRateChange)" CardModel="cardItem"></CardSimple>
+        }
+    </Authorized>
+    <NotAuthorized>
+
+        <EditForm Model="_boardFillerDto" OnValidSubmit="CreateUser" Context="test">
+            <DataAnnotationsValidator />
+            <div class="form-group my-3">
+                <label for="password">Password</label>
+                <InputText @bind-Value="_boardFillerDto.Password" type="password" id="password" class="form-control" />
+                <ValidationMessage For="@(()=>_boardFillerDto.Password)" />
+            </div>
+            <ValidationSummary />
+
+            <button type="submit" class="btn btn-primary">Login</button>
+
+        </EditForm>
+
+    </NotAuthorized>
 </AuthorizeView>
+
+
 
 @code {
 
+    private BoardFillerDto _boardFillerDto = new BoardFillerDto();
+    private UserToken? userToken;
 
+    protected override Task OnInitializedAsync()
+    {
+        if (AccessGuid != null)
+        {
+            _boardFillerDto.AccessGuid = AccessGuid;
 
+        }
+        return base.OnInitializedAsync();
+    }
+    private async Task CreateUser()
+    {
+        userToken = await accountsRepository.Login(_boardFillerDto);
+        if (userToken?.Token != null)
+        {
+            await loginService.Login(userToken.Token);
+        }
+    }
 }
 
 

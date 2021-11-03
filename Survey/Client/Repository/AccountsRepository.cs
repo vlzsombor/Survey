@@ -58,5 +58,22 @@ namespace Survey.Client.Repository
             }
             return JsonConvert.DeserializeObject<UserToken?>(await response.Content.ReadAsStringAsync());
         }
+
+        public async Task<UserToken?> Login(BoardFillerDto boardFillerDto)
+        {
+            var response = await _httpClient.PostAsJsonAsync(baseURL + "/test/" + Constants.BACKEND_URL.LOGIN, boardFillerDto);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorsDictionarySerialized = await response.Content.ReadAsStringAsync();
+                var errorDictionary = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(errorsDictionarySerialized);
+
+                return new UserToken()
+                {
+                    ErrorDict = errorDictionary
+                };
+            }
+            return JsonConvert.DeserializeObject<UserToken?>(await response.Content.ReadAsStringAsync());
+        }
     }
 }

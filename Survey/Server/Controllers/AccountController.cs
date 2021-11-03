@@ -83,6 +83,26 @@ namespace Survey.Server.Controllers
                 return BadRequest(errorsDictionary);
             }
         }
+        [HttpPost("test/" + Survey.Shared.Constants.BACKEND_URL.LOGIN)]
+        public async Task<ActionResult<UserToken>> Logintest([FromBody] BoardFillerDto boardFillerDto)
+        {
+            var result = await _signInManager.PasswordSignInAsync(boardFillerDto.AccessGuid, boardFillerDto.Password, isPersistent: false, lockoutOnFailure: false);
+
+            if (result.Succeeded)
+            {
+                IdentityUser identityUser = await _userManager.FindByNameAsync(boardFillerDto.AccessGuid);
+
+                return await BuildToken2(identityUser);
+            }
+            else
+            {
+                Dictionary<string, string> errorsDictionary = new Dictionary<string, string>();
+
+                errorsDictionary.Add("Bad credentials", "Please give correct credentials");
+                //string errorsDictionarySerialized = JsonConvert.SerializeObject(errorsDictionary);
+                return BadRequest(errorsDictionary);
+            }
+        }
 
         private async Task<UserToken> BuildToken(IdentityUser identityUser)
         {
@@ -90,6 +110,34 @@ namespace Survey.Server.Controllers
             {
                 new Claim(ClaimTypes.Name, identityUser.Email),
                 new Claim(ClaimTypes.Email, identityUser.Email),
+            };
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            IList<string> roleNames = await _userManager.GetRolesAsync(identityUser);
+            claims.AddRange(roleNames.Select(roleName => new Claim(ClaimsIdentity.DefaultRoleClaimType, roleName)));
+
+
+            var expiration = DateTime.UtcNow.AddYears(1);
+            JwtSecurityToken token = new JwtSecurityToken(
+                issuer: null,
+                audience: null,
+                claims: claims,
+                expires: expiration,
+                signingCredentials: creds
+                );
+
+            return new UserToken()
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token)
+            };
+
+        }
+        private async Task<UserToken> BuildToken2(IdentityUser identityUser)
+        {
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, identityUser.UserName),
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
