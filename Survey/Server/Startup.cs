@@ -39,6 +39,7 @@ namespace Survey.Server
                 (option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IBoardService, BoardService>();
+            services.AddScoped<IAccountService, AccountService>();
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<SurveyDbContext>()

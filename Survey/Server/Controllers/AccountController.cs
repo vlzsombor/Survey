@@ -13,7 +13,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
-
+using Survey.Server.Services.Interfaces;
 
 namespace Survey.Server.Controllers
 {
@@ -24,15 +24,18 @@ namespace Survey.Server.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IConfiguration _configuration;
+        private readonly IAccountService _accountService;
 
         public AccountController(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IAccountService accountService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
+            _accountService = accountService;
         }
 
         [HttpPost(Survey.Shared.Constants.BACKEND_URL.CREATE)]
@@ -40,23 +43,23 @@ namespace Survey.Server.Controllers
         {
             var user = new IdentityUser { UserName = model.Email, Email = model.Email };
             var result = await _userManager.CreateAsync(user, model.Password);
-            
-            IdentityResult roleIdentityResult = await _userManager.AddToRoleAsync(user, Survey.Shared.Constants.ROLE_NAMES.BOARD_ADMIN);
-            if (result.Succeeded && roleIdentityResult.Succeeded)
-            {
-                return Ok(await BuildToken(user));
-            }
-            else
-            {
-                Dictionary<string, string> errorsDictionary = new Dictionary<string, string>();
 
-                foreach (var errors in result.Errors)
-                {
-                    errorsDictionary.Add(errors.Code, errors.Description);
-                }
-                
-                return BadRequest(errorsDictionary);
+            if (result.Succeeded)
+            {
+                IdentityResult roleIdentityResult = await _userManager.AddToRoleAsync(user, Survey.Shared.Constants.ROLE_NAMES.BOARD_ADMIN);
+
+                if (roleIdentityResult.Succeeded)
+                    return Ok(await BuildToken(user));
             }
+
+            Dictionary<string, string> errorsDictionary = new Dictionary<string, string>();
+
+            foreach (var errors in result.Errors)
+            {
+                errorsDictionary.Add(errors.Code, errors.Description);
+            }
+
+            return BadRequest(errorsDictionary);
         }
 
 
@@ -64,7 +67,7 @@ namespace Survey.Server.Controllers
         public async Task<ActionResult<UserToken>> Login([FromBody] UserInfo userInfo)
         {
             var result = await _signInManager.PasswordSignInAsync(userInfo.Email, userInfo.Password, isPersistent: false, lockoutOnFailure: false);
-            
+
             if (result.Succeeded)
             {
                 IdentityUser identityUser = await _userManager.FindByNameAsync(userInfo.Email);

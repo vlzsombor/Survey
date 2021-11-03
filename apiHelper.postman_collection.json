@@ -1,0 +1,61 @@
+{
+	"info": {
+		"_postman_id": "0222c743-5529-404c-b566-3bc2984937da",
+		"name": "test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "https://localhost:44379/api/board/acces-guid/b190e045-1f29-4d83-932a-66438faf3b0b",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44379/api/board/acces-guid/b190e045-1f29-4d83-932a-66438faf3b0b",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44379",
+					"path": [
+						"api",
+						"board",
+						"acces-guid",
+						"b190e045-1f29-4d83-932a-66438faf3b0b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44379/api/board/test",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"Emails\":[\"\"], \"BoardGuid\" : \"ac1333e4-d106-4cd1-f170-08d99eff505f\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44379/api/board/test",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44379",
+					"path": [
+						"api",
+						"board",
+						"test"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

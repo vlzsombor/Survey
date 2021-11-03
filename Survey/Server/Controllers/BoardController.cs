@@ -26,9 +26,12 @@ namespace Survey.Server.Controllers
     {
         private readonly SurveyDbContext _context;
         private readonly IBoardService boardService;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public BoardController(SurveyDbContext surveyDbContext, IBoardService boardService)
+        public BoardController(UserManager<IdentityUser> userManager, SurveyDbContext surveyDbContext, IBoardService boardService)
         {
+            _userManager = userManager;
+
             this._context = surveyDbContext;
             this.boardService = boardService;
         }
@@ -63,11 +66,10 @@ namespace Survey.Server.Controllers
             Guid guid = Guid.Parse(boardFillerGuid);
             BoardFiller? boardFiller = _context.BoardFillers
                 .Include(x => x.BoardModel)
-                .Include(x=>x.BoardModel.Cards)
-                .Where(x => x.BoardFillerGuid.ToString() == boardFillerGuid).FirstOrDefault();
+                .Include(x => x.BoardModel.Cards)
+                .Where(x => x.identityUser.UserName == boardFillerGuid).FirstOrDefault();
 
             return boardFiller?.BoardModel?.Cards?.ToList();
-
         }
 
         //read
@@ -85,14 +87,17 @@ namespace Survey.Server.Controllers
         }
 
         [HttpPost("test")]
-        public string? GenerateTempUserId([FromBody] BoardFillerGenerationDto boardFillerGenerationDto)
+        public async Task<string?> GenerateTempUserId([FromBody] BoardFillerGenerationDto boardFillerGenerationDto)
         {
 
             //xxxxxxxxxxxxxxxx input parameter
             string email = "xyz@a.hu";
             string boardGuid = "c0145f46-b749-4fb2-75ab-08d99d3f0e38";
             //xxxxxxxxxxxxxxxx
-            boardService.HandleBoardFillerGeneration(boardFillerGenerationDto);
+            await boardService.HandleBoardFillerGeneration(boardFillerGenerationDto);
+
+
+
 
             // tick generate a random guid (lets call this G) and password (P)
             // this G,P should be saved to the db !alert P should definetily be hashed

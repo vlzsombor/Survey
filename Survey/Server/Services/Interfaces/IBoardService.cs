@@ -1,4 +1,5 @@
-﻿using Survey.Shared.DTOs;
+﻿using Microsoft.AspNetCore.Identity;
+using Survey.Shared.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ namespace Survey.Server.Services.Interfaces
 {
     public interface IBoardService
     {
-        void HandleBoardFillerGeneration(BoardFillerGenerationDto boardFillerGenerationDto);
+        Task HandleBoardFillerGeneration(BoardFillerGenerationDto boardFillerGenerationDto);
+        Task<IdentityResult?> HandleBoardFillerGeneration2(BoardFillerGenerationDto boardFillerGenerationDto);
     }
 }   

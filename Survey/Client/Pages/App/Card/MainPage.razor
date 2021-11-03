@@ -9,11 +9,14 @@
 <AuthorizeView Roles="Admin, BoardAdmin">
     <a @onclick="GenerateAnonymousLink" class="btn btn-info" role="button">Link Button</a>
 </AuthorizeView>
-<Survey.Client.Pages.App.Card.CardForm cardModel="@cardModel" OnValidSubmit="@Create" />
-@foreach (var cardItem in CardList ?? Enumerable.Empty<CardModel>())
-{
-    <CardSimple OnDelete="@(OnDelete)" OnRatingChanges="@(OnRateChange)" CardModel="cardItem"></CardSimple>
-}
+
+<AuthorizeView>
+    <Survey.Client.Pages.App.Card.CardForm cardModel="@cardModel" OnValidSubmit="@Create" />
+    @foreach (var cardItem in CardList ?? Enumerable.Empty<CardModel>())
+    {
+        <CardSimple OnDelete="@(OnDelete)" OnRatingChanges="@(OnRateChange)" CardModel="cardItem"></CardSimple>
+    }
+</AuthorizeView>
 
 @code {
 
