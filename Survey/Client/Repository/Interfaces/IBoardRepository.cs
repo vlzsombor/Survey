@@ -11,6 +11,5 @@ namespace Survey.Client.Repository.Interfaces
         Task<bool> CreateBoard(BoardModel bm);
         Task<List<CardModel>?> GetAllCardsOfUser(string guid);
         Task<List<BoardModel>?> GetBoardOfUser();
-        Task<List<CardModel>?> GetBoardWithAccessGuid(string accessGuid);
     }
 }

@@ -6,12 +6,10 @@
 @using Survey.Client.Auth
 @using Survey.Shared.Model
 @using Survey.Shared.DTOs
-@inject ILoginService loginService
-@inject IAccountsRepository accountsRepository
+
 
 
 @using System.Linq
-@using Survey.Shared.Model
 <h3>MainPage</h3>
 
 <AuthorizeView Roles="Admin, BoardAdmin">
@@ -28,7 +26,7 @@
     </Authorized>
     <NotAuthorized>
 
-        <EditForm Model="_boardFillerDto" OnValidSubmit="CreateUser" Context="test">
+        <EditForm Model="_boardFillerDto" OnValidSubmit="LoginUser" Context="test">
             <DataAnnotationsValidator />
             <div class="form-group my-3">
                 <label for="password">Password</label>
@@ -48,26 +46,9 @@
 
 @code {
 
-    private BoardFillerDto _boardFillerDto = new BoardFillerDto();
-    private UserToken? userToken;
 
-    protected override Task OnInitializedAsync()
-    {
-        if (AccessGuid != null)
-        {
-            _boardFillerDto.AccessGuid = AccessGuid;
 
-        }
-        return base.OnInitializedAsync();
-    }
-    private async Task CreateUser()
-    {
-        userToken = await accountsRepository.Login(_boardFillerDto);
-        if (userToken?.Token != null)
-        {
-            await loginService.Login(userToken.Token);
-        }
-    }
+
 }
 
 

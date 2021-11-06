@@ -21,7 +21,7 @@ namespace Survey.Server
         {
             if (httpContext.User.Identity != null)
             {
-                return _context.Users.Where(x => x.Email == httpContext.User.Identity.Name).First();
+                return _context.Users.Where(x => x.UserName == httpContext.User.Identity.Name).First();
             }
             throw new UnauthorizedAccessException();
         }

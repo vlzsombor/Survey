@@ -39,7 +39,16 @@ namespace Survey.Client
             services.AddBlazoredToast();
 
             //services.AddScoped<IHttpService, HttpService>();
+
+            //services.AddSingleton<IBoardRepository, BoardRepository>();
+            
             services.AddScoped<IBoardRepository, BoardRepository>();
+            services.AddScoped<BoardRepository>();
+            services.AddScoped<BoardFillerRepository>();
+
+
+
+
             services.AddScoped<ICardRepository, CardRepository>();
             services.AddAuthorizationCore();
 

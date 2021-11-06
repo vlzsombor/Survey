@@ -13,7 +13,7 @@ namespace Survey.Client.Repository
 {
     public class CardRepository : ICardRepository
     {
-        private string _baseUrl = Constants.BACKEND_URL.API_CARD_URL;
+        protected string _baseUrl = Constants.BACKEND_URL.API_CARD_URL;
         private HttpClient _httpClient { get; set; }
 
         public CardRepository(HttpClient httpClient)

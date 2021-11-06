@@ -1,11 +1,15 @@
 ﻿<div class="card" style="width: 18rem;">
-    <div class="float-right">
-        <button @onclick="Delete" class="close" aria-label="Close">
-            <span aria-hidden="true">
-                &times;
-            </span>
-        </button>
-    </div>
+    <AuthorizeView Roles="Admin, BoardAdmin">
+        <Authorized>
+            <div class="float-right">
+                <button @onclick="Delete" class="close" aria-label="Close">
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+                </button>
+            </div>
+        </Authorized>
+    </AuthorizeView>
     <div class="card-body">
         <h5 class="card-title">@CardModel.Title</h5>
         <h6 class="card-subtitle mb-2 text-muted">@(CardModel.Text.ToUpper())</h6>

@@ -64,9 +64,27 @@ namespace Survey.Server.Controllers
             await _context.SaveChangesAsync();
 
             return cardModel.Id;
+        }       
+        
+        [HttpPost]
+        [Route(Survey.Shared.Constants.BACKEND_URL.ACCESS_GUID + "/{guidString}")]
+        public async Task<int> AddCard2([FromBody] CardModel cardModel, string guidString)
+        {
+            BoardModel? boardModel = 
+                _context.BoardModel.Include(x=>x.Cards)
+                .Where(x => x.Id.ToString() == guidString)
+                .FirstOrDefault();
+
+            boardModel?.Cards?.Add(cardModel);
+
+            _context.Update(boardModel);
+            await _context.SaveChangesAsync();
+
+            return cardModel.Id;
         }
         //delete
-        [HttpDelete("{id}")] 
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin,BoardAdmin")]
         public async Task<ActionResult> Delete(int id)
         {
             var movie = _context.CardModel.FirstOrDefault(x => x.Id == id);

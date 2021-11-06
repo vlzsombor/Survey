@@ -8,6 +8,8 @@ using Survey.Shared.Model;
 using Survey.Client.Pages.App.Card;
 using Survey.Client.Repository;
 using Survey.Client.Repository.Interfaces;
+using Survey.Client.Auth;
+using Survey.Shared.DTOs;
 
 namespace Survey.Client.Pages.App.Card
 {
@@ -15,21 +17,42 @@ namespace Survey.Client.Pages.App.Card
     {
         [Inject]
         public ICardRepository cardRepository { get; set; } = default!;
+
+        public IBoardRepository boardRepository { get; set; } = default!; 
+
         [Inject]
-        public IBoardRepository boardRepository { get; set; } = default!;
+        public BoardRepository BoardRepositoryImp { get; set; } = default!;
+        [Inject]
+        public BoardFillerRepository BoardBoardFillerRepository { get; set; } = default!;              
+
+
+        [Inject]
+        public ILoginService loginService { get; set; }
+
+        [Inject]
+        public IAccountsRepository accountsRepository { get; set; }
 
         public List<CardModel>? CardList { get; set; } = new List<CardModel>();
 
         private CardModel cardModel = new CardModel();
+
+        private BoardFillerDto _boardFillerDto = new BoardFillerDto();
+        private UserToken? userToken;
 
         [Parameter]
         public string? BoardGuid { get; set; }
         [Parameter]
         public string? AccessGuid { get; set; }
 
+
+        public string? Guid { get; set; }
         private async void Create()
         {
-            await cardRepository.CreateCard(cardModel, BoardGuid);
+            if (Guid != null)
+            {
+                await cardRepository.CreateCard(cardModel, Guid);
+            }
+
             await LoadCard();
         }
 
@@ -41,6 +64,19 @@ namespace Survey.Client.Pages.App.Card
 
         protected async override void OnInitialized()
         {
+            if (AccessGuid != null)
+            {
+                _boardFillerDto.AccessGuid = AccessGuid;
+                Guid = AccessGuid;
+                boardRepository = BoardBoardFillerRepository;
+
+            }
+            else if (BoardGuid != null)
+            {
+                Guid = BoardGuid;
+                boardRepository = BoardRepositoryImp;
+            }
+
             await LoadCard();
             Console.WriteLine(BoardGuid);
         }
@@ -52,25 +88,25 @@ namespace Survey.Client.Pages.App.Card
 
         private async Task LoadCard()
         {
-            await Task.Delay(1000);
-
-            if (BoardGuid != null)
+            if (Guid != null)
             {
-                CardList = await boardRepository.GetAllCardsOfUser(BoardGuid);
-            }
-            if(AccessGuid != null)
-            {
-                CardList = await boardRepository.GetBoardWithAccessGuid(AccessGuid);
-
+                CardList = await boardRepository.GetAllCardsOfUser(Guid);
             }
             StateHasChanged();
         }
-
-
-        private void GenerateAnonymousLink()
+        public void GenerateAnonymousLink()
         {
 
-            Console.WriteLine("hello");
         }
+
+        private async Task LoginUser()
+        {
+            userToken = await accountsRepository.Login(_boardFillerDto);
+            if (userToken?.Token != null)
+            {
+                await loginService.Login(userToken.Token);
+            }
+        }
+
     }
 }

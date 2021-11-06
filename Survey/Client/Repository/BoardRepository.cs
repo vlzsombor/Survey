@@ -15,7 +15,7 @@ namespace Survey.Client.Repository
 {
     public class BoardRepository : IBoardRepository
     {
-        private readonly string _baseUrl = Constants.BACKEND_URL.API_BOARD_URL;
+        protected string _baseUrl = Constants.BACKEND_URL.API_BOARD_URL;
         private HttpClient _httpClient { get; set; }
 
         public BoardRepository(HttpClient httpClient)
@@ -52,18 +52,7 @@ namespace Survey.Client.Repository
             }
             return JsonConvert.DeserializeObject<List<CardModel>?>(await response.Content.ReadAsStringAsync());
         }
-        public async Task<List<CardModel>?> GetBoardWithAccessGuid(string accessGuid)
-        {
-            var response = await _httpClient.GetAsync(_baseUrl + "/" + Constants.BACKEND_URL.ACCESS_GUID + "/" + accessGuid);
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new ApplicationException(await response.Content.ReadAsStringAsync());
-            }
 
-            var a = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<List<CardModel>?>(await response.Content.ReadAsStringAsync());
-        }
 
     }
 }
