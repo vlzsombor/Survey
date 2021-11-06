@@ -45,14 +45,20 @@ namespace Survey.Client
             services.AddScoped<IBoardRepository, BoardRepository>();
             services.AddScoped<BoardRepository>();
             services.AddScoped<BoardFillerRepository>();
+            
+            
+            
+
 
 
 
 
             services.AddScoped<ICardRepository, CardRepository>();
+            services.AddScoped<CardRepository>();
+            services.AddScoped<CardBoardFillerRepository>();
+            services.AddScoped<BoardFillerRepository>();
+
             services.AddAuthorizationCore();
-
-
             services.AddScoped<JWTAuthenticationStateProvider>();
             services.AddScoped<AuthenticationStateProvider, JWTAuthenticationStateProvider>(
                 provider => provider.GetRequiredService<JWTAuthenticationStateProvider>()

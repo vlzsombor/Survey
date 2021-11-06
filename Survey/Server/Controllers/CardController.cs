@@ -20,10 +20,13 @@ namespace Survey.Server.Controllers
     {
 
         private readonly SurveyDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public CardController(SurveyDbContext context)
+        public CardController(SurveyDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+
         }
 
         //read
@@ -53,8 +56,8 @@ namespace Survey.Server.Controllers
         [Route("{guidString}")]
         public async Task<int> AddCard([FromBody] CardModel cardModel, string guidString)
         {
-            BoardModel? boardModel = 
-                _context.BoardModel.Include(x=>x.Cards)
+            BoardModel? boardModel =
+                _context.BoardModel.Include(x => x.Cards)
                 .Where(x => x.Id.ToString() == guidString)
                 .FirstOrDefault();
 
@@ -64,16 +67,25 @@ namespace Survey.Server.Controllers
             await _context.SaveChangesAsync();
 
             return cardModel.Id;
-        }       
-        
+        }
+
         [HttpPost]
         [Route(Survey.Shared.Constants.BACKEND_URL.ACCESS_GUID + "/{guidString}")]
         public async Task<int> AddCard2([FromBody] CardModel cardModel, string guidString)
         {
-            BoardModel? boardModel = 
-                _context.BoardModel.Include(x=>x.Cards)
-                .Where(x => x.Id.ToString() == guidString)
-                .FirstOrDefault();
+            //var boardModel =
+            //    _context.BoardFillers.Include(x => x.BoardModel)
+            //    .Where(x => x.Id.ToString() == guidString)
+            //    .FirstOrDefault();
+
+
+            var user = await _userManager.FindByNameAsync(guidString);
+
+            var boardModel = _context.BoardFillers
+                .Include(x => x.BoardModel)
+                .Include(x => x.BoardModel.Cards)
+                .Where(x => x.identityUser == user)
+                .FirstOrDefault()?.BoardModel;
 
             boardModel?.Cards?.Add(cardModel);
 

@@ -15,8 +15,11 @@ namespace Survey.Client.Pages.App.Card
 {
     public partial class MainPage : ComponentBase
     {
+        public ICardRepository cardRepository { get; set; }
         [Inject]
-        public ICardRepository cardRepository { get; set; } = default!;
+        public CardRepository CardRepository { get; set; } = default!;
+        [Inject]
+        public CardBoardFillerRepository CardBoardFillerRepository{ get; set; } = default!;
 
         public IBoardRepository boardRepository { get; set; } = default!; 
 
@@ -69,12 +72,14 @@ namespace Survey.Client.Pages.App.Card
                 _boardFillerDto.AccessGuid = AccessGuid;
                 Guid = AccessGuid;
                 boardRepository = BoardBoardFillerRepository;
+                cardRepository = CardBoardFillerRepository;
 
             }
             else if (BoardGuid != null)
             {
                 Guid = BoardGuid;
                 boardRepository = BoardRepositoryImp;
+                cardRepository = CardRepository;
             }
 
             await LoadCard();
