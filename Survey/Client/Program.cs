@@ -1,4 +1,5 @@
 using Blazored.LocalStorage;
+using Blazored.SessionStorage;
 using Blazored.Toast;
 using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -37,6 +38,7 @@ namespace Survey.Client
         {
             services.AddBlazoredLocalStorage();
             services.AddBlazoredToast();
+            services.AddBlazoredSessionStorage();
 
             //services.AddScoped<IHttpService, HttpService>();
 
