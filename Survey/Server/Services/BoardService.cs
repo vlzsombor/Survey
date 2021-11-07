@@ -43,13 +43,22 @@ namespace Survey.Server.Services
             }
             //foreach email address{
 
-            var a = await _accountService.RegisterUser(g, pinCode);
+            //var a = await _accountService.RegisterUser(g, pinCode);
 
-            if (a != null)
+            var user = new IdentityUser(g.ToString());
+            IdentityResult? result = await _userManager.CreateAsync(user, pinCode);
+
+
+            if (result.Succeeded)
             {
-                _context.Add(new BoardFiller() { identityUser = a, BoardModel = boardModel });
+                IdentityResult roleIdentityResult = await _userManager.AddToRoleAsync(user, Survey.Shared.Constants.ROLE_NAMES.BOARD_FILLER);
 
+                if (roleIdentityResult.Succeeded)
+                {
+                    _context.Add(new BoardFiller() { identityUser = user, BoardModel = boardModel });
+                }
             }
+
 
 
             //string password = "Aa123456!";

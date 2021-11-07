@@ -23,9 +23,9 @@ namespace Survey.Server.Services
         public async Task<IdentityUser> RegisterUser(Guid g, string password)
         {
 
-            var user = new IdentityUser(g.ToString());
-            IdentityResult? result = await _userManager.CreateAsync(user, password);
-            return user;
+
+
+            return null;
         }
 
     }

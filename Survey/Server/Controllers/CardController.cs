@@ -73,12 +73,6 @@ namespace Survey.Server.Controllers
         [Route(Survey.Shared.Constants.BACKEND_URL.ACCESS_GUID + "/{guidString}")]
         public async Task<int> AddCard2([FromBody] CardModel cardModel, string guidString)
         {
-            //var boardModel =
-            //    _context.BoardFillers.Include(x => x.BoardModel)
-            //    .Where(x => x.Id.ToString() == guidString)
-            //    .FirstOrDefault();
-
-
             var user = await _userManager.FindByNameAsync(guidString);
 
             var boardModel = _context.BoardFillers
