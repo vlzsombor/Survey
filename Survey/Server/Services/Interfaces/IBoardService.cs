@@ -9,7 +9,7 @@ namespace Survey.Server.Services.Interfaces
 {
     public interface IBoardService
     {
-        Task HandleBoardFillerGeneration(BoardFillerGenerationDto boardFillerGenerationDto);
+        Task<string> HandleBoardFillerGeneration(BoardFillerGenerationDto boardFillerGenerationDto);
         Task<IdentityResult?> HandleBoardFillerGeneration2(BoardFillerGenerationDto boardFillerGenerationDto);
     }
 }   

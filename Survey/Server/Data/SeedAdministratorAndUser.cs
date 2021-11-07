@@ -20,9 +20,9 @@ namespace Survey.Server.Data
         {
             IEnumerable<string> roleNames = new List<string>()
             {
-                Survey.Shared.Constants.ROLE_NAMES.ADMIN,
-                Survey.Shared.Constants.ROLE_NAMES.BOARD_ADMIN,
-                Survey.Shared.Constants.ROLE_NAMES.BOARD_FILLER
+                Survey.Shared.Constants.ROLE_NAMES.Admin.ToString(),
+                Survey.Shared.Constants.ROLE_NAMES.BoardAdmin.ToString(),
+                Survey.Shared.Constants.ROLE_NAMES.BoardFiller.ToString()
             };
 
             foreach (var roleName in roleNames)
@@ -63,7 +63,7 @@ namespace Survey.Server.Data
 
                 if (identityResult.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(administratorUser, Survey.Shared.Constants.ROLE_NAMES.ADMIN);
+                    await userManager.AddToRoleAsync(administratorUser, Survey.Shared.Constants.ROLE_NAMES.Admin.ToString());
                 }
             }
 

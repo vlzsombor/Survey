@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Survey.Shared;
 using Survey.Shared.Model;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,6 @@ namespace Survey.Server.Services.Interfaces
 {
     public interface IAccountService
     {
-        Task<IdentityUser> RegisterUser(Guid g, string password);
+        Task<IdentityUser?> RegisterUser(string g, string password, Constants.ROLE_NAMES role);
     }
 }

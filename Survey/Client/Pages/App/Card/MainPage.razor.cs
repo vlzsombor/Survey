@@ -15,25 +15,30 @@ namespace Survey.Client.Pages.App.Card
 {
     public partial class MainPage : ComponentBase
     {
-        public ICardRepository cardRepository { get; set; }
+        public ICardRepository? cardRepository { get; set; }
         [Inject]
         public CardRepository CardRepository { get; set; } = default!;
         [Inject]
-        public CardBoardFillerRepository CardBoardFillerRepository{ get; set; } = default!;
+        public CardBoardFillerRepository CardBoardFillerRepository { get; set; } = default!;
 
-        public IBoardRepository boardRepository { get; set; } = default!; 
+        public IBoardRepository boardRepository { get; set; } = default!;
 
         [Inject]
         public BoardRepository BoardRepositoryImp { get; set; } = default!;
         [Inject]
-        public BoardFillerRepository BoardBoardFillerRepository { get; set; } = default!;              
+        public BoardFillerRepository BoardBoardFillerRepository { get; set; } = default!;
 
 
         [Inject]
-        public ILoginService loginService { get; set; }
+        public ILoginService loginService { get; set; } = default!;
 
         [Inject]
-        public IAccountsRepository accountsRepository { get; set; }
+        public IAccountsRepository accountsRepository { get; set; } = default!;
+
+        [Parameter]
+        public string? BoardGuid { get; set; }
+        [Parameter]
+        public string? AccessGuid { get; set; }
 
         public List<CardModel>? CardList { get; set; } = new List<CardModel>();
 
@@ -42,28 +47,7 @@ namespace Survey.Client.Pages.App.Card
         private BoardFillerDto _boardFillerDto = new BoardFillerDto();
         private UserToken? userToken;
 
-        [Parameter]
-        public string? BoardGuid { get; set; }
-        [Parameter]
-        public string? AccessGuid { get; set; }
 
-
-        public string? Guid { get; set; }
-        private async void Create()
-        {
-            if (Guid != null)
-            {
-                await cardRepository.CreateCard(cardModel, Guid);
-            }
-
-            await LoadCard();
-        }
-
-        private async Task OnDelete(CardModel card)
-        {
-            await cardRepository.DeleteCard(card);
-            await LoadCard();
-        }
 
         protected async override void OnInitialized()
         {
@@ -83,12 +67,37 @@ namespace Survey.Client.Pages.App.Card
             }
 
             await LoadCard();
-            Console.WriteLine(BoardGuid);
         }
+
+        public string? Guid { get; set; }
+        private async void Create()
+        {
+            if (Guid != null && cardRepository != null)
+            {
+                await cardRepository.CreateCard(cardModel, Guid);
+            }
+
+            await LoadCard();
+        }
+
+        private async Task OnDelete(CardModel card)
+        {
+            if (cardRepository != null)
+            {
+                await cardRepository.DeleteCard(card);
+                await LoadCard();
+            }
+
+        }
+
+
 
         public void OnRateChange(CardModel args)
         {
-            cardRepository.UpdateCardRating(args);
+            if (cardRepository != null)
+            {
+                cardRepository.UpdateCardRating(args);
+            }
         }
 
         private async Task LoadCard()

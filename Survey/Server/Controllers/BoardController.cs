@@ -89,22 +89,11 @@ namespace Survey.Server.Controllers
         [HttpPost("test")]
         public async Task<string?> GenerateTempUserId([FromBody] BoardFillerGenerationDto boardFillerGenerationDto)
         {
-
-            //xxxxxxxxxxxxxxxx input parameter
-            string email = "xyz@a.hu";
-            string boardGuid = "c0145f46-b749-4fb2-75ab-08d99d3f0e38";
-            //xxxxxxxxxxxxxxxx
-            await boardService.HandleBoardFillerGeneration(boardFillerGenerationDto);
-
-
-
+            return await boardService.HandleBoardFillerGeneration(boardFillerGenerationDto);
 
             // tick generate a random guid (lets call this G) and password (P)
             // this G,P should be saved to the db !alert P should definetily be hashed
             // if a request comes in with the G and corret password typed, then the page is shown
-
-
-            return "hey";
         }
 
 

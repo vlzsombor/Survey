@@ -46,7 +46,7 @@ namespace Survey.Server.Controllers
 
             if (result.Succeeded)
             {
-                IdentityResult roleIdentityResult = await _userManager.AddToRoleAsync(user, Survey.Shared.Constants.ROLE_NAMES.BOARD_ADMIN);
+                IdentityResult roleIdentityResult = await _userManager.AddToRoleAsync(user, Survey.Shared.Constants.ROLE_NAMES.BoardAdmin.ToString());
 
                 if (roleIdentityResult.Succeeded)
                     return Ok(await BuildToken(user));

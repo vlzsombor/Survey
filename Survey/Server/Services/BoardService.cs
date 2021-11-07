@@ -25,13 +25,12 @@ namespace Survey.Server.Services
         }
         private Random _random = new Random();
 
-        public async Task HandleBoardFillerGeneration(BoardFillerGenerationDto boardFillerGenerationDto)
+        public async Task<string> HandleBoardFillerGeneration(BoardFillerGenerationDto boardFillerGenerationDto)
         {
             string boardGuid = boardFillerGenerationDto.BoardGuid.ToString();
 
             Guid g = Guid.NewGuid();
 
-            // todo hash pin code
             string pinCode2 = ServerHelper.GenerateRandomNo(_random) + "Aa123456!";
             string pinCode = "Aa123456!";
 
@@ -39,42 +38,21 @@ namespace Survey.Server.Services
             BoardModel? boardModel = _context.BoardModel.Where(x => x.Id.ToString() == boardGuid).FirstOrDefault();
             if (boardModel == null)
             {
-                return;
+                return "unknown boardmodel";
             }
             //foreach email address{
-
-            //var a = await _accountService.RegisterUser(g, pinCode);
-
-            var user = new IdentityUser(g.ToString());
-            IdentityResult? result = await _userManager.CreateAsync(user, pinCode);
-
-
-            if (result.Succeeded)
+            var user = await _accountService
+                .RegisterUser(g.ToString(), pinCode, Survey.Shared.Constants.ROLE_NAMES.BoardFiller);
+            if (user != null)
             {
-                IdentityResult roleIdentityResult = await _userManager.AddToRoleAsync(user, Survey.Shared.Constants.ROLE_NAMES.BOARD_FILLER);
+                _context.Add(new BoardFiller() { identityUser = user, BoardModel = boardModel });
+                _context.SaveChanges();
 
-                if (roleIdentityResult.Succeeded)
-                {
-                    _context.Add(new BoardFiller() { identityUser = user, BoardModel = boardModel });
-                }
+                return g.ToString();
             }
 
+            return "Unsuccessful adding";
 
-
-            //string password = "Aa123456!";
-
-            //IdentityUser user = new IdentityUser() { UserName= "korte2@a.hu" , Email = "korte2@a.hu" };
-            //IdentityResult? result = await _userManager.CreateAsync(user, password);
-
-            //BoardFiller boardFiller = new BoardFiller(g, pinCode, boardModel);
-            //SendToEmail(null);
-            //}
-
-
-            //_context.Add(boardFiller);
-
-
-            _context.SaveChanges();
         }
         public async Task<IdentityResult?> HandleBoardFillerGeneration2(BoardFillerGenerationDto boardFillerGenerationDto)
         {

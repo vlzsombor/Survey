@@ -9,12 +9,12 @@ namespace Survey.Shared
     public static class Constants
     {
 
-        public class ROLE_NAMES
+
+        public enum ROLE_NAMES
         {
-            public const string ADMIN = "Admin";
-            public const string BOARD_ADMIN = "BoardAdmin";
-            public const string BOARD_FILLER = "BoardFiller";
-                
+            Admin,
+            BoardAdmin,
+            BoardFiller
         }
 
         public static class BACKEND_URL
@@ -26,7 +26,7 @@ namespace Survey.Shared
             public const string CARDS = "cards";
             public const string UPDATE_CARD_RATING = "update-card-rating";
             #endregion
-            
+
             #region controller url
             public const string SLASH = "/";
             public const string API_BOARD_URL = API + SLASH + "board";
