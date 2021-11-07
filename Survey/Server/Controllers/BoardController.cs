@@ -53,7 +53,7 @@ namespace Survey.Server.Controllers
         public void Post([FromBody] BoardModel bm)
         {
             IdentityUser user = ServerHelper.GetIdentityUserByEmail(_context, HttpContext);
-            bm.Cards = _context.CardModel.ToList();
+            //bm.Cards = _context.CardModel.ToList();
             bm.OwnerUser = user;
             _context.BoardModel.Add(bm);
             _context.SaveChanges();
