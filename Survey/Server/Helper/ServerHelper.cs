@@ -17,7 +17,7 @@ namespace Survey.Server
         /// <see cref="SeedAdministratorAndUser.SeedAdministratorUser"/>
         /// </summary>
 
-        public static IdentityUser GetIdentityUserByEmail(SurveyDbContext _context, HttpContext httpContext)
+        public static IdentityUser GetIdentityUserByName(SurveyDbContext _context, HttpContext httpContext)
         {
             if (httpContext.User.Identity != null)
             {

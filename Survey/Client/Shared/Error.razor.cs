@@ -38,9 +38,16 @@ namespace Survey.Client.Shared
         {
             Logger.LogError("Error:ProcessError - Type: {Type} Message: {Message}",
                 ex.GetType(), ex.Message);
+            string exceptionMessage = generalErrorMessage;
 
+            if (ex.Message == System.Net.HttpStatusCode.Unauthorized.ToString())
+            {
+                exceptionMessage = "Unauthorized please login";
+            }
 
-            toastServive.ShowError("Something went wrong please refresh the page");
+            Console.WriteLine(ex.Message);
+
+            toastServive.ShowError(exceptionMessage);
             StateHasChanged();
         }
 

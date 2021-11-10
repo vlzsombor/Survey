@@ -48,11 +48,9 @@ namespace Survey.Client.Repository
             var response = await _httpClient.GetAsync(_baseUrl + "/" + guid);
             if (!response.IsSuccessStatusCode)
             {
-                throw new ApplicationException(await response.Content.ReadAsStringAsync());
+                throw new ApplicationException(response.StatusCode.ToString());
             }
             return JsonConvert.DeserializeObject<List<CardModel>?>(await response.Content.ReadAsStringAsync());
         }
-
-
     }
 }

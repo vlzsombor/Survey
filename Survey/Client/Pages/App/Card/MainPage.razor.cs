@@ -10,10 +10,11 @@ using Survey.Client.Repository;
 using Survey.Client.Repository.Interfaces;
 using Survey.Client.Auth;
 using Survey.Shared.DTOs;
+using Survey.Client.Shared;
 
 namespace Survey.Client.Pages.App.Card
 {
-    public partial class MainPage : ComponentBase
+    public partial class MainPage : ComponentBase, IDisposable
     {
         public ICardRepository? cardRepository { get; set; }
         [Inject]
@@ -39,6 +40,10 @@ namespace Survey.Client.Pages.App.Card
         public string? BoardGuid { get; set; }
         [Parameter]
         public string? AccessGuid { get; set; }
+
+        [CascadingParameter]
+        public Error Error { get; set; } = default!;
+
 
         public List<CardModel>? CardList { get; set; } = new List<CardModel>();
 
@@ -104,7 +109,18 @@ namespace Survey.Client.Pages.App.Card
         {
             if (Guid != null)
             {
-                CardList = await boardRepository.GetAllCardsOfUser(Guid);
+                try
+                {
+                    CardList = await boardRepository.GetAllCardsOfUser(Guid);
+
+                }
+                catch (ApplicationException ex)
+                {
+                    Error.ProcessError(ex);
+                    return;
+                }
+
+                
             }
             StateHasChanged();
         }
@@ -122,5 +138,12 @@ namespace Survey.Client.Pages.App.Card
             }
         }
 
+        public async void Dispose()
+        {
+            await loginService.Logout();
+
+            Console.WriteLine("hello");
+
+        }
     }
 }

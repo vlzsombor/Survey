@@ -1,4 +1,4 @@
-﻿<AuthorizeView>
+﻿<AuthorizeView Roles="Admin, BoardAdmin">
     <Authorized>
         <span>Hello @context.User.Identity?.Name</span>
         <a href="logout" class="nav-link" btn btn-link">Logout</a>

@@ -21,7 +21,7 @@ namespace Survey.Server.Controllers
 {
     [Route(Constants.BACKEND_URL.API_BOARD_URL)]
     [ApiController]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class BoardController : ControllerBase
     {
         private readonly SurveyDbContext _context;
@@ -42,7 +42,7 @@ namespace Survey.Server.Controllers
         {
             return _context.BoardModel
                 .Include(r => r.OwnerUser)
-                .Where(x => x.OwnerUser == ServerHelper.GetIdentityUserByEmail(_context, HttpContext))
+                .Where(x => x.OwnerUser == ServerHelper.GetIdentityUserByName(_context, HttpContext))
                 .ToList();
         }
 
@@ -52,7 +52,7 @@ namespace Survey.Server.Controllers
         [HttpPost]
         public void Post([FromBody] BoardModel bm)
         {
-            IdentityUser user = ServerHelper.GetIdentityUserByEmail(_context, HttpContext);
+            IdentityUser user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
             //bm.Cards = _context.CardModel.ToList();
             bm.OwnerUser = user;
             _context.BoardModel.Add(bm);
@@ -64,10 +64,28 @@ namespace Survey.Server.Controllers
         public List<CardModel>? GenerateTempUserId(string boardFillerGuid)
         {
             Guid guid = Guid.Parse(boardFillerGuid);
+
+
+
+
             BoardFiller? boardFiller = _context.BoardFillers
+                .Include(x => x.identityUser)
                 .Include(x => x.BoardModel)
                 .Include(x => x.BoardModel.Cards)
-                .Where(x => x.identityUser.UserName == boardFillerGuid).FirstOrDefault();
+                .Where(x => x.identityUser.UserName == boardFillerGuid)
+                .FirstOrDefault();
+
+            if (boardFiller == null)
+            {
+                return null;
+            }
+            IdentityUser user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
+
+            if (boardFiller.identityUser != user)
+            {
+                return Unauthorized();
+            }
+
 
             return boardFiller?.BoardModel?.Cards?.ToList();
         }
@@ -79,7 +97,7 @@ namespace Survey.Server.Controllers
             BoardModel? a = _context.BoardModel
                 .Include(b => b.Cards)
                 .Where(board =>
-                board.OwnerUser == ServerHelper.GetIdentityUserByEmail(_context, HttpContext) &&
+                board.OwnerUser == ServerHelper.GetIdentityUserByName(_context, HttpContext) &&
                 board.Id.ToString() == guidString).FirstOrDefault();
 
 
@@ -87,6 +105,7 @@ namespace Survey.Server.Controllers
         }
 
         [HttpPost("test")]
+        [Allow]
         public async Task<string?> GenerateTempUserId([FromBody] BoardFillerGenerationDto boardFillerGenerationDto)
         {
             return await boardService.HandleBoardFillerGeneration(boardFillerGenerationDto);

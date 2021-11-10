@@ -42,8 +42,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-
-
         HttpResponseMessage a = await Http.GetAsync("WeatherForecast");
 
         if (!a.IsSuccessStatusCode)
