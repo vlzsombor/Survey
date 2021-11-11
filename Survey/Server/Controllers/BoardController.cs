@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Survey.Shared.DTOs;
 using Survey.Server.Services.Interfaces;
 using Survey.Shared;
+using System.Net;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -75,16 +76,13 @@ namespace Survey.Server.Controllers
                 .Where(x => x.identityUser.UserName == boardFillerGuid)
                 .FirstOrDefault();
 
-            if (boardFiller == null)
+            IdentityUser user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
+            if (boardFiller == null || boardFiller.identityUser != user )
             {
+                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return null;
             }
-            IdentityUser user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
 
-            if (boardFiller.identityUser != user)
-            {
-                return Unauthorized();
-            }
 
 
             return boardFiller?.BoardModel?.Cards?.ToList();
@@ -105,7 +103,7 @@ namespace Survey.Server.Controllers
         }
 
         [HttpPost("test")]
-        [Allow]
+        [AllowAnonymous]
         public async Task<string?> GenerateTempUserId([FromBody] BoardFillerGenerationDto boardFillerGenerationDto)
         {
             return await boardService.HandleBoardFillerGeneration(boardFillerGenerationDto);

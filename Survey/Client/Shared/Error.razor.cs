@@ -7,6 +7,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Survey.Shared;
+using Survey.Client.Auth;
+
 namespace Survey.Client.Shared
 {
     public partial class Error : ComponentBase
@@ -19,6 +21,9 @@ namespace Survey.Client.Shared
         private ILogger<Error> Logger { get; set; } = default!;
         [Inject]
         private NavigationManager NavigationManager { get; set; } = default!;
+        [Inject]
+        public ILoginService loginService { get; set; } = default!;
+
         string generalErrorMessage = "Something went wrong please refresh the page";
 
         public void ProcessError(HttpResponseMessage message)
@@ -43,6 +48,7 @@ namespace Survey.Client.Shared
             if (ex.Message == System.Net.HttpStatusCode.Unauthorized.ToString())
             {
                 exceptionMessage = "Unauthorized please login";
+                loginService.Logout();
             }
 
             Console.WriteLine(ex.Message);

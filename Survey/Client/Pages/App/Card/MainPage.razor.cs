@@ -14,7 +14,7 @@ using Survey.Client.Shared;
 
 namespace Survey.Client.Pages.App.Card
 {
-    public partial class MainPage : ComponentBase, IDisposable
+    public partial class MainPage : ComponentBase
     {
         public ICardRepository? cardRepository { get; set; }
         [Inject]
@@ -136,14 +136,6 @@ namespace Survey.Client.Pages.App.Card
             {
                 await loginService.Login(userToken.Token);
             }
-        }
-
-        public async void Dispose()
-        {
-            await loginService.Logout();
-
-            Console.WriteLine("hello");
-
         }
     }
 }
