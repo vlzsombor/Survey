@@ -29,7 +29,6 @@ namespace Survey.Client.Pages.App.Card
         [Inject]
         public BoardFillerRepository BoardBoardFillerRepository { get; set; } = default!;
 
-
         [Inject]
         public ILoginService loginService { get; set; } = default!;
 
@@ -44,15 +43,12 @@ namespace Survey.Client.Pages.App.Card
         [CascadingParameter]
         public Error Error { get; set; } = default!;
 
-
         public List<CardModel>? CardList { get; set; } = new List<CardModel>();
 
         private CardModel cardModel = new CardModel();
 
         private BoardFillerDto _boardFillerDto = new BoardFillerDto();
         private UserToken? userToken;
-
-
 
         protected async override void OnInitialized()
         {
@@ -135,6 +131,7 @@ namespace Survey.Client.Pages.App.Card
             if (userToken?.Token != null)
             {
                 await loginService.Login(userToken.Token);
+                await LoadCard();
             }
         }
     }

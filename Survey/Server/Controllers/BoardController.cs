@@ -64,11 +64,6 @@ namespace Survey.Server.Controllers
         [HttpGet(Constants.BACKEND_URL.ACCESS_GUID + "/{boardFillerGuid}")]
         public List<CardModel>? GenerateTempUserId(string boardFillerGuid)
         {
-            Guid guid = Guid.Parse(boardFillerGuid);
-
-
-
-
             BoardFiller? boardFiller = _context.BoardFillers
                 .Include(x => x.identityUser)
                 .Include(x => x.BoardModel)
@@ -77,7 +72,7 @@ namespace Survey.Server.Controllers
                 .FirstOrDefault();
 
             IdentityUser user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
-            if (boardFiller == null || boardFiller.identityUser != user )
+            if ( boardFiller?.identityUser != user )
             {
                 Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return null;

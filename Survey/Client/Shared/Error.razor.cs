@@ -51,6 +51,7 @@ namespace Survey.Client.Shared
                 loginService.Logout();
             }
 
+            loginService.Logout();
             Console.WriteLine(ex.Message);
 
             toastServive.ShowError(exceptionMessage);
