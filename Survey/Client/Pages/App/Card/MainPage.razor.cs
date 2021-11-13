@@ -29,11 +29,8 @@ namespace Survey.Client.Pages.App.Card
         [Inject]
         public BoardFillerRepository BoardBoardFillerRepository { get; set; } = default!;
 
-        [Inject]
-        public ILoginService loginService { get; set; } = default!;
 
-        [Inject]
-        public IAccountsRepository accountsRepository { get; set; } = default!;
+
 
         [Parameter]
         public string? BoardGuid { get; set; }
@@ -46,15 +43,14 @@ namespace Survey.Client.Pages.App.Card
         public List<CardModel>? CardList { get; set; } = new List<CardModel>();
 
         private CardModel cardModel = new CardModel();
+        public BoardFillerDto BoardFillerDto { get; set; } = new BoardFillerDto();
 
-        private BoardFillerDto _boardFillerDto = new BoardFillerDto();
-        private UserToken? userToken;
 
         protected async override void OnInitialized()
         {
             if (AccessGuid != null)
             {
-                _boardFillerDto.AccessGuid = AccessGuid;
+                BoardFillerDto.AccessGuid = AccessGuid;
                 Guid = AccessGuid;
                 boardRepository = BoardBoardFillerRepository;
                 cardRepository = CardBoardFillerRepository;
@@ -101,22 +97,19 @@ namespace Survey.Client.Pages.App.Card
             }
         }
 
-        private async Task LoadCard()
+        public async Task LoadCard()
         {
             if (Guid != null)
             {
                 try
                 {
                     CardList = await boardRepository.GetAllCardsOfUser(Guid);
-
                 }
                 catch (ApplicationException ex)
                 {
                     Error.ProcessError(ex);
                     return;
-                }
-
-                
+                }  
             }
             StateHasChanged();
         }
@@ -125,14 +118,6 @@ namespace Survey.Client.Pages.App.Card
 
         }
 
-        private async Task LoginUser()
-        {
-            userToken = await accountsRepository.Login(_boardFillerDto);
-            if (userToken?.Token != null)
-            {
-                await loginService.Login(userToken.Token);
-                await LoadCard();
-            }
-        }
+
     }
 }

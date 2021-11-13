@@ -23,18 +23,8 @@
         }
     </Authorized>
     <NotAuthorized>
-        <EditForm Model="_boardFillerDto" OnValidSubmit="LoginUser" Context="test">
-            <DataAnnotationsValidator />
-            <div class="form-group my-3">
-                <label for="password">Password</label>
-                <InputText @bind-Value="_boardFillerDto.Password" type="password" id="password" class="form-control" />
-                <ValidationMessage For="@(()=>_boardFillerDto.Password)" />
-            </div>
-            <ValidationSummary />
 
-            <button type="submit" class="btn btn-primary">Login</button>
-
-        </EditForm>
+        <PasswordLogin LoadCardEventCallBack="@(LoadCard)" BoardFillerDto="BoardFillerDto"></PasswordLogin>
 
     </NotAuthorized>
 </AuthorizeView>

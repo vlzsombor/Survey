@@ -48,7 +48,6 @@ namespace Survey.Client.Shared
             if (ex.Message == System.Net.HttpStatusCode.Unauthorized.ToString())
             {
                 exceptionMessage = "Unauthorized please login";
-                loginService.Logout();
             }
 
             loginService.Logout();
