@@ -7,11 +7,14 @@
 
 @using System.Linq
 
-@using Survey.Client.Pages.Auth 
-<h3>MainPage</h3>
+@using Survey.Client.Pages.Auth
+
+@inject NavigationManager NavigationManager
+
+<h3>MainPage</h3>link
 
 <AuthorizeView Roles="Admin, BoardAdmin">
-    <a @onclick="GenerateAnonymousLink" class="btn btn-info" role="button">Link Button</a>
+    <a @onclick="@(() => {NavigationManager.NavigateTo(Constants.FRONTEND_URL.ADD_BOARDFILLERS + "/" + Guid);})"  class="btn btn-info" role="button">Link Button</a>
 </AuthorizeView>
 
 <AuthorizeView>
@@ -19,7 +22,7 @@
         <Survey.Client.Pages.App.Card.CardForm cardModel="@cardModel" OnValidSubmit="@Create" />
         @foreach (var cardItem in CardList ?? Enumerable.Empty<CardModel>())
         {
-            <CardSimple OnDelete="@(OnDelete)" OnRatingChanges="@(OnRateChange)" CardModel="cardItem"></CardSimple>
+                <CardSimple OnDelete="@(OnDelete)" OnRatingChanges="@(OnRateChange)" CardModel="cardItem"></CardSimple>
         }
     </Authorized>
     <NotAuthorized>

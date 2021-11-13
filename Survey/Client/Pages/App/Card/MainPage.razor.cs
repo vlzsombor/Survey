@@ -113,11 +113,5 @@ namespace Survey.Client.Pages.App.Card
             }
             StateHasChanged();
         }
-        public void GenerateAnonymousLink()
-        {
-
-        }
-
-
     }
 }
