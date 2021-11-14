@@ -97,7 +97,7 @@ namespace Survey.Server.Controllers
             return a?.Cards;
         }
 
-        [HttpPost("generate-board-filler")]
+        [HttpPost(Constants.BACKEND_URL.GENERATE_BOARD_FILLER)]
         [AllowAnonymous]
         public async Task<string?> GenerateTempUserId([FromBody] BoardFillerGenerationDto boardFillerGenerationDto)
         {

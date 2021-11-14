@@ -2,20 +2,12 @@
 @attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.ADD_BOARDFILLERS + "/{BoardId}")]
 @using System.Linq
 
+@inject BoardRepository boardRepository
+
 <EditForm Model="boardFillerGenerationDto">
     <DataAnnotationsValidator />
     <div class="form-group">
-        @*@for (int i = 0; i<list.Count(); i++)
-            {
-                var i2 = i;
-
-                <input @onfocusin="@((args) => ClickedInside(args))"
-                       @onfocusout="MouseOut"
-                       @bind="list[i]"
-                       @oninput="@(ui => SajatOnInput(ui))"
-                       @ref="list[i2]" />
-            }*@
-        @for (int i = 0; i < list.Count; i++)
+        @for (int i = 0; i < list.Count(); i++)
         {
             // see https://stackoverflow.com/a/56426146/323447
             var iCopy = i;
@@ -24,21 +16,16 @@
                 <label for="@($"effect{i}")">@i</label>
                 <input id="@($"effect{i}")" value="@list[i]"
                        @oninput="@(e => SajatOnInput(e,iCopy,(e?.Value?.ToString() ?? "")))"
-                       @onfocusout="MouseOut"
-                       @onfocusin="MouseIn" />
+                       @onfocusout="MouseOut" />
             </p>
         }
-        @*<InputText @onclick="" @bind-Value="@asd" class="form-control" id="emails"></InputText>*@
     </div>
-    <button class="btn btn-success" type="submit">Save changes</button>
+    <button class="btn btn-success" @onclick="OnValidInput" type="submit">Save changes</button>
 </EditForm>
 
 @code {
-    public ElementReference[] memberRef { get; set; } = new ElementReference[11];
-
     public string? value2 { get; set; }
     public int index { get; set; } = 0;
-    int refi = 0;
 
     [Parameter]
     public string BoardId { get; set; } = default!;
@@ -69,12 +56,6 @@
         list.ForEach(Console.WriteLine);
     }
 
-    public void MouseIn()
-    {
-        //list.RemoveAll(x => x == string.Empty);
-        //list.Add(string.Empty);
-    }
-
     public void SajatOnInput(ChangeEventArgs a, int iCopy, string text)
     {
         list[iCopy] = text;
@@ -89,14 +70,19 @@
 
     }
 
-    public BoardFillerGenerationDto boardFillerGenerationDto { get; set; } =
-        new BoardFillerGenerationDto(
-            new List<string>() { "alma@a.hu", "korte@b.hu" }
-            , new Guid()
-        );
+    public BoardFillerGenerationDto boardFillerGenerationDto { get; set; } = new BoardFillerGenerationDto("dsfd", new List<string>());
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
     }
+    private async Task OnValidInput()
+    {
+
+
+        BoardFillerGenerationDto boardFillerGenerationDto = new BoardFillerGenerationDto(BoardId, list.Where(x => x != string.Empty).ToList());
+
+        await boardRepository.GenerateByEmail(boardFillerGenerationDto);
+    }
+
 }

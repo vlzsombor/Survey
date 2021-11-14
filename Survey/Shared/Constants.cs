@@ -33,6 +33,7 @@ namespace Survey.Shared
             public const string ACCESS_GUID = "acces-guid";
             public const string API_CARD_URL = API + SLASH + "card";
             public const string API_ACCOUNT_URL = API + SLASH + "account";
+            public const string GENERATE_BOARD_FILLER = "generate-board-filler";
             #endregion
 
         }

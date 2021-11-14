@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Survey.Shared;
-
+using Survey.Shared.DTOs;
 
 namespace Survey.Client.Repository
 {
@@ -52,5 +52,19 @@ namespace Survey.Client.Repository
             }
             return JsonConvert.DeserializeObject<List<CardModel>?>(await response.Content.ReadAsStringAsync());
         }
+
+
+        public async Task GenerateByEmail(BoardFillerGenerationDto boardFillerGenerationDto)
+        {
+            var response = await _httpClient.PostAsJsonAsync(_baseUrl + "/" + Constants.BACKEND_URL.GENERATE_BOARD_FILLER, 
+                boardFillerGenerationDto);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApplicationException(response.StatusCode.ToString());
+            }
+
+            //return response;
+        }
+
     }
 }

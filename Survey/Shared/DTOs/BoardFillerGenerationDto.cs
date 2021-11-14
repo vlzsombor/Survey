@@ -9,13 +9,14 @@ namespace Survey.Shared.DTOs
     public class BoardFillerGenerationDto
     {
         public List<string> Emails { get; set; }
-        public Guid BoardGuid { get; set; }
+        public string BoardGuid { get; set; }
 
         // todo is this class needed or anonymous should be used???
-        public BoardFillerGenerationDto(List<string> emails, Guid boardGuid)
+        public BoardFillerGenerationDto(string boardGuid, List<string> emails)
         {
             Emails = emails;
             BoardGuid = boardGuid;
-        }
+        }        
+        
     }
 }
