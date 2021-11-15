@@ -54,7 +54,7 @@ namespace Survey.Client.Repository
         }
 
 
-        public async Task GenerateByEmail(BoardFillerGenerationDto boardFillerGenerationDto)
+        public async Task<HttpResponseMessage?> GenerateByEmail(BoardFillerGenerationDto boardFillerGenerationDto)
         {
             var response = await _httpClient.PostAsJsonAsync(_baseUrl + "/" + Constants.BACKEND_URL.GENERATE_BOARD_FILLER, 
                 boardFillerGenerationDto);
@@ -63,7 +63,7 @@ namespace Survey.Client.Repository
                 throw new ApplicationException(response.StatusCode.ToString());
             }
 
-            //return response;
+            return response;
         }
 
     }

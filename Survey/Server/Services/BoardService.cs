@@ -42,13 +42,18 @@ namespace Survey.Server.Services
             }
             //foreach email address{
             var user = await _accountService
-                .RegisterUser(g.ToString(), pinCode, Survey.Shared.Constants.ROLE_NAMES.BoardFiller);
+                .RegisterUser(boardGuid.ToString(), pinCode, Survey.Shared.Constants.ROLE_NAMES.BoardFiller);
+            //}
+
+
+
+
             if (user != null)
             {
                 _context.Add(new BoardFiller() { identityUser = user, BoardModel = boardModel });
                 _context.SaveChanges();
 
-                return g.ToString();
+                return boardGuid.ToString();
             }
 
             return "Unsuccessful adding";

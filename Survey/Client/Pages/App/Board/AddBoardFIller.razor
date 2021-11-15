@@ -23,18 +23,18 @@
     <button class="btn btn-success" @onclick="OnValidInput" type="submit">Save changes</button>
 </EditForm>
 
+@content
+
 @code {
     public string? value2 { get; set; }
     public int index { get; set; } = 0;
 
+    public string content { get; set; }
+
     [Parameter]
     public string BoardId { get; set; } = default!;
 
-    public List<string> list { get; set; } = new List<string>()
-{
-        "alma",
-        "korte"
-    };
+    public List<string> list { get; set; } = new List<string>() { string.Empty };
     public void MouseOut()
     {
         //if (value2 != null)
@@ -45,7 +45,7 @@
         list.RemoveAll(x => x == string.Empty);
         list.Add(string.Empty);
 
-        for (int i = 0; i<list.Count()-1; i++)
+        for (int i = 0; i < list.Count() - 1; i++)
         {
             if (list[i] == string.Empty)
             {
@@ -82,7 +82,15 @@
 
         BoardFillerGenerationDto boardFillerGenerationDto = new BoardFillerGenerationDto(BoardId, list.Where(x => x != string.Empty).ToList());
 
-        await boardRepository.GenerateByEmail(boardFillerGenerationDto);
+        HttpResponseMessage? a = await boardRepository.GenerateByEmail(boardFillerGenerationDto);
+
+
+        if (a != null)
+        {
+            content = await a.Content.ReadAsStringAsync();
+        }
+
+
     }
 
 }
