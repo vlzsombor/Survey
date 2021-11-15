@@ -83,7 +83,10 @@ namespace Survey.Server.Controllers
                 return BadRequest(errorsDictionary);
             }
         }
+
+
         [HttpPost("test/" + Survey.Shared.Constants.BACKEND_URL.LOGIN)]
+        [HttpPost(Survey.Shared.Constants.BACKEND_URL.BOARD_FILLER_LOGIN)]
         public async Task<ActionResult<UserToken>> Logintest([FromBody] BoardFillerDto boardFillerDto)
         {
             var result = await _signInManager.PasswordSignInAsync(boardFillerDto.AccessGuid, boardFillerDto.Password, isPersistent: false, lockoutOnFailure: false);

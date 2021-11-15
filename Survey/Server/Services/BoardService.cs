@@ -29,8 +29,6 @@ namespace Survey.Server.Services
         {
             string boardGuid = boardFillerGenerationDto.BoardGuid.ToString();
 
-            Guid g = Guid.NewGuid();
-
             string pinCode2 = ServerHelper.GenerateRandomNo(_random) + "Aa123456!";
             string pinCode = "Bb123456!";
 
@@ -40,20 +38,25 @@ namespace Survey.Server.Services
             {
                 return "unknown boardmodel";
             }
+
+            BoardFiller boardFiller = new BoardFiller();
+
+            _context.Add(boardFiller);
+
             //foreach email address{
             var user = await _accountService
-                .RegisterUser(boardGuid.ToString(), pinCode, Survey.Shared.Constants.ROLE_NAMES.BoardFiller);
+                .RegisterUser(boardFiller.Id.ToString(), pinCode, Survey.Shared.Constants.ROLE_NAMES.BoardFiller);
             //}
 
-
-
+            boardFiller.BoardModel = boardModel;
 
             if (user != null)
             {
-                _context.Add(new BoardFiller() { identityUser = user, BoardModel = boardModel });
+                boardFiller.identityUser = user;
+
                 _context.SaveChanges();
 
-                return boardGuid.ToString();
+                return boardFiller.Id.ToString();
             }
 
             return "Unsuccessful adding";

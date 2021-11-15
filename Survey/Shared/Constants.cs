@@ -23,6 +23,7 @@ namespace Survey.Shared
             public const string API = "api";
             public const string CREATE = "create";
             public const string LOGIN = "login";
+            public const string BOARD_FILLER_LOGIN = "board-filler/login";
             public const string CARDS = "cards";
             public const string UPDATE_CARD_RATING = "update-card-rating";
             #endregion

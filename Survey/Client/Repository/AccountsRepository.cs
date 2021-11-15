@@ -61,7 +61,7 @@ namespace Survey.Client.Repository
 
         public async Task<UserToken?> Login(BoardFillerDto boardFillerDto)
         {
-            var response = await _httpClient.PostAsJsonAsync(baseURL + "/test/" + Constants.BACKEND_URL.LOGIN, boardFillerDto);
+            var response = await _httpClient.PostAsJsonAsync(baseURL + "/" + Constants.BACKEND_URL.BOARD_FILLER_LOGIN, boardFillerDto);
 
             if (!response.IsSuccessStatusCode)
             {

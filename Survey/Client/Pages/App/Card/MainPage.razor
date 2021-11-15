@@ -11,10 +11,9 @@
 
 @inject NavigationManager NavigationManager
 
-<h3>MainPage</h3>link
-
+<h3>MainPage</h3>
 <AuthorizeView Roles="Admin, BoardAdmin">
-    <a @onclick="@(() => {NavigationManager.NavigateTo(Constants.FRONTEND_URL.ADD_BOARDFILLERS + "/" + Guid);})"  class="btn btn-info" role="button">Link Button</a>
+    <a @onclick="@(() => {NavigationManager.NavigateTo(Constants.FRONTEND_URL.ADD_BOARDFILLERS + "/" + Guid);})"  class="btn btn-info" role="button">Add Board filler</a>
 </AuthorizeView>
 
 <AuthorizeView>
@@ -29,8 +28,6 @@
         <PasswordLogin LoadCardEventCallBack="@(LoadCard)" BoardFillerDto="BoardFillerDto"></PasswordLogin>
     </NotAuthorized>
 </AuthorizeView>
-
-
 
 @code {
 
