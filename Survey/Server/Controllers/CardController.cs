@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using System.Security.Principal;
 using Microsoft.EntityFrameworkCore;
+using Survey.Shared.DTOs;
 
 namespace Survey.Server.Controllers
 {
@@ -44,10 +45,10 @@ namespace Survey.Server.Controllers
         //update, partly
         [HttpPut]
         [Route(Survey.Shared.Constants.BACKEND_URL.UPDATE_CARD_RATING)]
-        public async Task<int> UpdateCardRating([FromBody] CardModel card)
+        public async Task<int> UpdateCardRating([FromBody] CardRatingDto card)
         {
-            _context.Update(card);
-            await _context.SaveChangesAsync();
+            //_context.Update(card);
+            //await _context.SaveChangesAsync();
             return 0;
         }
 

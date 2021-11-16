@@ -17,7 +17,7 @@ namespace Survey.Client.Pages.App.Card
         public CardModel CardModel { get; set; } = default!;
 
         [Parameter]
-        public EventCallback<CardModel> OnRatingChanges { get; set; }
+        public EventCallback<(int, CardModel)> OnChange { get; set; }
 
         [Parameter]
         public EventCallback<CardModel> OnDelete { get; set; }
@@ -27,11 +27,6 @@ namespace Survey.Client.Pages.App.Card
             await OnDelete.InvokeAsync(CardModel);
         }
 
-        private async void OnChange(int value)
-        {
-            CardModel.Rating = value;
 
-            await OnRatingChanges.InvokeAsync(CardModel);
-        }
     }
 }

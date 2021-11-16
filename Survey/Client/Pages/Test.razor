@@ -1,8 +1,14 @@
 ﻿
-@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.test )]
+@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.test)]
 
 @code{
     public const string Href = "aaa";
 }
 
-<h1>test page asdfsfas</h1>
+<TestIn OnChange="@(x => OnChangeMethod((int)x))"></TestIn>
+@code{
+    public void OnChangeMethod(int cm)
+    {
+        Console.WriteLine(cm);
+    }
+}

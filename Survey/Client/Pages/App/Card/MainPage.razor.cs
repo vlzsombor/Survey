@@ -88,14 +88,15 @@ namespace Survey.Client.Pages.App.Card
         }
 
 
-
-        public void OnRateChange(CardModel args)
+        public void OnChangeMethod((int value, CardModel cm) args)
         {
-            if (cardRepository != null)
+            if (cardRepository!=null)
             {
-                cardRepository.UpdateCardRating(args);
+                cardRepository.UpdateCardRating(args.value, args.cm);
             }
+
         }
+
 
         public async Task LoadCard()
         {
@@ -109,7 +110,7 @@ namespace Survey.Client.Pages.App.Card
                 {
                     Error.ProcessError(ex);
                     return;
-                }  
+                }
             }
             StateHasChanged();
         }

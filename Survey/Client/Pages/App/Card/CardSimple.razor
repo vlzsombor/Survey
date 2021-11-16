@@ -14,7 +14,7 @@
         <h5 class="card-title">@CardModel.Title</h5>
         <h6 class="card-subtitle mb-2 text-muted">@(CardModel.Text.ToUpper())</h6>
         <p class="card-text">@CardModel.Text</p>
-        <RadzenRating Stars="7" Change=@(args => OnChange(args)) Value="CardModel.Rating" />
+        <RadzenRating Stars="7" Change=@(args => OnChange.InvokeAsync((args,CardModel))) />
     </div>
 </div>
 <div class="row">

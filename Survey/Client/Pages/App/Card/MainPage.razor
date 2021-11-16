@@ -13,7 +13,7 @@
 
 <h3>MainPage</h3>
 <AuthorizeView Roles="Admin, BoardAdmin">
-    <a @onclick="@(() => {NavigationManager.NavigateTo(Constants.FRONTEND_URL.ADD_BOARDFILLERS + "/" + Guid);})"  class="btn btn-info" role="button">Add Board filler</a>
+    <a @onclick="@(() => {NavigationManager.NavigateTo(Constants.FRONTEND_URL.ADD_BOARDFILLERS + "/" + Guid);})" class="btn btn-info" role="button">Add Board filler</a>
 </AuthorizeView>
 
 <AuthorizeView>
@@ -21,7 +21,9 @@
         <Survey.Client.Pages.App.Card.CardForm cardModel="@cardModel" OnValidSubmit="@Create" />
         @foreach (var cardItem in CardList ?? Enumerable.Empty<CardModel>())
         {
-                <CardSimple OnDelete="@(OnDelete)" OnRatingChanges="@(OnRateChange)" CardModel="cardItem"></CardSimple>
+
+
+            <CardSimple OnDelete="@(OnDelete)" OnChange="@((args) => OnChangeMethod(((int, CardModel))args))" CardModel="cardItem"></CardSimple>
         }
     </Authorized>
     <NotAuthorized>
