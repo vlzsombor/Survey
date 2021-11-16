@@ -85,7 +85,6 @@ namespace Survey.Server.Controllers
         }
 
 
-        [HttpPost("test/" + Survey.Shared.Constants.BACKEND_URL.LOGIN)]
         [HttpPost(Survey.Shared.Constants.BACKEND_URL.BOARD_FILLER_LOGIN)]
         public async Task<ActionResult<UserToken>> Logintest([FromBody] BoardFillerDto boardFillerDto)
         {

@@ -10,6 +10,6 @@ namespace Survey.Server.Services.Interfaces
 {
     public interface IAccountService
     {
-        Task<IdentityUser?> RegisterUser(string g, string password, Constants.ROLE_NAMES role);
+        public Task<BoardFiller?> RegisterUser(BoardModel bm, string password, Survey.Shared.Constants.ROLE_NAMES? role);
     }
 }

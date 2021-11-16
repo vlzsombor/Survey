@@ -20,9 +20,9 @@ namespace Survey.Server.Services
             _userManager = userManager;
             _signInManager = signInManager;
         }
-        public async Task<IdentityUser?> RegisterUser(string g, string password, Survey.Shared.Constants.ROLE_NAMES role)
+        public async Task<BoardFiller?> RegisterUser(BoardModel bm, string password, Survey.Shared.Constants.ROLE_NAMES? role)
         {
-            var user = new IdentityUser(g);
+            BoardFiller user = new BoardFiller(Guid.NewGuid().ToString(), bm);
             IdentityResult? result = await _userManager.CreateAsync(user, password);
 
 

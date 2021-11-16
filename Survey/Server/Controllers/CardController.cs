@@ -78,7 +78,7 @@ namespace Survey.Server.Controllers
             var boardModel = _context.BoardFillers
                 .Include(x => x.BoardModel)
                 .Include(x => x.BoardModel.Cards)
-                .Where(x => x.identityUser == user)
+                .Where(x => x.UserName == user.UserName)
                 .FirstOrDefault()?.BoardModel;
 
             boardModel?.Cards?.Add(cardModel);

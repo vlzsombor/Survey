@@ -8,15 +8,22 @@ using System.Threading.Tasks;
 
 namespace Survey.Shared.Model
 {
-    public class BoardFiller
+    public class BoardFiller : IdentityUser
     {
-        [Key]
-        public Guid Id { get; set; }
-        [Required]
-        public IdentityUser identityUser { get; set; } = default!;
-        // todo which side should the class be? is it important?
+
         [Required]
         public BoardModel BoardModel { get; set; } = default!;
+
+        public BoardFiller(string userName, BoardModel boardModel): base(userName)
+        {
+            this.BoardModel = boardModel;
+        }
+
+        
+        public BoardFiller(string userName): base(userName)
+        {
+        }
+
 
     }
 

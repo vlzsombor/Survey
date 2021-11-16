@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Survey.Server.Model;
 
 namespace Survey.Server.Migrations
 {
     [DbContext(typeof(SurveyDbContext))]
-    partial class SurveyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211115163334_akarmi")]
+    partial class akarmi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -272,7 +274,12 @@ namespace Survey.Server.Migrations
                     b.Property<Guid?>("BoardModelId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("identityUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasIndex("BoardModelId");
+
+                    b.HasIndex("identityUserId");
 
                     b.HasDiscriminator().HasValue("BoardFiller");
                 });
@@ -350,7 +357,13 @@ namespace Survey.Server.Migrations
                         .WithMany()
                         .HasForeignKey("BoardModelId");
 
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "identityUser")
+                        .WithMany()
+                        .HasForeignKey("identityUserId");
+
                     b.Navigation("BoardModel");
+
+                    b.Navigation("identityUser");
                 });
 
             modelBuilder.Entity("Survey.Shared.Model.BoardModel", b =>

@@ -39,24 +39,18 @@ namespace Survey.Server.Services
                 return "unknown boardmodel";
             }
 
-            BoardFiller boardFiller = new BoardFiller();
 
-            _context.Add(boardFiller);
+                //foreach email address{
+                BoardFiller user = await _accountService.RegisterUser(boardModel, pinCode, Survey.Shared.Constants.ROLE_NAMES.BoardFiller);
+                //}
 
-            //foreach email address{
-            var user = await _accountService
-                .RegisterUser(boardFiller.Id.ToString(), pinCode, Survey.Shared.Constants.ROLE_NAMES.BoardFiller);
-            //}
-
-            boardFiller.BoardModel = boardModel;
 
             if (user != null)
             {
-                boardFiller.identityUser = user;
-
-                _context.SaveChanges();
-
-                return boardFiller.Id.ToString();
+                //user.BoardModel = boardModel;
+                //_context.Add(user);
+                //_context.SaveChanges();
+                return user.UserName;
             }
 
             return "Unsuccessful adding";
