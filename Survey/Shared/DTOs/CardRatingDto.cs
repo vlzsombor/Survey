@@ -12,5 +12,11 @@ namespace Survey.Shared.DTOs
         public int RatingValue { get; set; }
 
         public CardModel CardModel { get; set; }
+
+        public CardRatingDto(int ratingValue,CardModel cardModel)
+        {
+            RatingValue = ratingValue;
+            CardModel = cardModel;
+        }
     }
 }

@@ -15,15 +15,10 @@ namespace Survey.Shared.Model
         [Required]
         public string Text { get; set; } = default!;
 
-        public int Rating { get; set; }
+        public IList<RatingModel> Rating { get; set; } = new List<RatingModel>();
 
-        public CardModel(int id, string title, string text)
-        {
-            Title = title;
-            Text = text;
-            Id = id;
-        }
-        public CardModel(int id, string title, string text, int rating)
+
+        public CardModel(int id, string title, string text, IList<RatingModel> rating)
         {
             Title = title;
             Text = text;

@@ -45,10 +45,23 @@ namespace Survey.Server.Controllers
         //update, partly
         [HttpPut]
         [Route(Survey.Shared.Constants.BACKEND_URL.UPDATE_CARD_RATING)]
-        public async Task<int> UpdateCardRating([FromBody] CardRatingDto card)
+        public async Task<int> UpdateCardRating([FromBody] CardRatingDto cardRatingDto)
         {
-            //_context.Update(card);
-            //await _context.SaveChangesAsync();
+            IdentityUser user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
+
+            if (cardRatingDto.CardModel.Rating.Any(x => x.IdentityUser == user))
+            {
+                cardRatingDto.CardModel.Rating.Where(x => x.IdentityUser == user).First().RatingNumber = cardRatingDto.RatingValue;
+
+            }
+            else
+            {
+                cardRatingDto.CardModel.Rating.Add(new RatingModel(cardRatingDto.RatingValue, user));
+            }
+
+
+            _context.Update(cardRatingDto.CardModel);
+            await _context.SaveChangesAsync();
             return 0;
         }
 
