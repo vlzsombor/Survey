@@ -1,4 +1,5 @@
-﻿using Survey.Shared.Model;
+﻿using Survey.Shared.DTOs;
+using Survey.Shared.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Survey.Client.Repository.Interfaces
     public interface IBoardRepository
     {
         Task<bool> CreateBoard(BoardModel bm);
-        Task<List<CardModel>?> GetAllCardsOfUser(string guid);
+        Task<List<CardRatingDto>?> GetAllCardsOfUser(string guid);
         Task<List<BoardModel>?> GetBoardOfUser();
     }
 }

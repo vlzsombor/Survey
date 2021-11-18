@@ -43,14 +43,14 @@ namespace Survey.Client.Repository
             return true;
         }
 
-        public async Task<List<CardModel>?> GetAllCardsOfUser(string guid)
+        public async Task<List<CardRatingDto>?> GetAllCardsOfUser(string guid)
         {
             var response = await _httpClient.GetAsync(_baseUrl + "/" + guid);
             if (!response.IsSuccessStatusCode)
             {
                 throw new ApplicationException(response.StatusCode.ToString());
             }
-            return JsonConvert.DeserializeObject<List<CardModel>?>(await response.Content.ReadAsStringAsync());
+            return JsonConvert.DeserializeObject<List<CardRatingDto>?>(await response.Content.ReadAsStringAsync());
         }
 
 

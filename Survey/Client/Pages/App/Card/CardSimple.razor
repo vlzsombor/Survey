@@ -11,10 +11,10 @@
         </Authorized>
     </AuthorizeView>
     <div class="card-body">
-        <h5 class="card-title">@CardModel.Title</h5>
-        <h6 class="card-subtitle mb-2 text-muted">@(CardModel.Text.ToUpper())</h6>
-        <p class="card-text">@CardModel.Text</p>
-        <RadzenRating Stars="7" Change=@(args => OnChange.InvokeAsync((args,CardModel))) />
+        <h5 class="card-title">@CardModel.CardModel.Title</h5>
+        <h6 class="card-subtitle mb-2 text-muted">@(CardModel.CardModel.Text.ToUpper())</h6>
+        <p class="card-text">@CardModel.CardModel.Text</p>
+        <RadzenRating Stars="7" Change=@(args => OnChange.InvokeAsync((args,CardModel.CardModel))) Value="@(CardModel.RatingValue ?? 0)" />
     </div>
 </div>
 <div class="row">

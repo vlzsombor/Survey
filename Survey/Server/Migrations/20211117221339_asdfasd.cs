@@ -2,7 +2,7 @@
 
 namespace Survey.Server.Migrations
 {
-    public partial class fdadsafds : Migration
+    public partial class asdfasd : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

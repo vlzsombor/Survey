@@ -15,7 +15,7 @@ namespace Survey.Shared.Model
         public virtual IdentityUser? OwnerUser { get; set; }
         // todo kitolto user tipust letrehozni atnevezni
         //public ICollection<User> surveyFillingUser { get; set; }
-        public ICollection<CardModel>? Cards { get; set; }
+        public IList<CardModel>? Cards { get; set; }
 
         //// todo from the other side it should be required, so if BoardFiller exist, then the table must exist
         //// but not the other way around

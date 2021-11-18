@@ -41,8 +41,6 @@ namespace Survey.Client.Repository
 
         }
 
-
-
         public async Task UpdateCardRating(int value, CardModel cardmodel)
         {
             var response = await _httpClient.PutAsJsonAsync<CardRatingDto>(_baseUrl + "/" + Constants.BACKEND_URL.UPDATE_CARD_RATING, new CardRatingDto(value,cardmodel));

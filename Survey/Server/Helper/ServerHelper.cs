@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Survey.Server.Data;
 using Survey.Server.Model;
+using Survey.Shared.Model;
 
 namespace Survey.Server
 {
@@ -30,5 +31,12 @@ namespace Survey.Server
         {
             return random.Next(0, 9999).ToString("D4");
         }
+
+        public static int GetRating(CardModel cm, IdentityUser identityUser)
+        {
+            return cm.Rating.Where(x => x.IdentityUser == identityUser).FirstOrDefault()?.RatingNumber ?? default(int);
+        }
+
+
     }
 }

@@ -71,7 +71,7 @@ namespace Survey.Server.Controllers
                 .FirstOrDefault();
 
             IdentityUser user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
-            if ( boardFiller?.UserName != user.UserName )
+            if (boardFiller?.UserName != user.UserName)
             {
                 Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return null;
@@ -84,16 +84,27 @@ namespace Survey.Server.Controllers
 
         //read
         [HttpGet("{guidString}")]
-        public ICollection<CardModel>? GetByGuid(string guidString)
+        public ICollection<CardRatingDto>? GetByGuid(string guidString)
         {
+            var user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
+
             BoardModel? a = _context.BoardModel
                 .Include(b => b.Cards)
+                .ThenInclude(x=>x.Rating)
                 .Where(board =>
-                board.OwnerUser == ServerHelper.GetIdentityUserByName(_context, HttpContext) &&
+                board.OwnerUser == user &&
                 board.Id.ToString() == guidString).FirstOrDefault();
 
+            List<CardRatingDto> cardRatingDto = new List<CardRatingDto>();
+            if (a!=null)
+            {
+                foreach (var item in a.Cards)
+                {
+                    cardRatingDto.Add(new CardRatingDto(item.Rating.Where(x => x.IdentityUser==user).FirstOrDefault()?.RatingNumber ?? 0, item));
+                }
+            }
 
-            return a?.Cards;
+            return cardRatingDto;
         }
 
         [HttpPost(Constants.BACKEND_URL.GENERATE_BOARD_FILLER)]

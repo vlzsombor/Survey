@@ -10,8 +10,8 @@ using Survey.Server.Model;
 namespace Survey.Server.Migrations
 {
     [DbContext(typeof(SurveyDbContext))]
-    [Migration("20211108134044_tested")]
-    partial class tested
+    [Migration("20211117155027_test")]
+    partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -84,6 +84,10 @@ namespace Survey.Server.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -135,6 +139,8 @@ namespace Survey.Server.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -217,27 +223,6 @@ namespace Survey.Server.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Survey.Shared.Model.BoardFiller", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("BoardModelId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("identityUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BoardModelId");
-
-                    b.HasIndex("identityUserId");
-
-                    b.ToTable("BoardFillers");
-                });
-
             modelBuilder.Entity("Survey.Shared.Model.BoardModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -256,16 +241,12 @@ namespace Survey.Server.Migrations
 
             modelBuilder.Entity("Survey.Shared.Model.CardModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("BoardModelId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
 
                     b.Property<string>("Text")
                         .IsRequired()
@@ -280,6 +261,42 @@ namespace Survey.Server.Migrations
                     b.HasIndex("BoardModelId");
 
                     b.ToTable("CardModel");
+                });
+
+            modelBuilder.Entity("Survey.Shared.Model.RatingModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CardModelId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("IdentityUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("RatingNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CardModelId");
+
+                    b.HasIndex("IdentityUserId");
+
+                    b.ToTable("RatingModel");
+                });
+
+            modelBuilder.Entity("Survey.Shared.Model.BoardFiller", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<Guid?>("BoardModelId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasIndex("BoardModelId");
+
+                    b.HasDiscriminator().HasValue("BoardFiller");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -333,21 +350,6 @@ namespace Survey.Server.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Survey.Shared.Model.BoardFiller", b =>
-                {
-                    b.HasOne("Survey.Shared.Model.BoardModel", "BoardModel")
-                        .WithMany()
-                        .HasForeignKey("BoardModelId");
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "identityUser")
-                        .WithMany()
-                        .HasForeignKey("identityUserId");
-
-                    b.Navigation("BoardModel");
-
-                    b.Navigation("identityUser");
-                });
-
             modelBuilder.Entity("Survey.Shared.Model.BoardModel", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "OwnerUser")
@@ -364,9 +366,36 @@ namespace Survey.Server.Migrations
                         .HasForeignKey("BoardModelId");
                 });
 
+            modelBuilder.Entity("Survey.Shared.Model.RatingModel", b =>
+                {
+                    b.HasOne("Survey.Shared.Model.CardModel", null)
+                        .WithMany("Rating")
+                        .HasForeignKey("CardModelId");
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
+
+                    b.Navigation("IdentityUser");
+                });
+
+            modelBuilder.Entity("Survey.Shared.Model.BoardFiller", b =>
+                {
+                    b.HasOne("Survey.Shared.Model.BoardModel", "BoardModel")
+                        .WithMany()
+                        .HasForeignKey("BoardModelId");
+
+                    b.Navigation("BoardModel");
+                });
+
             modelBuilder.Entity("Survey.Shared.Model.BoardModel", b =>
                 {
                     b.Navigation("Cards");
+                });
+
+            modelBuilder.Entity("Survey.Shared.Model.CardModel", b =>
+                {
+                    b.Navigation("Rating");
                 });
 #pragma warning restore 612, 618
         }

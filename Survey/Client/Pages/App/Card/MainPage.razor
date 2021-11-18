@@ -19,12 +19,10 @@
 <AuthorizeView>
     <Authorized>
         <Survey.Client.Pages.App.Card.CardForm cardModel="@cardModel" OnValidSubmit="@Create" />
-        @foreach (var cardItem in CardList ?? Enumerable.Empty<CardModel>())
+        @foreach (var cardItem in CardList ?? Enumerable.Empty<CardRatingDto>())
         {
-
-
-            <CardSimple OnDelete="@(OnDelete)" OnChange="@((args) => OnChangeMethod(((int, CardModel))args))" CardModel="cardItem"></CardSimple>
-        }
+            <CardSimple OnDelete="@(OnDelete)" OnChange="@((args) => OnChangeMethod(((int, CardModel))args))" CardModel="cardItem" ></CardSimple>
+        }   
     </Authorized>
     <NotAuthorized>
         <PasswordLogin LoadCardEventCallBack="@(LoadCard)" BoardFillerDto="BoardFillerDto"></PasswordLogin>

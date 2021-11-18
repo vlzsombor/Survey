@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using Microsoft.EntityFrameworkCore;
 using Survey.Shared.DTOs;
+using System;
 
 namespace Survey.Server.Controllers
 {
@@ -45,22 +46,35 @@ namespace Survey.Server.Controllers
         //update, partly
         [HttpPut]
         [Route(Survey.Shared.Constants.BACKEND_URL.UPDATE_CARD_RATING)]
+        [Route(Survey.Shared.Constants.BACKEND_URL.ACCESS_GUID + "/" +Survey.Shared.Constants.BACKEND_URL.UPDATE_CARD_RATING)]
         public async Task<int> UpdateCardRating([FromBody] CardRatingDto cardRatingDto)
         {
             IdentityUser user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
 
-            if (cardRatingDto.CardModel.Rating.Any(x => x.IdentityUser == user))
-            {
-                cardRatingDto.CardModel.Rating.Where(x => x.IdentityUser == user).First().RatingNumber = cardRatingDto.RatingValue;
+            var myObject = user as BoardFiller;
 
+
+            var cm = _context.CardModel.Include(x => x.Rating)
+                .Where(x => x.Id == cardRatingDto.CardModel.Id)
+                .FirstOrDefault();
+
+            if (cm == null)
+            {
+                return 0;
+            }
+
+
+            if (cm.Rating.Any(x => x.IdentityUser == user))
+            {
+                cm.Rating.Where(x => x.IdentityUser == user).First().RatingNumber = cardRatingDto.RatingValue;
             }
             else
             {
-                cardRatingDto.CardModel.Rating.Add(new RatingModel(cardRatingDto.RatingValue, user));
+                cm.Rating.Add(new RatingModel(cardRatingDto.RatingValue, user));
             }
 
 
-            _context.Update(cardRatingDto.CardModel);
+            _context.Update(cm);
             await _context.SaveChangesAsync();
             return 0;
         }
@@ -68,7 +82,7 @@ namespace Survey.Server.Controllers
         //create
         [HttpPost]
         [Route("{guidString}")]
-        public async Task<int> AddCard([FromBody] CardModel cardModel, string guidString)
+        public async Task<Guid> AddCard([FromBody] CardModel cardModel, string guidString)
         {
             BoardModel? boardModel =
                 _context.BoardModel.Include(x => x.Cards)
@@ -85,7 +99,7 @@ namespace Survey.Server.Controllers
 
         [HttpPost]
         [Route(Survey.Shared.Constants.BACKEND_URL.ACCESS_GUID + "/{guidString}")]
-        public async Task<int> AddCard2([FromBody] CardModel cardModel, string guidString)
+        public async Task<Guid> AddCard2([FromBody] CardModel cardModel, string guidString)
         {
             var user = await _userManager.FindByNameAsync(guidString);
 
@@ -105,9 +119,9 @@ namespace Survey.Server.Controllers
         //delete
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin,BoardAdmin")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(Guid id)
         {
-            var movie = _context.CardModel.FirstOrDefault(x => x.Id == id);
+            var movie = _context.CardModel.Include(x=>x.Rating).FirstOrDefault(x => x.Id == id);
             if (movie == null)
             {
                 return NotFound();

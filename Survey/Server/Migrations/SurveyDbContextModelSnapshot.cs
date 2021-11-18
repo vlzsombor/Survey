@@ -239,10 +239,9 @@ namespace Survey.Server.Migrations
 
             modelBuilder.Entity("Survey.Shared.Model.CardModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("BoardModelId")
                         .HasColumnType("uniqueidentifier");
@@ -268,8 +267,8 @@ namespace Survey.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("CardModelId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("CardModelId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("IdentityUserId")
                         .HasColumnType("nvarchar(450)");

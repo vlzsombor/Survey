@@ -29,9 +29,6 @@ namespace Survey.Client.Pages.App.Card
         [Inject]
         public BoardFillerRepository BoardBoardFillerRepository { get; set; } = default!;
 
-
-
-
         [Parameter]
         public string? BoardGuid { get; set; }
         [Parameter]
@@ -40,7 +37,7 @@ namespace Survey.Client.Pages.App.Card
         [CascadingParameter]
         public Error Error { get; set; } = default!;
 
-        public List<CardModel>? CardList { get; set; } = new List<CardModel>();
+        public List<CardRatingDto>? CardList { get; set; } = new List<CardRatingDto>();
 
         private CardModel cardModel = new CardModel();
         public BoardFillerDto BoardFillerDto { get; set; } = new BoardFillerDto();
@@ -90,7 +87,7 @@ namespace Survey.Client.Pages.App.Card
 
         public void OnChangeMethod((int value, CardModel cm) args)
         {
-            if (cardRepository!=null)
+            if (cardRepository != null)
             {
                 cardRepository.UpdateCardRating(args.value, args.cm);
             }

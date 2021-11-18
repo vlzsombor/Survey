@@ -9,7 +9,7 @@ namespace Survey.Shared.Model
 {
     public class CardModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [Required]
         public string Title { get; set; } = default!;
         [Required]
@@ -17,8 +17,7 @@ namespace Survey.Shared.Model
 
         public IList<RatingModel> Rating { get; set; } = new List<RatingModel>();
 
-
-        public CardModel(int id, string title, string text, IList<RatingModel> rating)
+        public CardModel(Guid id, string title, string text, IList<RatingModel> rating)
         {
             Title = title;
             Text = text;

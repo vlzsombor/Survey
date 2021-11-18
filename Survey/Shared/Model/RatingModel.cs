@@ -16,9 +16,9 @@ namespace Survey.Shared.Model
         [Required]
         public IdentityUser IdentityUser { get; set; } = default!;
 
-        public int RatingNumber { get; set; }
+        public int? RatingNumber { get; set; }
 
-        public RatingModel(int ratingNumber, IdentityUser identityUser)
+        public RatingModel(int? ratingNumber, IdentityUser identityUser)
         {
             RatingNumber = ratingNumber;
             IdentityUser = identityUser;
