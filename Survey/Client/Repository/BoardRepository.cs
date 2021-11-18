@@ -45,6 +45,7 @@ namespace Survey.Client.Repository
 
         public async Task<List<CardRatingDto>?> GetAllCardsOfUser(string guid)
         {
+
             var response = await _httpClient.GetAsync(_baseUrl + "/" + guid);
             if (!response.IsSuccessStatusCode)
             {

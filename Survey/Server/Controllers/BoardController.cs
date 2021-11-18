@@ -62,11 +62,12 @@ namespace Survey.Server.Controllers
         }
 
         [HttpGet(Constants.BACKEND_URL.ACCESS_GUID + "/{boardFillerGuid}")]
-        public List<CardModel>? GenerateTempUserId(string boardFillerGuid)
+        public List<CardRatingDto>? GenerateTempUserId(string boardFillerGuid)
         {
             BoardFiller? boardFiller = _context.BoardFillers
                 .Include(x => x.BoardModel)
                 .Include(x => x.BoardModel.Cards)
+                .ThenInclude(x=>x.Rating)
                 .Where(x => x.UserName == boardFillerGuid)
                 .FirstOrDefault();
 
@@ -77,9 +78,14 @@ namespace Survey.Server.Controllers
                 return null;
             }
 
+            List<CardRatingDto> cardRatingDto = new List<CardRatingDto>();
 
+            foreach (var item in boardFiller?.BoardModel?.Cards ?? Enumerable.Empty<CardModel>())
+            {
+                cardRatingDto.Add(new CardRatingDto(item.Rating.Where(x => x.IdentityUser == user).FirstOrDefault()?.RatingNumber ?? 0, item));
+            }
 
-            return boardFiller?.BoardModel?.Cards?.ToList();
+            return cardRatingDto;
         }
 
         //read
@@ -90,17 +96,17 @@ namespace Survey.Server.Controllers
 
             BoardModel? a = _context.BoardModel
                 .Include(b => b.Cards)
-                .ThenInclude(x=>x.Rating)
+                .ThenInclude(x => x.Rating)
                 .Where(board =>
                 board.OwnerUser == user &&
                 board.Id.ToString() == guidString).FirstOrDefault();
 
             List<CardRatingDto> cardRatingDto = new List<CardRatingDto>();
-            if (a!=null)
+            if (a != null)
             {
                 foreach (var item in a.Cards)
                 {
-                    cardRatingDto.Add(new CardRatingDto(item.Rating.Where(x => x.IdentityUser==user).FirstOrDefault()?.RatingNumber ?? 0, item));
+                    cardRatingDto.Add(new CardRatingDto(item.Rating.Where(x => x.IdentityUser == user).FirstOrDefault()?.RatingNumber ?? 0, item));
                 }
             }
 

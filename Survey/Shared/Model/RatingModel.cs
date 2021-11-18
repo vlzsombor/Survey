@@ -13,8 +13,7 @@ namespace Survey.Shared.Model
         [Key]
         public Guid Id { get; set; }
 
-        [Required]
-        public IdentityUser IdentityUser { get; set; } = default!;
+        public IdentityUser? IdentityUser { get; set; } = default!;
 
         public int? RatingNumber { get; set; }
 
@@ -25,7 +24,7 @@ namespace Survey.Shared.Model
         }
 
 
-        public RatingModel(Guid id, IdentityUser identityUser, int ratingNumber)
+        public RatingModel(Guid id, IdentityUser? identityUser, int ratingNumber)
         {
             Id = id;
             IdentityUser = identityUser;

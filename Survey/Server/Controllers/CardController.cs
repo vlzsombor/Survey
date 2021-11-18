@@ -46,7 +46,7 @@ namespace Survey.Server.Controllers
         //update, partly
         [HttpPut]
         [Route(Survey.Shared.Constants.BACKEND_URL.UPDATE_CARD_RATING)]
-        [Route(Survey.Shared.Constants.BACKEND_URL.ACCESS_GUID + "/" +Survey.Shared.Constants.BACKEND_URL.UPDATE_CARD_RATING)]
+        [Route(Survey.Shared.Constants.BACKEND_URL.ACCESS_GUID + "/" + Survey.Shared.Constants.BACKEND_URL.UPDATE_CARD_RATING)]
         public async Task<int> UpdateCardRating([FromBody] CardRatingDto cardRatingDto)
         {
             IdentityUser user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
@@ -76,7 +76,7 @@ namespace Survey.Server.Controllers
 
             _context.Update(cm);
             await _context.SaveChangesAsync();
-            return 0;
+            return cardRatingDto.RatingValue ?? 0;
         }
 
         //create
@@ -121,7 +121,7 @@ namespace Survey.Server.Controllers
         [Authorize(Roles = "Admin,BoardAdmin")]
         public async Task<ActionResult> Delete(Guid id)
         {
-            var movie = _context.CardModel.Include(x=>x.Rating).FirstOrDefault(x => x.Id == id);
+            var movie = _context.CardModel.Include(x => x.Rating).FirstOrDefault(x => x.Id == id);
             if (movie == null)
             {
                 return NotFound();

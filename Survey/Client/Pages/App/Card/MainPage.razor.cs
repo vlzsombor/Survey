@@ -85,11 +85,13 @@ namespace Survey.Client.Pages.App.Card
         }
 
 
-        public void OnChangeMethod((int value, CardModel cm) args)
+        public async void OnChangeMethod((int value, CardModel cm) args)
         {
             if (cardRepository != null)
             {
-                cardRepository.UpdateCardRating(args.value, args.cm);
+                await cardRepository.UpdateCardRating(args.value, args.cm);
+                await LoadCard();
+
             }
 
         }
@@ -97,6 +99,8 @@ namespace Survey.Client.Pages.App.Card
 
         public async Task LoadCard()
         {
+            
+
             if (Guid != null)
             {
                 try

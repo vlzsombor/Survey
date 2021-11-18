@@ -1,6 +1,7 @@
 ﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.BOARD_MANAGER + "/{BoardGuid}")]
 @attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.BOARD + "/{AccessGuid}")]
 
+
 @using Survey.Client.Auth
 @using Survey.Shared.Model
 @using Survey.Shared.DTOs
@@ -21,8 +22,8 @@
         <Survey.Client.Pages.App.Card.CardForm cardModel="@cardModel" OnValidSubmit="@Create" />
         @foreach (var cardItem in CardList ?? Enumerable.Empty<CardRatingDto>())
         {
-            <CardSimple OnDelete="@(OnDelete)" OnChange="@((args) => OnChangeMethod(((int, CardModel))args))" CardModel="cardItem" ></CardSimple>
-        }   
+            <CardSimple OnDelete="@(OnDelete)" OnChange="@((args) => OnChangeMethod(((int, CardModel))args))" CardModel="cardItem"></CardSimple>
+        }
     </Authorized>
     <NotAuthorized>
         <PasswordLogin LoadCardEventCallBack="@(LoadCard)" BoardFillerDto="BoardFillerDto"></PasswordLogin>
