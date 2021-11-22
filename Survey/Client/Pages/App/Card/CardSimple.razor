@@ -16,6 +16,20 @@
         <p class="card-text">@CardModel.CardModel.Text</p>
         <RadzenRating Stars="7" Change=@(args => OnChange.InvokeAsync((args,CardModel.CardModel))) Value="@(CardModel.RatingValue ?? 0)" />
     </div>
+
+    @foreach (var item in CardModel.CardModel.Replies)
+    {
+        <h5 class="card-title">@item.Text</h5>
+    }
+
+
+
+    <div class="d-flex justify-content-center">
+        <div>
+            <button @onclick="@(()=> AddReply.InvokeAsync((Reply,CardModel.CardModel)))" type="button" class="btn btn-primary"><i class="fas fa-plus"></i></button>
+        </div>
+        <input type="text" @bind="Reply" class="form-control" placeholder="Comment" />
+    </div>
 </div>
 <div class="row">
     <div class="col-xl-6">

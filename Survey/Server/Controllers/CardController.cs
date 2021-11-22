@@ -47,12 +47,11 @@ namespace Survey.Server.Controllers
         [HttpPut]
         [Route(Survey.Shared.Constants.BACKEND_URL.UPDATE_CARD_RATING)]
         [Route(Survey.Shared.Constants.BACKEND_URL.ACCESS_GUID + "/" + Survey.Shared.Constants.BACKEND_URL.UPDATE_CARD_RATING)]
-        public async Task<int> UpdateCardRating([FromBody] CardRatingDto cardRatingDto)
+        public async Task<int> OnChangeMethod([FromBody] CardRatingDto cardRatingDto)
         {
             IdentityUser user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
 
             var myObject = user as BoardFiller;
-
 
             var cm = _context.CardModel.Include(x => x.Rating)
                 .Where(x => x.Id == cardRatingDto.CardModel.Id)
@@ -73,10 +72,20 @@ namespace Survey.Server.Controllers
                 cm.Rating.Add(new RatingModel(cardRatingDto.RatingValue, user));
             }
 
-
             _context.Update(cm);
             await _context.SaveChangesAsync();
             return cardRatingDto.RatingValue ?? 0;
+        }
+
+
+
+        [HttpPut]
+        [Route(Survey.Shared.Constants.BACKEND_URL.ADD_REPLY)]
+        public async Task AddRepy([FromBody] CardModel cardModel)
+        {
+            _context.Update(cardModel);
+            await _context.SaveChangesAsync();
+
         }
 
         //create
@@ -116,6 +125,7 @@ namespace Survey.Server.Controllers
 
             return cardModel.Id;
         }
+
         //delete
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin,BoardAdmin")]

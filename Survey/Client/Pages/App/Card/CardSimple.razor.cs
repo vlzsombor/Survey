@@ -23,16 +23,17 @@ namespace Survey.Client.Pages.App.Card
         [Parameter]
         public EventCallback<CardModel> OnDelete { get; set; }
 
+        [Parameter]
+        public EventCallback<(string, CardModel)> AddReply { get; set; }
+
+        public string Reply { get; set; }
+
+
         //[Parameter]
         public int Value
         {
             get { return 3; }
             set { Value = value; }
-        }
-
-        public int test()
-        {
-            return 34;
         }
 
         protected override void OnInitialized()
@@ -43,7 +44,7 @@ namespace Survey.Client.Pages.App.Card
                 var a = CardModel.CardModel.Rating.Average(x => x.RatingNumber);
                 Console.WriteLine(a);
             }
-
+            CardModel.CardModel.Replies.Add(new Survey.Shared.Model.Comment.Reply());
 
             base.OnInitialized();
         }

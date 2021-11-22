@@ -12,12 +12,12 @@
             // see https://stackoverflow.com/a/56426146/323447
             var iCopy = i;
 
-            <p>
-                <label for="@($"effect{i}")">@i</label>
-                <input id="@($"effect{i}")" value="@list[i]"
+                <p>
+                    <label for="@($"effect{i}")">@i</label>
+                    <input id="@($"effect{i}")" value="@list[i]"
                        @oninput="@(e => SajatOnInput(e,iCopy,(e?.Value?.ToString() ?? "")))"
-                       @onfocusout="MouseOut" />
-            </p>
+                       />
+                </p>
         }
     </div>
     <button class="btn btn-success" @onclick="OnValidInput" type="submit">Save changes</button>
@@ -29,21 +29,18 @@
     public string? value2 { get; set; }
     public int index { get; set; } = 0;
 
-    public string content { get; set; }
+    public string? content { get; set; }
 
     [Parameter]
     public string BoardId { get; set; } = default!;
 
     public List<string> list { get; set; } = new List<string>() { string.Empty };
-    public void MouseOut()
-    {
-        //if (value2 != null)
-        //{
-        //    list[index] = value2;
-        //}
 
-        list.RemoveAll(x => x == string.Empty);
-        list.Add(string.Empty);
+    public void SajatOnInput(ChangeEventArgs a, int iCopy, string text)
+    {
+        list[iCopy] = text;
+        value2 = (string?)a.Value;
+        StateHasChanged();
 
         for (int i = 0; i < list.Count() - 1; i++)
         {
@@ -53,20 +50,12 @@
             }
         }
 
-        list.ForEach(Console.WriteLine);
-    }
-
-    public void SajatOnInput(ChangeEventArgs a, int iCopy, string text)
-    {
-        list[iCopy] = text;
-        value2 = (string?)a.Value;
-        StateHasChanged();
-
         if (!list.Where(x => x == string.Empty).Any())
         {
             list.Add(string.Empty);
 
         }
+
 
     }
 

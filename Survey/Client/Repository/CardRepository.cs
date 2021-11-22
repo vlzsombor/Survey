@@ -43,12 +43,22 @@ namespace Survey.Client.Repository
 
         public async Task UpdateCardRating(int value, CardModel cardmodel)
         {
-            var response = await _httpClient.PutAsJsonAsync<CardRatingDto>(_baseUrl + "/" + Constants.BACKEND_URL.UPDATE_CARD_RATING, new CardRatingDto(value,cardmodel));
+            var response = await _httpClient.PutAsJsonAsync<CardRatingDto>(_baseUrl + "/" + Constants.BACKEND_URL.UPDATE_CARD_RATING, new CardRatingDto(value, cardmodel));
             if (!response.IsSuccessStatusCode)
             {
                 throw new ApplicationException(await response.Content.ReadAsStringAsync());
             }
         }
 
+        public async Task AddReply(string comment, CardModel cardmodel)
+        {
+
+            var response = await _httpClient.PutAsJsonAsync<CardModel>(_baseUrl + "/" + Constants.BACKEND_URL.ADD_REPLY , cardmodel);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApplicationException(await response.Content.ReadAsStringAsync());
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Survey.Shared.Model.Comment;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace Survey.Shared.Model
         public string Text { get; set; } = default!;
 
         public IList<RatingModel> Rating { get; set; } = new List<RatingModel>();
+
+        public IList<Reply> Replies { get; set; } = new List<Reply>();
 
         public CardModel(Guid id, string title, string text, IList<RatingModel> rating)
         {

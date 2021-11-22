@@ -41,19 +41,11 @@ namespace Survey.Client
             services.AddBlazoredSessionStorage();
 
             //services.AddScoped<IHttpService, HttpService>();
-
             //services.AddSingleton<IBoardRepository, BoardRepository>();
             
             services.AddScoped<IBoardRepository, BoardRepository>();
             services.AddScoped<BoardRepository>();
             services.AddScoped<BoardFillerRepository>();
-            
-            
-            
-
-
-
-
 
             services.AddScoped<ICardRepository, CardRepository>();
             services.AddScoped<CardRepository>();

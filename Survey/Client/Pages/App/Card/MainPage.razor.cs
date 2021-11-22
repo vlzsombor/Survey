@@ -11,6 +11,7 @@ using Survey.Client.Repository.Interfaces;
 using Survey.Client.Auth;
 using Survey.Shared.DTOs;
 using Survey.Client.Shared;
+using Survey.Shared.Model.Comment;
 
 namespace Survey.Client.Pages.App.Card
 {
@@ -42,7 +43,6 @@ namespace Survey.Client.Pages.App.Card
         private CardModel cardModel = new CardModel();
         public BoardFillerDto BoardFillerDto { get; set; } = new BoardFillerDto();
 
-
         protected async override void OnInitialized()
         {
             if (AccessGuid != null)
@@ -70,7 +70,6 @@ namespace Survey.Client.Pages.App.Card
             {
                 await cardRepository.CreateCard(cardModel, Guid);
             }
-
             await LoadCard();
         }
 
@@ -81,11 +80,10 @@ namespace Survey.Client.Pages.App.Card
                 await cardRepository.DeleteCard(card);
                 await LoadCard();
             }
-
         }
 
 
-        public async void OnChangeMethod((int value, CardModel cm) args)
+        public async void UpdateCardRating((int value, CardModel cm) args)
         {
             if (cardRepository != null)
             {
@@ -96,11 +94,18 @@ namespace Survey.Client.Pages.App.Card
 
         }
 
+        public async void AddReply((string comment, CardModel cm) args)
+        {
+            if (cardRepository != null)
+            {
+                args.cm.Replies.Add(new Survey.Shared.Model.Comment.Reply() { Text = args.comment });
+
+                await cardRepository.AddReply(args.comment, args.cm);
+            }
+        }
 
         public async Task LoadCard()
         {
-            
-
             if (Guid != null)
             {
                 try
