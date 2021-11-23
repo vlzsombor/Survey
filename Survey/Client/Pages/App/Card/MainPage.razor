@@ -26,7 +26,7 @@
             <CardSimple OnDelete="@(OnDelete)"
                         OnChange="@((args) => UpdateCardRating(((int, CardModel))args))"
                         CardModel="cardItem"
-                        AddReply="@((args) => AddReply(((string, CardModel))args))"></CardSimple>
+                        AddReply="@((args) => AddReply(((string, IRepliable))args))"></CardSimple>
         }
     </Authorized>
     <NotAuthorized>

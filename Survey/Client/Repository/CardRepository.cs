@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Survey.Client.Repository.Interfaces;
 using Survey.Shared;
 using Survey.Shared.DTOs;
+using Survey.Shared.Model.Comment;
 
 namespace Survey.Client.Repository
 {
@@ -50,15 +51,47 @@ namespace Survey.Client.Repository
             }
         }
 
-        public async Task AddReply(string comment, CardModel cardmodel)
+        public async Task AddReply(string comment, IRepliable cardmodel)
         {
+            var a = cardmodel as CardModel;
 
-            var response = await _httpClient.PutAsJsonAsync<CardModel>(_baseUrl + "/" + Constants.BACKEND_URL.ADD_REPLY , cardmodel);
-
-            if (!response.IsSuccessStatusCode)
+            if (a != null)
             {
-                throw new ApplicationException(await response.Content.ReadAsStringAsync());
+                var response = await _httpClient.PutAsJsonAsync<CardModel>(_baseUrl + "/" + Constants.BACKEND_URL.ADD_REPLY, a);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new ApplicationException(await response.Content.ReadAsStringAsync());
+                }
+
             }
+
+            var a2 = cardmodel as Reply;
+
+            if (a2 != null)
+            {
+                var response = await _httpClient.PutAsJsonAsync<Reply>(_baseUrl + "/" + Constants.BACKEND_URL.ADD_REPLY_TO_REPLY, a2);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new ApplicationException(await response.Content.ReadAsStringAsync());
+                }
+
+            }
+
+        }
+        public async Task AddReplyReply(string comment, IRepliable cardmodel)
+        {
+            var a = cardmodel as Reply;
+
+            if (a != null)
+            {
+                var response = await _httpClient.PutAsJsonAsync<Reply>(_baseUrl + "/" + Constants.BACKEND_URL.ADD_REPLY_TO_REPLY, a);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new ApplicationException(await response.Content.ReadAsStringAsync());
+                }
+
+            }
+
         }
     }
 }

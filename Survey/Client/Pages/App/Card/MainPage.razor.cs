@@ -94,7 +94,7 @@ namespace Survey.Client.Pages.App.Card
 
         }
 
-        public async void AddReply((string comment, CardModel cm) args)
+        public async void AddReply((string comment, IRepliable cm) args)
         {
             if (cardRepository != null)
             {

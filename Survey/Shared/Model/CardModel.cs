@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Survey.Shared.Model
 {
-    public class CardModel
+    public class CardModel : IRepliable
     {
         public Guid Id { get; set; }
         [Required]

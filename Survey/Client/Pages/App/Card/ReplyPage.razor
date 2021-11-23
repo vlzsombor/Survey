@@ -1,0 +1,25 @@
+﻿@using Survey.Shared.Model.Comment
+
+
+<h3>Reply</h3>
+@foreach (var item in Replies)
+{
+    <div class="pl-3 d-flex">
+        <div>
+            <button @onclick="@(()=> AddReply.InvokeAsync(item))"
+                    type="button"
+                    class="btn btn-primary">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+        <h5 class="card-title">@item.Text</h5>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public IList<Reply> Replies { get; set; }
+    [Parameter]
+    public EventCallback<IRepliable> AddReply { get; set; }
+}

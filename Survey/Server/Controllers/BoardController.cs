@@ -67,7 +67,7 @@ namespace Survey.Server.Controllers
             BoardFiller? boardFiller = _context.BoardFillers
                 .Include(x => x.BoardModel)
                 .Include(x => x.BoardModel.Cards)
-                .ThenInclude(x=>x.Rating)
+                .ThenInclude(x => x.Rating)
                 .Where(x => x.UserName == boardFillerGuid)
                 .FirstOrDefault();
 
@@ -95,8 +95,8 @@ namespace Survey.Server.Controllers
             var user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
 
             BoardModel? a = _context.BoardModel
-                .Include(b => b.Cards)
-                .ThenInclude(x => x.Rating)
+                .Include(b => b.Cards).ThenInclude(x => x.Rating)
+                .Include(b => b.Cards).ThenInclude(x => x.Replies)
                 .Where(board =>
                 board.OwnerUser == user &&
                 board.Id.ToString() == guidString).FirstOrDefault();

@@ -12,6 +12,7 @@ using System.Security.Principal;
 using Microsoft.EntityFrameworkCore;
 using Survey.Shared.DTOs;
 using System;
+using Survey.Shared.Model.Comment;
 
 namespace Survey.Server.Controllers
 {
@@ -82,6 +83,16 @@ namespace Survey.Server.Controllers
         [HttpPut]
         [Route(Survey.Shared.Constants.BACKEND_URL.ADD_REPLY)]
         public async Task AddRepy([FromBody] CardModel cardModel)
+        {
+            _context.Update(cardModel);
+            await _context.SaveChangesAsync();
+
+        }
+
+
+        [HttpPut]
+        [Route(Survey.Shared.Constants.BACKEND_URL.ADD_REPLY_TO_REPLY)]
+        public async Task AddRepy([FromBody] Reply cardModel)
         {
             _context.Update(cardModel);
             await _context.SaveChangesAsync();

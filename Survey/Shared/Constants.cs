@@ -36,6 +36,7 @@ namespace Survey.Shared
             public const string API_ACCOUNT_URL = API + SLASH + "account";
             public const string GENERATE_BOARD_FILLER = "generate-board-filler";
             public const string ADD_REPLY = "add_reply";
+            public const string ADD_REPLY_TO_REPLY = "add_reply_to_reply";
             #endregion
 
         }

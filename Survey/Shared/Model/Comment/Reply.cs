@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Survey.Shared.Model.Comment
 {
-    public class Reply
+    public class Reply : IRepliable
     {
 
         public Guid Id { get; set; }

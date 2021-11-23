@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Survey.Shared.DTOs;
 using Survey.Shared.Model;
+using Survey.Shared.Model.Comment;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace Survey.Client.Pages.App.Card
         public EventCallback<CardModel> OnDelete { get; set; }
 
         [Parameter]
-        public EventCallback<(string, CardModel)> AddReply { get; set; }
+        public EventCallback<(string, IRepliable)> AddReply { get; set; }
 
         public string Reply { get; set; }
 
@@ -42,10 +43,7 @@ namespace Survey.Client.Pages.App.Card
             if (CardModel.CardModel.Rating.Any())
             {
                 var a = CardModel.CardModel.Rating.Average(x => x.RatingNumber);
-                Console.WriteLine(a);
             }
-            CardModel.CardModel.Replies.Add(new Survey.Shared.Model.Comment.Reply());
-
             base.OnInitialized();
         }
 
@@ -54,6 +52,11 @@ namespace Survey.Client.Pages.App.Card
             await OnDelete.InvokeAsync(CardModel.CardModel);
         }
 
+
+        public void alma(IRepliable repliable)
+        {
+            AddReply.InvokeAsync((Reply, repliable));
+        }
 
     }
 }
