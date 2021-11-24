@@ -1,25 +1,26 @@
 ﻿@using Survey.Shared.Model.Comment
-
-
-<h3>Reply</h3>
 @foreach (var item in Replies)
 {
-<div class="pl-3 d-flex">
-    <div>
-        <button @onclick="@(()=> AddReply.InvokeAsync(item))"
-                type="button"
-                class="btn btn-primary">
-            <i class="fas fa-plus"></i>
-        </button>
+    <div class="pl-3 d-flex">
+        <div>
+            <button @onclick="@(()=> AddReply.InvokeAsync(item))"
+                    type="button"
+                    class="btn btn-primary">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+        <h5 class="card-title">@item.Text</h5>
+
+
+        @if (item.Replies.Any())
+        {
+            <div class="pl-3 d-flex">
+                <div>
+                    <ReplyPage Replies="@(item.Replies)" AddReply="AddReply"></ReplyPage>
+                </div>
+            </div>
+        }
     </div>
-    <h5 class="card-title">@item.Text</h5>
-    @if (item.Replies.Any())
-    {
-        <ReplyPage Replies="@(item.Replies)" AddReply="AddReply"></ReplyPage>
-
-
-    }
-</div>
 }
 
 

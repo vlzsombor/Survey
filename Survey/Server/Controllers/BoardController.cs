@@ -96,7 +96,7 @@ namespace Survey.Server.Controllers
 
             BoardModel? a = _context.BoardModel
                 .Include(b => b.Cards).ThenInclude(x => x.Rating)
-                .Include(b => b.Cards).ThenInclude(x => x.Replies)
+                .Include(b => b.Cards).ThenInclude(x => x.Replies).ThenInclude(x=>x.Replies)
                 .Where(board =>
                 board.OwnerUser == user &&
                 board.Id.ToString() == guidString).FirstOrDefault();
