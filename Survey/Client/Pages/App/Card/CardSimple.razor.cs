@@ -53,7 +53,7 @@ namespace Survey.Client.Pages.App.Card
         }
 
 
-        public void alma(IRepliable repliable)
+        public void OnAddReply(IRepliable repliable)
         {
             AddReply.InvokeAsync((Reply, repliable));
         }
