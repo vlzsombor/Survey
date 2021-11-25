@@ -27,14 +27,15 @@ namespace Survey.Client.Pages.App.Card
         [Parameter]
         public EventCallback<(string, IRepliable)> AddReply { get; set; }
 
-        public string Reply { get; set; }
+        public Reply ReplyModel { get; set; } = new Reply();
 
-
-        //[Parameter]
-        public int Value
+        public void OnValidSubmit()
         {
-            get { return 3; }
-            set { Value = value; }
+            if (!string.IsNullOrEmpty(ReplyModel.Text))
+            {
+                AddReply.InvokeAsync((ReplyModel.Text, CardModel.CardModel));
+
+            }
         }
 
         protected override void OnInitialized()
@@ -55,7 +56,10 @@ namespace Survey.Client.Pages.App.Card
 
         public void OnAddReply(IRepliable repliable)
         {
-            AddReply.InvokeAsync((Reply, repliable));
+            if (!string.IsNullOrEmpty(ReplyModel.Text))
+            {
+                AddReply.InvokeAsync((ReplyModel.Text, repliable));
+            }
         }
 
     }

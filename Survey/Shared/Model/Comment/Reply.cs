@@ -13,7 +13,9 @@ namespace Survey.Shared.Model.Comment
         public Guid Id { get; set; }
 
         public IList<Reply> Replies { get; set; } = new List<Reply>();
-        public string? Text { get; set; }
+
+        [Required(AllowEmptyStrings = false)]
+        public string Text { get; set; } = default!;
 
     }
 }

@@ -142,7 +142,9 @@ namespace Survey.Server.Controllers
         [Authorize(Roles = "Admin,BoardAdmin")]
         public async Task<ActionResult> Delete(Guid id)
         {
-            var movie = _context.CardModel.Include(x => x.Rating).FirstOrDefault(x => x.Id == id);
+            var movie = _context.CardModel.Include(x => x.Rating)
+                .Include(x => x.Replies).ThenInclude(x => x.Replies)
+                .FirstOrDefault(x => x.Id == id);
             if (movie == null)
             {
                 return NotFound();

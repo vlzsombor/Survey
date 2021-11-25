@@ -26,7 +26,7 @@
 
 @code {
     [Parameter]
-    public IList<Reply> Replies { get; set; }
+    public IList<Reply?> Replies { get; set; } = default!;
     [Parameter]
     public EventCallback<IRepliable> AddReply { get; set; }
 }

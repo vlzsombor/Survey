@@ -19,10 +19,21 @@
 
 
     <div class="d-flex justify-content-center">
-        <div>
-            <button @onclick="@(()=> AddReply.InvokeAsync((Reply,CardModel.CardModel)))" type="button" class="btn btn-primary"><i class="fas fa-plus"></i></button>
-        </div>
-        <input type="text" @bind="Reply" class="form-control" placeholder="Comment" />
+        <EditForm Model="ReplyModel" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+
+            <div>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i></button>
+            </div>
+
+            @*<input type="text" @bind="Reply" class="form-control" placeholder="Comment" />*@
+            <InputText @bind-Value="@ReplyModel.Text" class="form-control" id="cardModel.Title"></InputText>
+            <ValidationMessage For="@(() => ReplyModel.Text)" />
+
+
+            <ReplyPage Replies="@(CardModel.CardModel.Replies)" AddReply="OnAddReply"></ReplyPage>
+
+        </EditForm>
     </div>
 </div>
 <div class="row">
@@ -31,4 +42,3 @@
 </div>
 
 
-<ReplyPage Replies="@(CardModel.CardModel.Replies)" AddReply="OnAddReply"></ReplyPage>
