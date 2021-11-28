@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Survey.Client.Repository;
 using Survey.Server.Data;
+using Survey.Server.Hubs;
 using Survey.Server.Model;
 using Survey.Server.Services;
 using Survey.Server.Services.Interfaces;
@@ -16,6 +18,7 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Survey.Server.Hubs;
 
 namespace Survey.Server
 {
@@ -63,13 +66,19 @@ namespace Survey.Server
                         ClockSkew = TimeSpan.Zero
                     }
             );
-
+            services.AddSignalR();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddResponseCompression(opts =>
+            {
+                opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+                    new[] { "application/octet-stream" });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -97,10 +106,11 @@ namespace Survey.Server
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chathub");
                 endpoints.MapFallbackToFile("index.html");
             });
-
-            await Seeding(app);
+            
+            //await Seeding(app);
 
         }
 
