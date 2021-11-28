@@ -15,6 +15,8 @@ using Survey.Shared.DTOs;
 using Survey.Server.Services.Interfaces;
 using Survey.Shared;
 using System.Net;
+using Survey.Shared.Model.Comment;
+using System.Threading;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -67,9 +69,15 @@ namespace Survey.Server.Controllers
             BoardFiller? boardFiller = _context.BoardFillers
                 .Include(x => x.BoardModel)
                 .Include(x => x.BoardModel.Cards)
-                .ThenInclude(x => x.Rating)
+                    .ThenInclude(x => x.Rating)
+                .Include(x => x.BoardModel.Cards)
+                    .ThenInclude(x => x.Replies)
+                    .ThenInclude(x => x.Replies)
+                    .ThenInclude(x => x.Replies)
                 .Where(x => x.UserName == boardFillerGuid)
                 .FirstOrDefault();
+
+
 
             IdentityUser user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
             if (boardFiller?.UserName != user.UserName)
@@ -94,12 +102,22 @@ namespace Survey.Server.Controllers
         {
             var user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
 
+            _context.BoardModel.Load();
+
+
             BoardModel? a = _context.BoardModel
-                .Include(b => b.Cards).ThenInclude(x => x.Rating)
-                .Include(b => b.Cards).ThenInclude(x => x.Replies).ThenInclude(x=>x.Replies)
+                .Include(b => b.Cards)
+                    .ThenInclude(x => x.Rating)
+                .Include(b => b.Cards)
+                    .ThenInclude(x => x.Replies)
+                    .ThenInclude(x => x.Replies)
+                    .ThenInclude(x => x.Replies)
                 .Where(board =>
-                board.OwnerUser == user &&
-                board.Id.ToString() == guidString).FirstOrDefault();
+                    board.OwnerUser == user &&
+                    board.Id.ToString() == guidString)
+                .FirstOrDefault();
+
+
 
             List<CardRatingDto> cardRatingDto = new List<CardRatingDto>();
             if (a != null)
@@ -109,7 +127,6 @@ namespace Survey.Server.Controllers
                     cardRatingDto.Add(new CardRatingDto(item.Rating.Where(x => x.IdentityUser == user).FirstOrDefault()?.RatingNumber ?? 0, item));
                 }
             }
-
             return cardRatingDto;
         }
 

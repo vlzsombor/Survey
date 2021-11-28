@@ -81,6 +81,7 @@ namespace Survey.Server.Controllers
 
 
         [HttpPut]
+        [Route(Survey.Shared.Constants.BACKEND_URL.ACCESS_GUID + "/" +Survey.Shared.Constants.BACKEND_URL.ADD_REPLY)]
         [Route(Survey.Shared.Constants.BACKEND_URL.ADD_REPLY)]
         public async Task AddRepy([FromBody] CardModel cardModel)
         {
@@ -89,8 +90,8 @@ namespace Survey.Server.Controllers
 
         }
 
-
         [HttpPut]
+        [Route(Survey.Shared.Constants.BACKEND_URL.ACCESS_GUID + "/" +Survey.Shared.Constants.BACKEND_URL.ADD_REPLY_TO_REPLY)]
         [Route(Survey.Shared.Constants.BACKEND_URL.ADD_REPLY_TO_REPLY)]
         public async Task AddRepy([FromBody] Reply cardModel)
         {
