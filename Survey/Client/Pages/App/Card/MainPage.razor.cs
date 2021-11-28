@@ -12,10 +12,11 @@ using Survey.Client.Auth;
 using Survey.Shared.DTOs;
 using Survey.Client.Shared;
 using Survey.Shared.Model.Comment;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Survey.Client.Pages.App.Card
 {
-    public partial class MainPage : ComponentBase
+    public partial class MainPage : ComponentBase, IAsyncDisposable
     {
         public ICardRepository? cardRepository { get; set; }
         [Inject]
@@ -43,6 +44,10 @@ namespace Survey.Client.Pages.App.Card
         private CardModel cardModel = new CardModel();
         public BoardFillerDto BoardFillerDto { get; set; } = new BoardFillerDto();
 
+        private HubConnection hubConnection = default!;
+        [Inject]
+        public NavigationManager navigationManager { get; set; }
+
         protected async override void OnInitialized()
         {
             if (AccessGuid != null)
@@ -60,14 +65,39 @@ namespace Survey.Client.Pages.App.Card
                 cardRepository = CardRepository;
             }
 
+
+            hubConnection = new HubConnectionBuilder()
+                .WithUrl(navigationManager.ToAbsoluteUri("/chathub"))
+                .Build();
+
+
+            hubConnection.On("ReceiveCm", async () =>
+            {
+                Console.WriteLine("hello");
+
+                await LoadCard();
+                StateHasChanged();
+            });
+
+            await hubConnection.StartAsync();
+
             await LoadCard();
         }
+
+
+        Task SendMessage() => hubConnection.SendAsync("SendCardModel");
+        public bool IsConnected =>
+            hubConnection.State == HubConnectionState.Connected;
+
 
         public string? Guid { get; set; }
         private async void Create()
         {
             if (Guid != null && cardRepository != null)
             {
+                if (IsConnected) await SendMessage();
+
+
                 await cardRepository.CreateCard(cardModel, Guid);
             }
             await LoadCard();
@@ -120,5 +150,13 @@ namespace Survey.Client.Pages.App.Card
             }
             StateHasChanged();
         }
+        public async ValueTask DisposeAsync()
+        {
+            if (hubConnection is not null)
+            {
+                await hubConnection.DisposeAsync();
+            }
+        }
+
     }
 }
