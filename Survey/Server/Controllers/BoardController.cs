@@ -102,16 +102,16 @@ namespace Survey.Server.Controllers
         {
             var user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
 
-            _context.BoardModel.Load();
+            //_context.BoardModel.Load();
 
 
             BoardModel? a = _context.BoardModel
-                .Include(b => b.Cards)
-                    .ThenInclude(x => x.Rating)
-                .Include(b => b.Cards)
-                    .ThenInclude(x => x.Replies)
-                    .ThenInclude(x => x.Replies)
-                    .ThenInclude(x => x.Replies)
+                //.Include(b => b.Cards)
+                //    .ThenInclude(x => x.Rating)
+                //.Include(b => b.Cards)
+                ////    .ThenInclude(x => x.Replies)
+                ////    .ThenInclude(x => x.Replies)
+                ////    .ThenInclude(x => x.Replies)
                 .Where(board =>
                     board.OwnerUser == user &&
                     board.Id.ToString() == guidString)

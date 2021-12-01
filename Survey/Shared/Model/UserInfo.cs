@@ -12,11 +12,11 @@ namespace Survey.Shared.Model
         [Required]
         [EmailAddress]
         [Display(Name = "Email address")]
-        public string Email { get; set; } = default!;
+        public virtual string Email { get; set; } = default!;
         [Required]
         [DataType(DataType.Password)]
         [StringLength(80, ErrorMessage = "Your password must be between {2} and {1} characters.", MinimumLength = 6)]
         [Display]
-        public string Password { get; set; } = default!;
+        public virtual string Password { get; set; } = default!;
     }
 }

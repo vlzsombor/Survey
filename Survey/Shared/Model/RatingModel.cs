@@ -11,29 +11,16 @@ namespace Survey.Shared.Model
     public class RatingModel
     {
         [Key]
-        public Guid Id { get; set; }
+        public virtual Guid Id { get; set; }
 
-        public IdentityUser? IdentityUser { get; set; } = default!;
+        public virtual IdentityUser? IdentityUser { get; set; } = default!;
 
-        public int? RatingNumber { get; set; }
-
-        public RatingModel(int? ratingNumber, IdentityUser identityUser)
-        {
-            RatingNumber = ratingNumber;
-            IdentityUser = identityUser;
-        }
+        public virtual int? RatingNumber { get; set; }
 
 
-        public RatingModel(Guid id, IdentityUser? identityUser, int ratingNumber)
-        {
-            Id = id;
-            IdentityUser = identityUser;
-            RatingNumber = ratingNumber;
-        }
-        public RatingModel()
-        {
 
-        }
+
+
 
     }
 }

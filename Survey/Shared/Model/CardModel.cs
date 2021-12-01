@@ -10,27 +10,16 @@ namespace Survey.Shared.Model
 {
     public class CardModel : IRepliable
     {
-        public Guid Id { get; set; }
+        public virtual Guid Id { get; set; }
         [Required]
-        public string Title { get; set; } = default!;
+        public virtual string Title { get; set; } = default!;
         [Required]
-        public string Text { get; set; } = default!;
+        public virtual string Text { get; set; } = default!;
 
-        public IList<RatingModel> Rating { get; set; } = new List<RatingModel>();
+        public virtual IList<RatingModel> Rating { get; set; } = new List<RatingModel>();
 
-        public IList<Reply> Replies { get; set; } = new List<Reply>();
+        public virtual IList<Reply> Replies { get; set; } = new List<Reply>();
 
-        public CardModel(Guid id, string title, string text, IList<RatingModel> rating)
-        {
-            Title = title;
-            Text = text;
-            Id = id;
-            Rating = rating;
-        }
 
-        public CardModel()
-        {
-
-        }
     }
 }

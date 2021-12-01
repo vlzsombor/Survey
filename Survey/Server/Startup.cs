@@ -40,12 +40,15 @@ namespace Survey.Server
             //services.AddDbContextFactory<SurveyDbContext>(opt => opt.UseSqlite($"Data Source=../MyBlog.db"));
 
             services.AddDbContext<SurveyDbContext>
-                (option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                (option => option
+                    .UseLazyLoadingProxies()
+                    .UseSqlServer(
+                        Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IBoardService, BoardService>();
 
-            
-            
+
+
             services.AddScoped<IAccountService, AccountService>();
 
 

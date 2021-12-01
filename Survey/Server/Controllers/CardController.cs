@@ -70,7 +70,7 @@ namespace Survey.Server.Controllers
             }
             else
             {
-                cm.Rating.Add(new RatingModel(cardRatingDto.RatingValue, user));
+                cm.Rating.Add(new RatingModel() { RatingNumber = cardRatingDto.RatingValue, IdentityUser = user });
             }
 
             _context.Update(cm);

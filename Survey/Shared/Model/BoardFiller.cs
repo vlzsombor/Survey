@@ -12,19 +12,7 @@ namespace Survey.Shared.Model
     {
 
         [Required]
-        public BoardModel BoardModel { get; set; } = default!;
-
-        public BoardFiller(string userName, BoardModel boardModel): base(userName)
-        {
-            this.BoardModel = boardModel;
-        }
-
-        
-        public BoardFiller(string userName): base(userName)
-        {
-        }
-
-
+        public virtual BoardModel BoardModel { get; set; } = default!;
     }
 
 

@@ -10,12 +10,12 @@ namespace Survey.Shared.Model.Comment
     public class Reply : IRepliable
     {
 
-        public Guid Id { get; set; }
+        public virtual Guid Id { get; set; }
 
-        public IList<Reply> Replies { get; set; } = new List<Reply>();
+        public virtual IList<Reply> Replies { get; set; } = new List<Reply>();
 
         [Required(AllowEmptyStrings = false)]
-        public string Text { get; set; } = default!;
+        public virtual string Text { get; set; } = default!;
 
     }
 }
