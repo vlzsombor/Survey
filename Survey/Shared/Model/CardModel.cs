@@ -10,6 +10,7 @@ namespace Survey.Shared.Model
 {
     public class CardModel : IRepliable
     {
+        [Key]
         public virtual Guid Id { get; set; }
         [Required]
         public virtual string Title { get; set; } = default!;
@@ -19,7 +20,6 @@ namespace Survey.Shared.Model
         public virtual IList<RatingModel> Rating { get; set; } = new List<RatingModel>();
 
         public virtual IList<Reply> Replies { get; set; } = new List<Reply>();
-
 
     }
 }

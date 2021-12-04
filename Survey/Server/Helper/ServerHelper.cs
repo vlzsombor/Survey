@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -37,6 +38,21 @@ namespace Survey.Server
             return cm.Rating.Where(x => x.IdentityUser == identityUser).FirstOrDefault()?.RatingNumber ?? default(int);
         }
 
-
+        public static void WriteFile(string path, string text)
+        {
+            if (!File.Exists(path))
+            {
+                File.Create(path);
+                TextWriter tw = new StreamWriter(path);
+                tw.WriteLine(text);
+                tw.Close();
+            }
+            else if (File.Exists(path))
+            {
+                TextWriter tw = new StreamWriter(path, true);
+                tw.WriteLine(text);
+                tw.Close();
+            }
+        }
     }
 }

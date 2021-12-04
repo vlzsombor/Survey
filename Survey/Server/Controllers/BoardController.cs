@@ -44,7 +44,6 @@ namespace Survey.Server.Controllers
         public List<BoardModel> Get()
         {
             return _context.BoardModel
-                .Include(r => r.OwnerUser)
                 .Where(x => x.OwnerUser == ServerHelper.GetIdentityUserByName(_context, HttpContext))
                 .ToList();
         }
@@ -67,13 +66,6 @@ namespace Survey.Server.Controllers
         public List<CardRatingDto>? GenerateTempUserId(string boardFillerGuid)
         {
             BoardFiller? boardFiller = _context.BoardFillers
-                .Include(x => x.BoardModel)
-                .Include(x => x.BoardModel.Cards)
-                    .ThenInclude(x => x.Rating)
-                .Include(x => x.BoardModel.Cards)
-                    .ThenInclude(x => x.Replies)
-                    .ThenInclude(x => x.Replies)
-                    .ThenInclude(x => x.Replies)
                 .Where(x => x.UserName == boardFillerGuid)
                 .FirstOrDefault();
 
@@ -106,12 +98,6 @@ namespace Survey.Server.Controllers
 
 
             BoardModel? a = _context.BoardModel
-                //.Include(b => b.Cards)
-                //    .ThenInclude(x => x.Rating)
-                //.Include(b => b.Cards)
-                ////    .ThenInclude(x => x.Replies)
-                ////    .ThenInclude(x => x.Replies)
-                ////    .ThenInclude(x => x.Replies)
                 .Where(board =>
                     board.OwnerUser == user &&
                     board.Id.ToString() == guidString)
@@ -130,6 +116,8 @@ namespace Survey.Server.Controllers
             return cardRatingDto;
         }
 
+
+
         [HttpPost(Constants.BACKEND_URL.GENERATE_BOARD_FILLER)]
         [AllowAnonymous]
         public async Task<string?> GenerateTempUserId([FromBody] BoardFillerGenerationDto boardFillerGenerationDto)
@@ -140,6 +128,7 @@ namespace Survey.Server.Controllers
             // this G,P should be saved to the db !alert P should definetily be hashed
             // if a request comes in with the G and corret password typed, then the page is shown
         }
+
 
 
 

@@ -143,12 +143,17 @@ namespace Survey.Server.Controllers
         [Authorize(Roles = "Admin,BoardAdmin")]
         public async Task<ActionResult> Delete(Guid id)
         {
-            var movie = _context.CardModel.Include(x => x.Rating)
-                .Include(x => x.Replies).ThenInclude(x => x.Replies)
+                var movie = _context.CardModel.Include(x => x.Rating)
                 .FirstOrDefault(x => x.Id == id);
             if (movie == null)
             {
                 return NotFound();
+            }
+
+
+            if (movie.Replies.Any())
+            {
+                await RemoveChildren(movie.Replies);
             }
 
             _context.Remove(movie);
@@ -156,6 +161,13 @@ namespace Survey.Server.Controllers
             return NoContent();
         }
 
-
+        async Task RemoveChildren(IList<Reply> children)
+        {
+            foreach (var child in children)
+            {
+                await RemoveChildren(child.Replies);
+                _context.Remove(child);
+            }
+        }
     }
 }

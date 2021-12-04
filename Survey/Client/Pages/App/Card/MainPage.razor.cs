@@ -73,8 +73,6 @@ namespace Survey.Client.Pages.App.Card
 
             hubConnection.On("ReceiveCm", async () =>
             {
-                Console.WriteLine("hello");
-
                 await LoadCard();
                 StateHasChanged();
             });

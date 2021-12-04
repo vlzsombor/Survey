@@ -12,8 +12,8 @@ using Survey.Server.Model;
 namespace Survey.Server.Migrations
 {
     [DbContext(typeof(SurveyDbContext))]
-    [Migration("20211201220834_almaasdf")]
-    partial class almaasdf
+    [Migration("20211204200145_a")]
+    partial class a
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -400,7 +400,8 @@ namespace Survey.Server.Migrations
                 {
                     b.HasOne("Survey.Shared.Model.CardModel", null)
                         .WithMany("Replies")
-                        .HasForeignKey("CardModelId");
+                        .HasForeignKey("CardModelId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Survey.Shared.Model.Comment.Reply", null)
                         .WithMany("Replies")
