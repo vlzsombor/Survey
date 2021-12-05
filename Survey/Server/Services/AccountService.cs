@@ -14,15 +14,15 @@ namespace Survey.Server.Services
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public AccountService(UserManager<IdentityUser> userManager,
-       SignInManager<IdentityUser> signInManager)
+        public AccountService(UserManager<IdentityUser> userManager, 
+            SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
         }
         public async Task<BoardFiller?> RegisterUser(BoardModel bm, string password, Survey.Shared.Constants.ROLE_NAMES? role)
         {
-            BoardFiller user = new BoardFiller() { Id=Guid.NewGuid().ToString(), BoardModel = bm };
+            BoardFiller user = new BoardFiller() { UserName = Guid.NewGuid().ToString(), BoardModel = bm };
             IdentityResult? result = await _userManager.CreateAsync(user, password);
 
 

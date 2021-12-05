@@ -398,8 +398,7 @@ namespace Survey.Server.Migrations
                 {
                     b.HasOne("Survey.Shared.Model.CardModel", null)
                         .WithMany("Replies")
-                        .HasForeignKey("CardModelId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CardModelId");
 
                     b.HasOne("Survey.Shared.Model.Comment.Reply", null)
                         .WithMany("Replies")

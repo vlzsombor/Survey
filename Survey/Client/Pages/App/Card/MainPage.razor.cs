@@ -93,10 +93,11 @@ namespace Survey.Client.Pages.App.Card
         {
             if (Guid != null && cardRepository != null)
             {
-                if (IsConnected) await SendMessage();
 
 
                 await cardRepository.CreateCard(cardModel, Guid);
+                if (IsConnected) await SendMessage();
+
             }
             await LoadCard();
         }
@@ -105,8 +106,10 @@ namespace Survey.Client.Pages.App.Card
         {
             if (cardRepository != null)
             {
+
                 await cardRepository.DeleteCard(card);
                 await LoadCard();
+                if (IsConnected) await SendMessage();
             }
         }
 
@@ -129,6 +132,8 @@ namespace Survey.Client.Pages.App.Card
                 args.cm.Replies.Add(new Survey.Shared.Model.Comment.Reply() { Text = args.comment });
 
                 await cardRepository.AddReply(args.comment, args.cm);
+                if (IsConnected) await SendMessage();
+
             }
         }
 

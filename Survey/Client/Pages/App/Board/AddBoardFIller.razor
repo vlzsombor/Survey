@@ -9,7 +9,6 @@
     <div class="form-group">
         @for (int i = 0; i < list.Count(); i++)
         {
-            // see https://stackoverflow.com/a/56426146/323447
             var iCopy = i;
 
                 <p>
@@ -67,9 +66,8 @@
     }
     private async Task OnValidInput()
     {
-
-
-        BoardFillerGenerationDto boardFillerGenerationDto = new BoardFillerGenerationDto(BoardId, list.Where(x => x != string.Empty).ToList());
+        BoardFillerGenerationDto boardFillerGenerationDto = 
+            new BoardFillerGenerationDto(BoardId, list.Where(x => x != string.Empty).ToList());
 
         HttpResponseMessage? a = await boardRepository.GenerateByEmail(boardFillerGenerationDto);
 

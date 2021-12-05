@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Survey.Server.Migrations
 {
-    public partial class a : Migration
+    public partial class xddhkl : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -214,8 +214,7 @@ namespace Survey.Server.Migrations
                         name: "FK_Reply_CardModel_CardModelId",
                         column: x => x.CardModelId,
                         principalTable: "CardModel",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Reply_Reply_ReplyId",
                         column: x => x.ReplyId,
