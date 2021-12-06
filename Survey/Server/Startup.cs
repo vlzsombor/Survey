@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Survey.Server.Hubs;
+using Microsoft.FeatureManagement;
 
 namespace Survey.Server
 {
@@ -47,6 +48,7 @@ namespace Survey.Server
 
             services.AddScoped<IBoardService, BoardService>();
 
+            services.AddFeatureManagement();
 
 
             services.AddScoped<IAccountService, AccountService>();

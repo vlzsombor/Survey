@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.FeatureManagement;
 using Survey.Server.Model;
 using Survey.Server.Services.Interfaces;
 using Survey.Shared.DTOs;
@@ -15,13 +16,19 @@ namespace Survey.Server.Services
         private readonly SurveyDbContext _context;
         private readonly IAccountService _accountService;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IFeatureManager _featureManager;
 
-        public BoardService(SurveyDbContext surveyDbContext, IAccountService accountService, UserManager<IdentityUser> userManager)
+        public BoardService(SurveyDbContext surveyDbContext,
+            IAccountService accountService,
+            UserManager<IdentityUser> userManager,
+            IFeatureManager featureManager)
         {
             _userManager = userManager;
 
-            this._context = surveyDbContext;
+            _context = surveyDbContext;
             _accountService = accountService;
+            _featureManager = featureManager;
+
         }
         private Random _random = new Random();
 
@@ -40,9 +47,18 @@ namespace Survey.Server.Services
             }
 
 
-                //foreach email address{
-                BoardFiller user = await _accountService.RegisterUser(boardModel, pinCode, Survey.Shared.Constants.ROLE_NAMES.BoardFiller);
-                //}
+            BoardFiller? user = await _accountService.RegisterUser(boardModel,
+                pinCode,
+                Survey.Shared.Constants.ROLE_NAMES.BoardFiller);
+
+            if (user != null)
+            {
+
+                if (await _featureManager.IsEnabledAsync("FeatureActuallySendEmail"))
+                {
+                    await EmailService.SendEmail("vl.zsombor@gmail.com", user.UserName);
+                }
+            }
 
 
             if (user != null)
