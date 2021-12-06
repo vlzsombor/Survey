@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace Survey.Server.Services
 {
     public class BoardService : IBoardService
@@ -46,27 +47,36 @@ namespace Survey.Server.Services
                 return "unknown boardmodel";
             }
 
-
-            BoardFiller? user = await _accountService.RegisterUser(boardModel,
+            List<(string, string, string)> emailUserList = new List<(string, string, string)>();
+            foreach (var email in boardFillerGenerationDto.Emails)
+            {
+                BoardFiller? user = await _accountService.RegisterUser(boardModel,
                 pinCode,
                 Survey.Shared.Constants.ROLE_NAMES.BoardFiller);
-
-            if (user != null)
-            {
-
-                if (await _featureManager.IsEnabledAsync("FeatureActuallySendEmail"))
+                if (user != null)
                 {
-                    await EmailService.SendEmail("vl.zsombor@gmail.com", user.UserName);
+                    emailUserList.Add((email, pinCode, user.UserName));
+
                 }
             }
 
 
-            if (user != null)
+            if (await _featureManager.IsEnabledAsync("FeatureActuallySendEmail"))
+            {
+                var emailRow = emailUserList.Select(x => x.Item1);
+                var pinRow = emailUserList.Select(x => x.Item2);
+                var usersList = emailUserList.Select(x => x.Item3);
+
+
+                await EmailService.SendEmail(emailUserList);
+            }
+
+            if (emailUserList[0].Item3 != null)
             {
                 //user.BoardModel = boardModel;
                 //_context.Add(user);
                 //_context.SaveChanges();
-                return user.UserName;
+                return emailUserList[0].Item3;
             }
 
             return "Unsuccessful adding";

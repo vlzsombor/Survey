@@ -25,7 +25,6 @@ namespace Survey.Server.Services
             BoardFiller user = new BoardFiller() { UserName = Guid.NewGuid().ToString(), BoardModel = bm };
             IdentityResult? result = await _userManager.CreateAsync(user, password);
 
-
             if (result.Succeeded)
             {
                 IdentityResult roleIdentityResult = await _userManager.AddToRoleAsync(user, role.ToString());

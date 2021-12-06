@@ -13,7 +13,7 @@
 
                 <p>
                     <label for="@($"effect{i}")">@i</label>
-                    <input id="@($"effect{i}")" value="@list[i]"
+                    <input type="email" id="@($"effect{i}")" value="@list[i]"
                        @oninput="@(e => SajatOnInput(e,iCopy,(e?.Value?.ToString() ?? "")))"
                        />
                 </p>
