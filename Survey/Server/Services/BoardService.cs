@@ -70,13 +70,15 @@ namespace Survey.Server.Services
 
                 await EmailService.SendEmail(emailUserList);
             }
-
-            if (emailUserList[0].Item3 != null)
+            else
             {
-                //user.BoardModel = boardModel;
-                //_context.Add(user);
-                //_context.SaveChanges();
-                return emailUserList[0].Item3;
+
+
+                var a = string.Join(Environment.NewLine +" ", emailUserList.Select(x=>x.Item3).ToArray());
+
+
+                return a ?? "not found";
+
             }
 
             return "Unsuccessful adding";
@@ -96,10 +98,6 @@ namespace Survey.Server.Services
             return result;
         }
 
-        private void SendToEmail(string email, BoardFiller boardFiller)
-        {
-
-        }
     }
 }
 

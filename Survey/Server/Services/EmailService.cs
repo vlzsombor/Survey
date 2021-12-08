@@ -21,11 +21,21 @@ namespace Survey.Server.Services
 
             List<string> htmlContents = new List<string>();
             List<EmailAddress> emails = new List<EmailAddress>();
+
+            var a = new List<Dictionary<string, string>>();
+
             foreach (var x in toEmail)
             {
                 htmlContents.Add($"<strong>and easy to do anywhere, even with C# your access guid: {x.accessguid} <br> your pin {x.pin}</strong>");
                 emails.Add(new EmailAddress(x.email, "anyone"));
+                a.Add(new Dictionary<string, string>()
+                    {
+                        { "pin",x.pin},
+                        { "accessguid",x.accessguid}
+                    });
             }
+
+
 
 
             //var msg2 = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
@@ -33,15 +43,9 @@ namespace Survey.Server.Services
                 from,
                 emails,
                 htmlContents,
-                "jojojjo {alma} -alma-",
-      "jojooj {alma} -alma-",
-                new List<Dictionary<string, string>>()
-                {
-                    new Dictionary<string, string>()
-                    {
-                        { "alma","faafsd" }
-                    }
-                }
+      "jojooj {pin} -pin- <br> -accessguid- accessguid",
+      "jojooj {pin} -pin- <br> -accessguid- accessguid",
+                a
                 );
 
 
