@@ -26,6 +26,8 @@ namespace Survey.Client.Pages.App.Board
         public async void Delete(BoardModel boardModel)
         {
             await BoardRepository.DeleteBoard(boardModel);
+            await LoadCard();
+
         }
     }
 }
