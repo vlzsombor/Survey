@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Survey.Shared.DTOs;
 using System;
 using Survey.Shared.Model.Comment;
+using Survey.Server.Services;
 
 namespace Survey.Server.Controllers
 {
@@ -22,7 +23,7 @@ namespace Survey.Server.Controllers
     public class CardController : ControllerBase
     {
 
-        private readonly SurveyDbContext _context;
+        private readonly SurveyDbContext _context = default!;
         private readonly UserManager<IdentityUser> _userManager;
 
         public CardController(SurveyDbContext context, UserManager<IdentityUser> userManager)
@@ -81,7 +82,7 @@ namespace Survey.Server.Controllers
 
 
         [HttpPut]
-        [Route(Survey.Shared.Constants.BACKEND_URL.ACCESS_GUID + "/" +Survey.Shared.Constants.BACKEND_URL.ADD_REPLY)]
+        [Route(Survey.Shared.Constants.BACKEND_URL.ACCESS_GUID + "/" + Survey.Shared.Constants.BACKEND_URL.ADD_REPLY)]
         [Route(Survey.Shared.Constants.BACKEND_URL.ADD_REPLY)]
         public async Task AddRepy([FromBody] CardModel cardModel)
         {
@@ -91,7 +92,7 @@ namespace Survey.Server.Controllers
         }
 
         [HttpPut]
-        [Route(Survey.Shared.Constants.BACKEND_URL.ACCESS_GUID + "/" +Survey.Shared.Constants.BACKEND_URL.ADD_REPLY_TO_REPLY)]
+        [Route(Survey.Shared.Constants.BACKEND_URL.ACCESS_GUID + "/" + Survey.Shared.Constants.BACKEND_URL.ADD_REPLY_TO_REPLY)]
         [Route(Survey.Shared.Constants.BACKEND_URL.ADD_REPLY_TO_REPLY)]
         public async Task AddRepy([FromBody] Reply cardModel)
         {
@@ -143,31 +144,15 @@ namespace Survey.Server.Controllers
         [Authorize(Roles = "Admin,BoardAdmin")]
         public async Task<ActionResult> Delete(Guid id)
         {
-                var movie = _context.CardModel.Include(x => x.Rating)
-                .FirstOrDefault(x => x.Id == id);
-            if (movie == null)
-            {
-                return NotFound();
-            }
 
 
-            if (movie.Replies.Any())
-            {
-                await RemoveChildren(movie.Replies);
-            }
+            await new CardService(_context).DeleteCard(id);
 
-            _context.Remove(movie);
             await _context.SaveChangesAsync();
+
             return NoContent();
         }
 
-        async Task RemoveChildren(IList<Reply> children)
-        {
-            foreach (var child in children)
-            {
-                await RemoveChildren(child.Replies);
-                _context.Remove(child);
-            }
-        }
+
     }
 }

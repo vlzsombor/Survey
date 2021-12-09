@@ -54,6 +54,7 @@ namespace Survey.Server
             services.AddScoped<IAccountService, AccountService>();
 
 
+
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<SurveyDbContext>()
                 .AddDefaultTokenProviders();

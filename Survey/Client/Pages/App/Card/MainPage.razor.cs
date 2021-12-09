@@ -46,7 +46,7 @@ namespace Survey.Client.Pages.App.Card
 
         private HubConnection hubConnection = default!;
         [Inject]
-        public NavigationManager navigationManager { get; set; }
+        public NavigationManager navigationManager { get; set; } = default!;
 
         protected async override void OnInitialized()
         {

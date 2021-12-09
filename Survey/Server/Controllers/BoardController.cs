@@ -17,6 +17,7 @@ using Survey.Shared;
 using System.Net;
 using Survey.Shared.Model.Comment;
 using System.Threading;
+using Survey.Server.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -129,8 +130,27 @@ namespace Survey.Server.Controllers
             // if a request comes in with the G and corret password typed, then the page is shown
         }
 
+        [HttpDelete(Constants.BACKEND_URL.DELETE_BOARD + "/{guid}")]
+        public async Task<bool> DeleteBoard(Guid guid)
+        {
+
+            var a = _context.BoardModel.FirstOrDefault(board => board.Id == guid);
+
+            if (a == null)
+            {
+                return false;
+            }
+            
+            foreach (var item in a.Cards ?? Enumerable.Empty<CardModel>() )
+            {
+                await new CardService(_context).DeleteCard(item.Id);
+            }
 
 
+            _context.BoardModel.Remove(a);
+            _context.SaveChanges();
 
+            return true;
+        }
     }
 }

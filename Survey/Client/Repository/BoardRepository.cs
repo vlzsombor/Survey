@@ -67,5 +67,17 @@ namespace Survey.Client.Repository
             return response;
         }
 
+        public async Task<HttpResponseMessage?> DeleteBoard(BoardModel boardModel)
+        {
+            var response = await _httpClient.DeleteAsync(_baseUrl + "/" + Constants.BACKEND_URL.DELETE_BOARD + "/" + boardModel.Id);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApplicationException(response.StatusCode.ToString());
+            }
+
+            return response;
+        }
+
+
     }
 }

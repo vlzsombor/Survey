@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Survey.Server.Migrations
 {
-    public partial class xddhkl : Migration
+    public partial class asdfadsfsa : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
