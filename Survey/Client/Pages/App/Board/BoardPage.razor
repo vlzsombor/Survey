@@ -28,7 +28,10 @@
                 </div>
                 <a @onclick="@(() => {
                        NavigationManager.NavigateTo(Constants.FRONTEND_URL.BOARD_MANAGER +"/"+ board.Id);
-                   })" class="btn btn-info" role="button">Link Button</a>
+                   })" class="btn btn-info" role="button">View board</a>
+                <a @onclick="@(() => {
+                       NavigationManager.NavigateTo(Constants.FRONTEND_URL.BOARD_ADMIN);
+                   })" class="btn btn-info" role="button">Summary</a>
             </Authorized>
         </AuthorizeView>
     </div>

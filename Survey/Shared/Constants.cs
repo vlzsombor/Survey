@@ -43,21 +43,16 @@ namespace Survey.Shared
         }
         public static class FRONTEND_URL
         {
-
             public const string BOARD = "board";
             public const string MANAGER = "manager";
-
 
             public const string test = "test";
             public const string LOGIN = "login";
             public const string LOGOUT = "logout";
             public const string REGISTER = "register";
             public const string BOARD_MANAGER = BOARD + "/manager";
+            public const string BOARD_ADMIN= BOARD + "/admin";
             public const string ADD_BOARDFILLERS = BOARD + "/add-boardfillers";
-
-
-
-
         }
 
 
