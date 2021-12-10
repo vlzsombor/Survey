@@ -112,8 +112,11 @@ namespace Survey.Server.Controllers
                 .FirstOrDefault();
 
             boardModel?.Cards?.Add(cardModel);
+            if (boardModel != null)
+            {
+                _context.Update(boardModel);
+            }
 
-            _context.Update(boardModel);
             await _context.SaveChangesAsync();
 
             return cardModel.Id;
@@ -132,8 +135,10 @@ namespace Survey.Server.Controllers
                 .FirstOrDefault()?.BoardModel;
 
             boardModel?.Cards?.Add(cardModel);
-
-            _context.Update(boardModel);
+            if (boardModel != null)
+            {
+                _context.Update(boardModel);
+            }
             await _context.SaveChangesAsync();
 
             return cardModel.Id;

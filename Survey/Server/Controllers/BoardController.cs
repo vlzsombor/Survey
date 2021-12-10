@@ -81,9 +81,14 @@ namespace Survey.Server.Controllers
 
             List<CardRatingDto> cardRatingDto = new List<CardRatingDto>();
 
-            foreach (var item in boardFiller?.BoardModel?.Cards ?? Enumerable.Empty<CardModel>())
+            foreach (var item in boardFiller?.BoardModel?.Cards ?? Enumerable.Empty<CardModel?>())
             {
-                cardRatingDto.Add(new CardRatingDto(item.Rating.Where(x => x.IdentityUser == user).FirstOrDefault()?.RatingNumber ?? 0, item));
+                if (item != null)
+                {
+                    cardRatingDto.Add(new CardRatingDto(item.Rating.Where(x => x.IdentityUser == user).FirstOrDefault()?.RatingNumber ?? 0, item));
+
+                }
+
             }
 
             return cardRatingDto;
@@ -111,7 +116,11 @@ namespace Survey.Server.Controllers
             {
                 foreach (var item in a.Cards)
                 {
-                    cardRatingDto.Add(new CardRatingDto(item.Rating.Where(x => x.IdentityUser == user).FirstOrDefault()?.RatingNumber ?? 0, item));
+                    if (item != null)
+                    {
+                        cardRatingDto.Add(new CardRatingDto(item.Rating.Where(x => x.IdentityUser == user).FirstOrDefault()?.RatingNumber ?? 0, item));
+                    }
+
                 }
             }
             return cardRatingDto;
@@ -140,8 +149,8 @@ namespace Survey.Server.Controllers
             {
                 return false;
             }
-            
-            foreach (var item in a.Cards ?? Enumerable.Empty<CardModel>() )
+
+            foreach (var item in a.Cards ?? Enumerable.Empty<CardModel>())
             {
                 await new CardService(_context).DeleteCard(item.Id);
             }

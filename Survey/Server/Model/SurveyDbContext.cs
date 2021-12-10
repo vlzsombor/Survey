@@ -53,6 +53,20 @@ namespace Survey.Server.Model
 
         //    base.OnModelCreating(modelBuilder);
         //}
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .Entity<CardModel>()
+                .HasMany(e => e.Rating)
+                .WithOne()
+                .OnDelete(DeleteBehavior.ClientCascade);
+            base.OnModelCreating(modelBuilder);
+
+
+        }
+
         public DbSet<CardModel> CardModel => Set<CardModel>();
         public DbSet<BoardModel> BoardModel => Set<BoardModel>();
         public DbSet<BoardFiller> BoardFillers => Set<BoardFiller>();
