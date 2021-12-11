@@ -1,12 +1,29 @@
-﻿
-@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.test)]
+﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.test)]
+@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.test + "/h")]
 
-@code{
+@code {
     public const string Href = "aaa";
 }
 
 <TestIn OnChange="@(x => OnChangeMethod((int)x))"></TestIn>
-@code{
+
+<p>@(MyNavigationManager.Uri)</p>
+<p>@(MyNavigationManager.BaseUri)</p>
+
+
+@code {
+
+
+
+    [Inject]
+    public NavigationManager MyNavigationManager { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        var a = MyNavigationManager.ToBaseRelativePath(MyNavigationManager.Uri);
+        Console.WriteLine(a);
+    }
     public void OnChangeMethod(int cm)
     {
         Console.WriteLine(cm);

@@ -1,0 +1,136 @@
+﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.BOARD_MANAGER + "/{BOARD_MANAGER_boardId}")]
+@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.BOARD + "/{AccessGuid}")]
+@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.BOARD_ADMIN_PAGE + "/{BOARD_ADMIN_PAGE_boardId}")]
+
+
+
+@implements IAsyncDisposable
+@using Survey.Shared.DTOs
+@using Survey.Shared.Model
+@using Microsoft.AspNetCore.SignalR.Client
+
+
+
+@if(BOARD_MANAGER_boardId != null || BOARD_ADMIN_PAGE_boardId != null)
+{
+    <Survey.Client.Pages.App.Card.MainPage 
+    cardRepository="cardRepository"
+    boardRepository="boardRepository"
+    BoardFillerDto="BoardFillerDto"
+    CardList="CardList"
+    Guid="@Guid"
+    SendMessage="@(SendMessage)"
+    ></Survey.Client.Pages.App.Card.MainPage>
+}
+
+<h3>BoardModelLoader</h3>
+@code {
+    public List<CardRatingDto>? CardList { get; set; } = new List<CardRatingDto>();
+    public string? Guid { get; set; }
+
+    [Parameter]
+    public string? BOARD_MANAGER_boardId { get; set; }
+    [Parameter]
+    public string? AccessGuid { get; set; }
+    [Parameter]
+    public string? BOARD_ADMIN_PAGE_boardId { get; set; }
+
+    public IBoardRepository boardRepository { get; set; } = default!;
+
+    [Inject]
+    public BoardRepository BoardRepositoryImp { get; set; } = default!;
+    [Inject]
+    public BoardFillerRepository BoardBoardFillerRepository { get; set; } = default!;
+
+    public ICardRepository? cardRepository { get; set; }
+    [Inject]
+    public CardRepository CardRepository { get; set; } = default!;
+    [Inject]
+    public CardBoardFillerRepository CardBoardFillerRepository { get; set; } = default!;
+
+
+    [Inject]
+    public NavigationManager navigationManager { get; set; } = default!;
+
+    public BoardFillerDto BoardFillerDto { get; set; } = new BoardFillerDto();
+
+    [CascadingParameter]
+    public Error Error { get; set; } = default!;
+
+    private HubConnection hubConnection = default!;
+
+    protected async override void OnInitialized()
+    {
+        if (AccessGuid != null)
+        {
+            BoardFillerDto.AccessGuid = AccessGuid;
+            Guid = AccessGuid;
+            boardRepository = BoardBoardFillerRepository;
+            cardRepository = CardBoardFillerRepository;
+        }
+        else if (BOARD_MANAGER_boardId != null)
+        {
+            Guid = BOARD_MANAGER_boardId;
+            boardRepository = BoardRepositoryImp;
+            cardRepository = CardRepository;
+        }
+        else if (BOARD_ADMIN_PAGE_boardId != null)
+        {
+            Guid = BOARD_ADMIN_PAGE_boardId;
+
+        }
+
+
+        hubConnection = new HubConnectionBuilder().WithUrl(navigationManager.ToAbsoluteUri("/chathub")).Build();
+
+
+        hubConnection.On("ReceiveCm", async () =>
+        {
+            await LoadCard();
+            StateHasChanged();
+        });
+
+        await hubConnection.StartAsync();
+
+        await LoadCard();
+
+        base.OnInitialized();
+
+    }
+
+
+    public async Task LoadCard()
+    {
+        if (Guid != null)
+        {
+            try
+            {
+                CardList = await boardRepository.GetAllCardsOfUser(Guid);
+            }
+            catch (ApplicationException ex)
+            {
+                Error.ProcessError(ex);
+                return;
+            }
+        }
+        StateHasChanged();
+    }
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
+
+
+    private async Task SendMessage()
+    {
+        if (IsConnected)
+        {
+            await hubConnection.SendAsync("SendCardModel");
+        }
+    }
+    public bool IsConnected =>
+        hubConnection.State == HubConnectionState.Connected;
+}

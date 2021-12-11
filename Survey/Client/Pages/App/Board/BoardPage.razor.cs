@@ -13,7 +13,7 @@ namespace Survey.Client.Pages.App.Board
     public partial class BoardPage : ComponentBase
     {
 
-        //private readonly IBoardRepository _boardRepository;
+        private readonly IBoardRepository _boardRepository = default!;
 
         public BoardPage()
         {
@@ -21,11 +21,11 @@ namespace Survey.Client.Pages.App.Board
 
         public BoardPage(IBoardRepository boardRepository)
         {
-            BoardRepository = boardRepository;
+            _boardRepository = boardRepository;
         }
         public async void Delete(BoardModel boardModel)
         {
-            await BoardRepository.DeleteBoard(boardModel);
+            await _boardRepository.DeleteBoard(boardModel);
             await LoadCard();
 
         }
