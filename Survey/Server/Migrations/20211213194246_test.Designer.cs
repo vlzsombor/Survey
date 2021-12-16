@@ -12,8 +12,8 @@ using Survey.Server.Model;
 namespace Survey.Server.Migrations
 {
     [DbContext(typeof(SurveyDbContext))]
-    [Migration("20211210130421_adafsd")]
-    partial class adafsd
+    [Migration("20211213194246_test")]
+    partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -411,7 +411,8 @@ namespace Survey.Server.Migrations
                 {
                     b.HasOne("Survey.Shared.Model.CardModel", null)
                         .WithMany("Rating")
-                        .HasForeignKey("CardModelId");
+                        .HasForeignKey("CardModelId")
+                        .OnDelete(DeleteBehavior.ClientCascade);
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()

@@ -1,6 +1,6 @@
 ﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.BOARD_MANAGER + "/{BOARD_MANAGER_boardId}")]
 @attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.BOARD + "/{AccessGuid}")]
-@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.BOARD_ADMIN_PAGE + "/{BOARD_ADMIN_PAGE_boardId}")]
+@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.BOARD_ADMIN_PAGE + "/{Summary}")]
 
 
 
@@ -10,18 +10,27 @@
 @using Microsoft.AspNetCore.SignalR.Client
 
 
-
-@if(BOARD_MANAGER_boardId != null || BOARD_ADMIN_PAGE_boardId != null)
+@if  (BOARD_MANAGER_boardId != null || AccessGuid != null)
 {
     <Survey.Client.Pages.App.Card.MainPage 
-    cardRepository="cardRepository"
-    boardRepository="boardRepository"
-    BoardFillerDto="BoardFillerDto"
-    CardList="CardList"
-    Guid="@Guid"
-    SendMessage="@(SendMessage)"
+        cardRepository="cardRepository"
+        boardRepository="boardRepository"
+        BoardFillerDto="BoardFillerDto"
+        CardList="CardList"
+        Guid="@Guid"
+        SendMessage="@(SendMessage)"
     ></Survey.Client.Pages.App.Card.MainPage>
 }
+
+else if  (Summary!=null)
+{
+    <Survey.Client.Pages.App.Board.Summary
+            CardList="CardList"
+
+    ></Survey.Client.Pages.App.Board.Summary>
+}
+
+
 
 <h3>BoardModelLoader</h3>
 @code {
@@ -33,7 +42,7 @@
     [Parameter]
     public string? AccessGuid { get; set; }
     [Parameter]
-    public string? BOARD_ADMIN_PAGE_boardId { get; set; }
+    public string? Summary { get; set; }
 
     public IBoardRepository boardRepository { get; set; } = default!;
 
@@ -63,23 +72,27 @@
     {
         if (AccessGuid != null)
         {
+            // anonym case
             BoardFillerDto.AccessGuid = AccessGuid;
             Guid = AccessGuid;
             boardRepository = BoardBoardFillerRepository;
             cardRepository = CardBoardFillerRepository;
         }
-        else if (BOARD_MANAGER_boardId != null)
+        else if (BOARD_MANAGER_boardId != null || Summary != null)
         {
-            Guid = BOARD_MANAGER_boardId;
+            // admin seeing own board case || summary
+
+            if (Summary!=null)
+            {
+                Guid = Summary;
+            }
+            else if(BOARD_MANAGER_boardId != null)
+            {
+                Guid = BOARD_MANAGER_boardId;
+            }
             boardRepository = BoardRepositoryImp;
             cardRepository = CardRepository;
         }
-        else if (BOARD_ADMIN_PAGE_boardId != null)
-        {
-            Guid = BOARD_ADMIN_PAGE_boardId;
-
-        }
-
 
         hubConnection = new HubConnectionBuilder().WithUrl(navigationManager.ToAbsoluteUri("/chathub")).Build();
 

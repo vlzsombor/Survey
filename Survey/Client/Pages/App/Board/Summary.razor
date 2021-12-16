@@ -1,0 +1,23 @@
+﻿@using Survey.Shared.DTOs
+@using Survey.Shared.Model
+@using Microsoft.AspNetCore.SignalR.Client
+
+<AuthorizeView>
+    <Authorized>
+        @foreach (var cardItem in CardList ?? Enumerable.Empty<CardRatingDto>())
+        {
+            <h1>@cardItem.CardModel.Title</h1>
+        }
+    </Authorized>
+</AuthorizeView>
+<h1>summary</h1>
+@code {
+    [Parameter, EditorRequired]
+    public List<CardRatingDto>? CardList { get; set; } = new List<CardRatingDto>();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+}

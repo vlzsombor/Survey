@@ -16,25 +16,25 @@
 </AuthorizeView>
 @foreach (var board in BoardList ?? Enumerable.Empty<BoardModel>())
 {
-    <div class="card" style="width: 18rem;">
-        <AuthorizeView Roles="Admin, BoardAdmin">
-            <Authorized>
-                <div class="float-right">
-                    <button @onclick="@(()=>Delete(board))" class="close" aria-label="Close">
-                        <span aria-hidden="true">
-                            &times;
-                        </span>
-                    </button>
-                </div>
-                <a @onclick="@(() => {
+        <div class="card" style="width: 18rem;">
+            <AuthorizeView Roles="Admin, BoardAdmin">
+                <Authorized>
+                    <div class="float-right">
+                        <button @onclick="@(()=>Delete(board))" class="close" aria-label="Close">
+                            <span aria-hidden="true">
+                                &times;
+                            </span>
+                        </button>
+                    </div>
+                    <a @onclick="@(() => {
                        NavigationManager.NavigateTo(Constants.FRONTEND_URL.BOARD_MANAGER +"/"+ board.Id);
                    })" class="btn btn-info" role="button">View board</a>
-                <a @onclick="@(() => {
-                       NavigationManager.NavigateTo(Constants.FRONTEND_URL.BOARD_ADMIN_PAGE);
+                    <a @onclick="@(() => {
+                       NavigationManager.NavigateTo(Constants.FRONTEND_URL.BOARD_ADMIN_PAGE +"/"+ board.Id);
                    })" class="btn btn-info" role="button">Summary</a>
-            </Authorized>
-        </AuthorizeView>
-    </div>
+                </Authorized>
+            </AuthorizeView>
+        </div>
 }
 
 
