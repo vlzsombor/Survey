@@ -10,6 +10,5 @@ namespace Survey.Server.Services.Interfaces
     public interface IBoardService
     {
         Task<string> HandleBoardFillerGeneration(BoardFillerGenerationDto boardFillerGenerationDto);
-        Task<IdentityResult?> HandleBoardFillerGeneration2(BoardFillerGenerationDto boardFillerGenerationDto);
     }
 }   

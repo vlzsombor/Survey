@@ -1,15 +1,24 @@
 ﻿@using Survey.Shared.DTOs
 @using Survey.Shared.Model
 @using Microsoft.AspNetCore.SignalR.Client
-
+@using Survey.Client.Pages.App.Card
 <AuthorizeView>
     <Authorized>
         @foreach (var cardItem in CardList ?? Enumerable.Empty<CardRatingDto>())
         {
-            <h1>@cardItem.CardModel.Title</h1>
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">@cardItem.CardModel.Title</h5>
+                    <p class="card-text">@cardItem.CardModel.Text</p>
+                </div>
+            </div>
+
         }
     </Authorized>
 </AuthorizeView>
+
+<a @onclick="test" class="btn btn-info" role="button">asdfasd</a>
+
 <h1>summary</h1>
 @code {
     [Parameter, EditorRequired]
@@ -17,7 +26,51 @@
 
     protected override void OnInitialized()
     {
+
         base.OnInitialized();
+    }
+
+
+    protected override Task OnParametersSetAsync()
+    {
+        if (CardList.Any())
+        {
+            CardList =  CardList.OrderByDescending(x => x.CardModel.Rating.Average(x => x.RatingNumber)).ToList();
+        }
+        StateHasChanged();
+        return base.OnParametersSetAsync();
+    }
+
+    //protected override Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    if (firstRender == true)
+    //    {
+    //        if (CardList != null)
+    //        {
+    //            var a = CardList.OrderByDescending(x => x.CardModel.Rating.Average(x => x.RatingNumber.Value)).ToList();
+
+    //        }
+    //    }
+
+    //    return base.OnAfterRenderAsync(firstRender);
+    //}
+
+
+    private async void test()
+    {
+        if (CardList != null)
+        {
+            var a = CardList.OrderByDescending(x => x.CardModel.Rating.Average(x => x.RatingNumber.Value)).ToList();
+
+            foreach (var x in a)
+            {
+                Console.WriteLine(x.CardModel.Title);
+                Console.WriteLine(x.CardModel.Text);
+            }
+        }
+
+
+        StateHasChanged();
     }
 
 }

@@ -84,19 +84,6 @@ namespace Survey.Server.Services
             return "Unsuccessful adding";
 
         }
-        public async Task<IdentityResult?> HandleBoardFillerGeneration2(BoardFillerGenerationDto boardFillerGenerationDto)
-        {
-            string password = "Aa123456!";
-
-            var user = new IdentityUser("korte5@a.hu");
-            IdentityResult? result = await _userManager.CreateAsync(user, password);
-
-            if (result.Succeeded)
-            {
-                Console.WriteLine("adsfads");
-            }
-            return result;
-        }
 
     }
 }
