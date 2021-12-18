@@ -19,10 +19,13 @@
 
 <a @onclick="test" class="btn btn-info" role="button">asdfasd</a>
 
+
 <h1>summary</h1>
 @code {
     [Parameter, EditorRequired]
     public List<CardRatingDto>? CardList { get; set; } = new List<CardRatingDto>();
+    public Dictionary<int,int> b = new Dictionary<int, int>();
+
 
     protected override void OnInitialized()
     {
@@ -40,22 +43,6 @@
         StateHasChanged();
         return base.OnParametersSetAsync();
     }
-
-    //protected override Task OnAfterRenderAsync(bool firstRender)
-    //{
-    //    if (firstRender == true)
-    //    {
-    //        if (CardList != null)
-    //        {
-    //            var a = CardList.OrderByDescending(x => x.CardModel.Rating.Average(x => x.RatingNumber.Value)).ToList();
-
-    //        }
-    //    }
-
-    //    return base.OnAfterRenderAsync(firstRender);
-    //}
-
-
     private async void test()
     {
         if (CardList != null)
@@ -68,6 +55,27 @@
                 Console.WriteLine(x.CardModel.Text);
             }
         }
+
+
+        foreach (var cardItem in CardList ?? Enumerable.Empty<CardRatingDto>())
+        {
+
+            var a = cardItem.CardModel.Rating.Sum(x => x.RatingNumber);
+
+            var b = cardItem.CardModel.Rating
+                .GroupBy(x => x.RatingNumber)
+                .Select(x => new
+                {
+                    Keyaasdf = x?.Key ?? 0,
+                    Second = x?.Count() ?? 0
+                }).ToList();
+
+            var asString = string.Join(Environment.NewLine, b) + " ;" + cardItem.CardModel.Title;
+
+            Console.WriteLine(asString);
+        }
+
+
 
 
         StateHasChanged();
