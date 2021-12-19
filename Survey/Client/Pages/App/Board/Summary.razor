@@ -2,30 +2,46 @@
 @using Survey.Shared.Model
 @using Microsoft.AspNetCore.SignalR.Client
 @using Survey.Client.Pages.App.Card
+
+@using Survey.Client.Pages.App.Util
+
 <AuthorizeView>
     <Authorized>
-        @foreach (var cardItem in CardList ?? Enumerable.Empty<CardRatingDto>())
-        {
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">@cardItem.CardModel.Title</h5>
-                    <p class="card-text">@cardItem.CardModel.Text</p>
-                </div>
-            </div>
+        @{
 
+            foreach (var cardItem in CardList ?? Enumerable.Empty<CardRatingDto>())
+            {
+                var b2 = cardItem.CardModel.Rating
+                .GroupBy(x => x.RatingNumber)
+                .ToDictionary(grp => grp.Key,
+                grp => grp.Count()
+                );
+
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">@cardItem.CardModel.Title</h5>
+                        <p class="card-text">@cardItem.CardModel.Text</p>
+                    </div>
+                </div>
+                foreach (KeyValuePair<int, int> entry in b2)
+                {
+                    <div class="test">Key: @entry.Key</div>
+                    <NumberDataShow radiusPropertion="entry.Value"></NumberDataShow>
+
+                }
+            }
         }
     </Authorized>
 </AuthorizeView>
 
-<a @onclick="test" class="btn btn-info" role="button">asdfasd</a>
+<a @onclick="test2" class="btn btn-info" role="button">test2</a>
 
 
 <h1>summary</h1>
 @code {
     [Parameter, EditorRequired]
     public List<CardRatingDto>? CardList { get; set; } = new List<CardRatingDto>();
-    public Dictionary<int,int> b = new Dictionary<int, int>();
-
+    public Dictionary<int, int> b = new Dictionary<int, int>();
 
     protected override void OnInitialized()
     {
@@ -36,49 +52,13 @@
 
     protected override Task OnParametersSetAsync()
     {
-        if (CardList.Any())
+        if (CardList?.Any() ?? false)
         {
             CardList =  CardList.OrderByDescending(x => x.CardModel.Rating.Average(x => x.RatingNumber)).ToList();
         }
         StateHasChanged();
         return base.OnParametersSetAsync();
     }
-    private async void test()
-    {
-        if (CardList != null)
-        {
-            var a = CardList.OrderByDescending(x => x.CardModel.Rating.Average(x => x.RatingNumber.Value)).ToList();
 
-            foreach (var x in a)
-            {
-                Console.WriteLine(x.CardModel.Title);
-                Console.WriteLine(x.CardModel.Text);
-            }
-        }
-
-
-        foreach (var cardItem in CardList ?? Enumerable.Empty<CardRatingDto>())
-        {
-
-            var a = cardItem.CardModel.Rating.Sum(x => x.RatingNumber);
-
-            var b = cardItem.CardModel.Rating
-                .GroupBy(x => x.RatingNumber)
-                .Select(x => new
-                {
-                    Keyaasdf = x?.Key ?? 0,
-                    Second = x?.Count() ?? 0
-                }).ToList();
-
-            var asString = string.Join(Environment.NewLine, b) + " ;" + cardItem.CardModel.Title;
-
-            Console.WriteLine(asString);
-        }
-
-
-
-
-        StateHasChanged();
-    }
 
 }

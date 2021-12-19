@@ -67,11 +67,23 @@ namespace Survey.Server.Controllers
 
             if (cm.Rating.Any(x => x.IdentityUser == user))
             {
-                cm.Rating.Where(x => x.IdentityUser == user).First().RatingNumber = cardRatingDto.RatingValue;
+
+                if (cardRatingDto.RatingValue.HasValue)
+                {
+                    cm.Rating.Where(x => x.IdentityUser == user).First().RatingNumber = cardRatingDto.RatingValue.Value;
+                }
+                else
+                {
+                    var toDeleteScore = cm.Rating.Where(x => x.IdentityUser == user).First();
+                    _context.Remove(toDeleteScore);
+                }
             }
             else
             {
-                cm.Rating.Add(new RatingModel() { RatingNumber = cardRatingDto.RatingValue, IdentityUser = user });
+                if (cardRatingDto.RatingValue.HasValue)
+                {
+                    cm.Rating.Add(new RatingModel() { RatingNumber = cardRatingDto.RatingValue.Value, IdentityUser = user });
+                }
             }
 
             _context.Update(cm);

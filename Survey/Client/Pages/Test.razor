@@ -1,31 +1,20 @@
 ﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.test)]
 @attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.test + "/h")]
 
-@code {
-    public const string Href = "aaa";
+@using Survey.Client.Pages.App.Util
+@foreach (var x in lista)
+{
+    <NumberDataShow radiusPropertion="x"></NumberDataShow>
+
 }
 
-<TestIn OnChange="@(x => OnChangeMethod((int)x))"></TestIn>
-
-<p>@(MyNavigationManager.Uri)</p>
-<p>@(MyNavigationManager.BaseUri)</p>
-
-
 @code {
 
 
-
-    [Inject]
-    public NavigationManager MyNavigationManager { get; set; }
-
-
-    protected override void OnInitialized()
+    public List<int> lista { get; set; } = new List<int>()
     {
-        var a = MyNavigationManager.ToBaseRelativePath(MyNavigationManager.Uri);
-        Console.WriteLine(a);
-    }
-    public void OnChangeMethod(int cm)
-    {
-        Console.WriteLine(cm);
-    }
+        100,50,75,25
+    };
+
+
 }
