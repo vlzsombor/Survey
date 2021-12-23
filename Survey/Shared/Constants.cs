@@ -51,7 +51,7 @@ namespace Survey.Shared
             public const string LOGOUT = "logout";
             public const string REGISTER = "register";
             public const string BOARD_MANAGER = BOARD + "/manager";
-            public const string BOARD_ADMIN_PAGE = BOARD + "/board_admin_page";
+            public const string SUMMARY = BOARD + "/summary";
             public const string ADD_BOARDFILLERS = BOARD + "/add-boardfillers";
         }
 

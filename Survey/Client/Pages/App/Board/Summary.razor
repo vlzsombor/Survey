@@ -8,28 +8,59 @@
 <AuthorizeView>
     <Authorized>
         @{
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">0</th>
+                        <th scope="col">1</th>
+                        <th scope="col">2</th>
+                        <th scope="col">3</th>
+                        <th scope="col">4</th>
+                        <th scope="col">5</th>
+                        <th scope="col">6</th>
+                        <th scope="col">7</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-            foreach (var cardItem in CardList ?? Enumerable.Empty<CardRatingDto>())
-            {
-                var b2 = cardItem.CardModel.Rating
-                .GroupBy(x => x.RatingNumber)
-                .ToDictionary(grp => grp.Key,
-                grp => grp.Count()
-                );
-
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">@cardItem.CardModel.Title</h5>
-                        <p class="card-text">@cardItem.CardModel.Text</p>
-                    </div>
-                </div>
-                foreach (KeyValuePair<int, int> entry in b2)
+                    @foreach (var cardItem in CardList ?? Enumerable.Empty<CardRatingDto>())
                 {
-                    <div class="test">Key: @entry.Key</div>
-                    <NumberDataShow radiusPropertion="entry.Value"></NumberDataShow>
 
-                }
-            }
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>
+
+                            @{ 
+                                var b2 = cardItem.CardModel.Rating.GroupBy(x => x.RatingNumber).ToDictionary(grp => grp.Key
+                                    ,grp => grp.Count());
+
+                                <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">@cardItem.CardModel.Title</h5>
+                                    <p class="card-text">@cardItem.CardModel.Text</p>
+                                </div>
+                                </div>
+
+                            }
+
+                        </td>
+
+                        @foreach (KeyValuePair<int, int> entry in b2)
+                        {
+                            <td>
+                            <div class="test">Key: @entry.Key, @entry.Value</div>
+                            <NumberDataShow radiusPropertion="entry.Value"></NumberDataShow>
+                            </td>
+                        }
+                    </tr>
+
+}
+                </tbody>
+            </table>
+
+
+
         }
     </Authorized>
 </AuthorizeView>
@@ -40,25 +71,25 @@
 <h1>summary</h1>
 @code {
     [Parameter, EditorRequired]
-    public List<CardRatingDto>? CardList { get; set; } = new List<CardRatingDto>();
-    public Dictionary<int, int> b = new Dictionary<int, int>();
+public List<CardRatingDto>? CardList { get; set; } = new List<CardRatingDto>();
+public Dictionary<int, int> b = new Dictionary<int, int>();
 
-    protected override void OnInitialized()
+protected override void OnInitialized()
+{
+
+    base.OnInitialized();
+}
+
+
+protected override Task OnParametersSetAsync()
+{
+    if (CardList?.Any() ?? false)
     {
-
-        base.OnInitialized();
+    CardList =  CardList.OrderByDescending(x => x.CardModel.Rating.Average(x => x.RatingNumber)).ToList();
     }
-
-
-    protected override Task OnParametersSetAsync()
-    {
-        if (CardList?.Any() ?? false)
-        {
-            CardList =  CardList.OrderByDescending(x => x.CardModel.Rating.Average(x => x.RatingNumber)).ToList();
-        }
-        StateHasChanged();
-        return base.OnParametersSetAsync();
-    }
+    StateHasChanged();
+    return base.OnParametersSetAsync();
+}
 
 
 }

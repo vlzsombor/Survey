@@ -30,7 +30,7 @@
                        NavigationManager.NavigateTo(Constants.FRONTEND_URL.BOARD_MANAGER +"/"+ board.Id);
                    })" class="btn btn-info" role="button">View board</a>
                     <a @onclick="@(() => {
-                       NavigationManager.NavigateTo(Constants.FRONTEND_URL.BOARD_ADMIN_PAGE +"/"+ board.Id);
+                       NavigationManager.NavigateTo(Constants.FRONTEND_URL.SUMMARY +"/"+ board.Id);
                    })" class="btn btn-info" role="button">Summary</a>
                 </Authorized>
             </AuthorizeView>

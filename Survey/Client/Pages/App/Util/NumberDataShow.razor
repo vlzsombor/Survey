@@ -1,17 +1,18 @@
-﻿<h3>NumberDataShow</h3>
-@namespace Survey.Client.Pages.App.Util
-<h1>igen</h1>
-
-<svg height="@(radiusPropertion*2*proportion)" width="@(radiusPropertion*2*proportion)">
-    <circle cx="@radiusPropertion*proportion" cy="@radiusPropertion*proportion" r="@(radiusPropertion*0.8*proportion)" stroke="black" stroke-width="@(radiusPropertion *0.05*proportion)" fill="@color" />
-    <text x="50%" y="50%" text-anchor="middle" alignment-baseline="central" fill="#fff" font-size="@(radiusPropertion*0.6)px">@radiusPropertion</text>
-</svg>
-
+﻿@namespace Survey.Client.Pages.App.Util
+<svg height="100" width="100">
+    <circle cx="50%" cy="50%" r="@(radiusPropertion*0.7*proportion+konst)" stroke="black" 
+    fill="@color" />
+    <text x="50%" y="50%" text-anchor="middle"
+        alignment-baseline="central" 
+        fill="#fff"
+        font-size="@(radiusPropertion*proportion)px">@radiusPropertion</text>
+</svg> 
 @code {
     [Parameter]
-    public int radiusPropertion { get; set; } = 100;
+    public int radiusPropertion { get; set; } = 1;
     [Parameter]
     public string color { get; set; } = "#a0a";
-    
-    public int proportion = 100;
+
+    public int proportion = 10;
+    public int konst = 10;
 }
