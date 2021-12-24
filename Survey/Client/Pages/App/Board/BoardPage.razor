@@ -1,7 +1,6 @@
 ﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.BOARD_MANAGER)]
 
 @using Survey.Client.Repository.Interfaces
-@inject IBoardRepository BoardRepository
 @using Microsoft.AspNetCore.Authorization
 @using Survey.Shared.Model
 @using System.Linq
@@ -39,28 +38,6 @@
 
 
 @code {
-    private async void MakeNewSurveyBoard()
-    {
-        BoardModel boardModel = new BoardModel();
 
-        bool ifSucceded = await BoardRepository.CreateBoard(new Survey.Shared.Model.BoardModel());
-        if (ifSucceded)
-        {
-            BoardList?.Add(boardModel);
-        }
-        await LoadCard();
-    }
-
-    public List<BoardModel>? BoardList { get; set; } = new List<BoardModel>();
-
-    private async Task LoadCard()
-    {
-        BoardList = await BoardRepository.GetBoardOfUser();
-        StateHasChanged();
-    }
-    protected async override void OnInitialized()
-    {
-        await LoadCard();
-    }
 
 }

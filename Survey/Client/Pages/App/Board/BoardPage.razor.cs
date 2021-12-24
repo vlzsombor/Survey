@@ -12,16 +12,11 @@ namespace Survey.Client.Pages.App.Board
 {
     public partial class BoardPage : ComponentBase
     {
-
-        private readonly IBoardRepository _boardRepository = default!;
+        [Inject]
+        private IBoardRepository _boardRepository { get; set; } = default!;
 
         public BoardPage()
         {
-        }
-
-        public BoardPage(IBoardRepository boardRepository)
-        {
-            _boardRepository = boardRepository;
         }
         public async void Delete(BoardModel boardModel)
         {
@@ -29,5 +24,32 @@ namespace Survey.Client.Pages.App.Board
             await LoadCard();
 
         }
+        private async void MakeNewSurveyBoard()
+        {
+            BoardModel boardModel = new BoardModel();
+
+            bool ifSucceded = await _boardRepository.CreateBoard(new Survey.Shared.Model.BoardModel());
+            if (ifSucceded)
+            {
+                BoardList?.Add(boardModel);
+            }
+            await LoadCard();
+        }
+
+        public List<BoardModel>? BoardList { get; set; } = new List<BoardModel>();
+
+        private async Task LoadCard()
+        {
+            BoardList = await _boardRepository.GetBoardOfUser();
+            StateHasChanged();
+        }
+        protected async override void OnInitialized()
+        {
+            await LoadCard();
+        }
     }
+
+
+
 }
+

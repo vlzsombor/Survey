@@ -18,9 +18,18 @@ namespace Survey.Client.Pages.App.Board
             {
                 var b2 = cardItem.CardModel.Rating
                     .GroupBy(x => x.RatingNumber)
-                    .ToDictionary(grp => grp.Key, 
-                    grp => grp.Count()
-                    );
+                    .ToDictionary(grp => grp.Key,
+                     grp => grp.Count());
+
+
+                for(int i = 0; i<7; i++)
+                {
+                        b2.TryAdd(i, 0);
+                }
+
+
+                Console.WriteLine(b2);
+
             }
         }
     }
