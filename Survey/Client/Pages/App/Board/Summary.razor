@@ -32,11 +32,16 @@
                             <td>
 
                                 @{
-                                    var b2 = cardItem.CardModel.Rating
-                                    .GroupBy(x => x.RatingNumber)
-                                    .ToDictionary(grp => grp.Key, grp => grp.Count());
+                                    var b2 = cardItem.CardModel.Rating  
+                                        .GroupBy(x => x.RatingNumber)
+                                        .ToDictionary(grp => grp.Key, grp => grp.Count());
 
-                                    for (int i = 0; i<7; i++)
+                                    if (b2 ==null)
+                                    {
+                                        b2 = new Dictionary<int, int>();
+                                    }
+
+                                    for (int i = 1; i<8; i++)
                                     {
                                         b2.TryAdd(i, 0);
                                     }
@@ -86,7 +91,7 @@
     {
         if (CardList?.Any() ?? false)
         {
-            CardList =  CardList.OrderByDescending(x => x.CardModel.Rating.Average(x => x.RatingNumber)).ToList();
+            CardList =  CardList.OrderByDescending(x => x.CardModel?.Rating.Select(x=>x.RatingNumber).DefaultIfEmpty(0).Average()).ToList();
         }
         StateHasChanged();
         return base.OnParametersSetAsync();
