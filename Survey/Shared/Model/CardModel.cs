@@ -21,5 +21,6 @@ namespace Survey.Shared.Model
 
         public virtual IList<Reply> Replies { get; set; } = new List<Reply>();
 
+
     }
 }

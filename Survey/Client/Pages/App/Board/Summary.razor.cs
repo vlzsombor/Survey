@@ -17,10 +17,10 @@ namespace Survey.Client.Pages.App.Board
     {
 
         public List<(CardModel, Dictionary<int, int>)> ToShowList = new List<(CardModel, Dictionary<int, int>)>();
-        
-        
+
+
         [Inject]
-        public Microsoft.JSInterop.IJSRuntime JS { get; set;  }
+        public Microsoft.JSInterop.IJSRuntime JS { get; set; }
 
         public void test2()
         {
@@ -56,12 +56,46 @@ namespace Survey.Client.Pages.App.Board
             pdfGrid.Style.CellPadding.Right = cellMargin;
 
             //Applying built-in style to the PDF grid
-            pdfGrid.ApplyBuiltinStyle(PdfGridBuiltinStyle.GridTable4Accent1);
+            pdfGrid.ApplyBuiltinStyle(PdfGridBuiltinStyle.GridTable5DarkAccent2);
+
+            string[] a = { "1", "2" };
 
             //Assign data source.
-            pdfGrid.DataSource = CardList;
+            pdfGrid.DataSource = CardList?.Select(x => x.CardModel)
+                .Select(x => new
+                {
+                    x.Title,
+                    x.Text,
+
+
+                    _1 = x.Rating.Where(y=>y.RatingNumber==1)
+                        .GroupBy(y=>y.RatingNumber)
+                        .Count(),
+                    _2 = x.Rating.Where(y=>y.RatingNumber==2)
+                        .GroupBy(y=>y.RatingNumber)
+                        .Count(),
+                    _3 = x.Rating.Where(y=>y.RatingNumber==3)
+                        .GroupBy(y=>y.RatingNumber)
+                        .Count(),
+                    _4 = x.Rating.Where(y=>y.RatingNumber==4)
+                        .GroupBy(y=>y.RatingNumber)
+                        .Count(),
+                    _5 = x.Rating.Where(y=>y.RatingNumber==5)
+                        .GroupBy(y=>y.RatingNumber)
+                        .Count(),
+                    _6 = x.Rating.Where(y=>y.RatingNumber==6)
+                        .GroupBy(y=>y.RatingNumber)
+                        .Count(),
+                    _7 = x.Rating.Where(y=>y.RatingNumber==7)
+                        .GroupBy(y=>y.RatingNumber)
+                        .Count()
+                    
+
+                    
+                });
 
             pdfGrid.Style.Font = contentFont;
+
 
             //Draw PDF grid into the PDF page.
             pdfGrid.Draw(page, new Syncfusion.Drawing.PointF(0, result.Bounds.Bottom + paragraphAfterSpacing));
@@ -71,10 +105,11 @@ namespace Survey.Client.Pages.App.Board
             // Save the PDF document.
             pdfDocument.Save(memoryStream);
 
+
+
             // Download the PDF document
             JS.SaveAs("Sample.pdf", memoryStream.ToArray());
         }
-
 
     }
 

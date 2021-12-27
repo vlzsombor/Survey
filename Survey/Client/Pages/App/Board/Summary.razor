@@ -32,9 +32,9 @@
                             <td>
 
                                 @{
-                                    var b2 = cardItem.CardModel.Rating  
-                                        .GroupBy(x => x.RatingNumber)
-                                        .ToDictionary(grp => grp.Key, grp => grp.Count());
+                                    var b2 = cardItem.CardModel.Rating
+                                .GroupBy(x => x.RatingNumber)
+                                .ToDictionary(grp => grp.Key, grp => grp.Count());
 
                                     if (b2 ==null)
                                     {
@@ -53,12 +53,15 @@
                                     </div>
                                 }
                             </td>
-                            @foreach (KeyValuePair<int, int> entry in b2)
+
+                            @for (int i = 1; i<8; i++)
                             {
-                                <td>
-                                    <NumberDataShow radiusPropertion="entry.Value"></NumberDataShow>
-                                </td>
+                                if (b2.ContainsKey(i))
+                                {
+                                    <NumberDataShow radiusPropertion="b2[i]"></NumberDataShow>
+                                }
                             }
+
                         </tr>
 
                     }
@@ -92,7 +95,7 @@
     {
         if (CardList?.Any() ?? false)
         {
-            CardList =  CardList.OrderByDescending(x => x.CardModel?.Rating.Select(x=>x.RatingNumber).DefaultIfEmpty(0).Average()).ToList();
+            CardList =  CardList.OrderByDescending(x => x.CardModel?.Rating.Select(x => x.RatingNumber).DefaultIfEmpty(0).Average()).ToList();
         }
         StateHasChanged();
         return base.OnParametersSetAsync();
