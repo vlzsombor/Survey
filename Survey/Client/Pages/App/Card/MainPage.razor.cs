@@ -87,6 +87,7 @@ namespace Survey.Client.Pages.App.Card
 
         public async Task LoadCard()
         {
+
             if (Guid != null)
             {
                 try

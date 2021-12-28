@@ -102,11 +102,11 @@ namespace Survey.Server.Controllers
 
             //_context.BoardModel.Load();
 
-
             BoardModel? a = _context.BoardModel
                 .Where(board =>
                     board.OwnerUser == user &&
-                    board.Id.ToString() == guidString)
+                    board.Id.ToString() == guidString &&
+                    0 < DateTime.Compare(board.ExpDate, DateTime.Now))
                 .FirstOrDefault();
 
 
