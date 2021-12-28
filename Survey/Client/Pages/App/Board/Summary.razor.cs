@@ -20,7 +20,7 @@ namespace Survey.Client.Pages.App.Board
 
 
         [Inject]
-        public Microsoft.JSInterop.IJSRuntime JS { get; set; }
+        public Microsoft.JSInterop.IJSRuntime JS { get; set; } = null!;
 
         public void test2()
         {

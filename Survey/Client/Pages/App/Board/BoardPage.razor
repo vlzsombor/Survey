@@ -7,37 +7,41 @@
 @inject NavigationManager NavigationManager
 
 @attribute [Authorize]
-<AuthorizeView>
-    <Authorized>
-        <h3>BoardPage</h3>
-        <button class="btn btn-primary" @onclick="MakeNewSurveyBoard">Make a new Survey board</button>
-    </Authorized>
-</AuthorizeView>
+
+
+        <EditForm Model="boardModel" OnValidSubmit="MakeNewSurveyBoard">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <InputDate @bind-Value="@boardModel.ExpDate" class="form-control" id="boardModel.ExpDate"></InputDate>
+                <ValidationMessage For="@(() => boardModel.ExpDate)" />
+            </div>
+            <button class="btn btn-primary" type="submit">Make a new Survey board</button>
+        </EditForm>
+
+
 @foreach (var board in BoardList ?? Enumerable.Empty<BoardModel>())
 {
-        <div class="card" style="width: 18rem;">
-            <AuthorizeView Roles="Admin, BoardAdmin">
-                <Authorized>
-                    <div class="float-right">
-                        <button @onclick="@(()=>Delete(board))" class="close" aria-label="Close">
-                            <span aria-hidden="true">
-                                &times;
-                            </span>
-                        </button>
-                    </div>
-                    <a @onclick="@(() => {
+    <div class="card" style="width: 18rem;">
+        <AuthorizeView Roles="Admin, BoardAdmin">
+            <Authorized>
+                <div class="float-right">
+                    <button @onclick="@(()=>Delete(board))" class="close" aria-label="Close">
+                        <span aria-hidden="true">
+                            &times;
+                        </span>
+                    </button>
+                </div>
+                <a @onclick="@(() => {
                        NavigationManager.NavigateTo(Constants.FRONTEND_URL.BOARD_MANAGER +"/"+ board.Id);
                    })" class="btn btn-info" role="button">View board</a>
-                    <a @onclick="@(() => {
+                <a @onclick="@(() => {
                        NavigationManager.NavigateTo(Constants.FRONTEND_URL.SUMMARY +"/"+ board.Id);
                    })" class="btn btn-info" role="button">Summary</a>
-                </Authorized>
-            </AuthorizeView>
-        </div>
+            </Authorized>
+        </AuthorizeView>
+    </div>
 }
 
 
 @code {
-
-
 }

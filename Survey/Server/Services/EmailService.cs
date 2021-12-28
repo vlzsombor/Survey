@@ -16,8 +16,6 @@ namespace Survey.Server.Services
             var apiKey = Environment.GetEnvironmentVariable("emailTest");
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress("vl.zsombor@hotmail.com", "Zsombor");
-            var subject = "Sending with SendGrid is Fun";
-            var plainTextContent = "what is this?";
 
             List<string> htmlContents = new List<string>();
             List<EmailAddress> emails = new List<EmailAddress>();

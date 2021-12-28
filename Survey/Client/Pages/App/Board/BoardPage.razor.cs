@@ -12,42 +12,47 @@ namespace Survey.Client.Pages.App.Board
 {
     public partial class BoardPage : ComponentBase
     {
-        [Inject]
-        private IBoardRepository _boardRepository { get; set; } = default!;
 
-        public BoardPage()
+        private BoardModel boardModel = new BoardModel()
         {
-        }
-        public async void Delete(BoardModel boardModel)
-        {
-            await _boardRepository.DeleteBoard(boardModel);
-            await LoadCard();
+            ExpDate = DateTime.Now
+        };
 
-        }
-        private async void MakeNewSurveyBoard()
-        {
-            BoardModel boardModel = new BoardModel();
+    [Inject]
+    private IBoardRepository _boardRepository { get; set; } = default!;
 
-            bool ifSucceded = await _boardRepository.CreateBoard(new Survey.Shared.Model.BoardModel());
-            if (ifSucceded)
-            {
-                BoardList?.Add(boardModel);
-            }
-            await LoadCard();
-        }
-
-        public List<BoardModel>? BoardList { get; set; } = new List<BoardModel>();
-
-        private async Task LoadCard()
-        {
-            BoardList = await _boardRepository.GetBoardOfUser();
-            StateHasChanged();
-        }
-        protected async override void OnInitialized()
-        {
-            await LoadCard();
-        }
+    public BoardPage()
+    {
     }
+    public async void Delete(BoardModel boardModel)
+    {
+        await _boardRepository.DeleteBoard(boardModel);
+        await LoadCard();
+
+    }
+    private async void MakeNewSurveyBoard()
+    {
+
+        bool ifSucceded = await _boardRepository.CreateBoard(boardModel);
+        if (ifSucceded)
+        {
+            BoardList?.Add(boardModel);
+        }
+        await LoadCard();
+    }
+
+    public List<BoardModel>? BoardList { get; set; } = new List<BoardModel>();
+
+    private async Task LoadCard()
+    {
+        BoardList = await _boardRepository.GetBoardOfUser();
+        StateHasChanged();
+    }
+    protected async override void OnInitialized()
+    {
+        await LoadCard();
+    }
+}
 
 
 

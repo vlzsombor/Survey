@@ -56,10 +56,12 @@
 
                             @for (int i = 1; i<8; i++)
                             {
-                                if (b2.ContainsKey(i))
-                                {
-                                    <NumberDataShow radiusPropertion="b2[i]"></NumberDataShow>
-                                }
+                                <td>
+                                    @if (b2.ContainsKey(i))
+                                    {
+                                        <NumberDataShow radiusPropertion="b2[i]"></NumberDataShow>
+                                    }
+                                </td>
                             }
 
                         </tr>

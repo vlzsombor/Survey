@@ -44,14 +44,6 @@ namespace Survey.Client.Pages.App.Card
         [Parameter, EditorRequired]
         public EventCallback<Task> SendMessage { get; set; }
 
-        protected async override void OnInitialized()
-        {
-
-
-        }
-
-
-
         private async void Create()
         {
             if (Guid != null && cardRepository != null)
