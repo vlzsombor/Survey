@@ -1,0 +1,18 @@
+@page "/dialogcard/{OrderID}"
+
+
+<h1>Hello</h1>
+
+@code {
+
+
+    [Parameter] public int OrderID { get; set; }
+
+
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine(OrderID);
+
+    }
+}

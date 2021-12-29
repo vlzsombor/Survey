@@ -19,8 +19,6 @@ using Survey.Shared.Model.Comment;
 using System.Threading;
 using Survey.Server.Services;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Survey.Server.Controllers
 {
     [Route(Constants.BACKEND_URL.API_BOARD_URL)]
@@ -67,10 +65,9 @@ namespace Survey.Server.Controllers
         public List<CardRatingDto>? GenerateTempUserId(string boardFillerGuid)
         {
             BoardFiller? boardFiller = _context.BoardFillers
-                .Where(x => x.UserName == boardFillerGuid)
+                .Where(x => x.UserName == boardFillerGuid &&
+                0 < DateTime.Compare(x.BoardModel.ExpDate, DateTime.Now))
                 .FirstOrDefault();
-
-
 
             IdentityUser user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
             if (boardFiller?.UserName != user.UserName)
@@ -99,8 +96,6 @@ namespace Survey.Server.Controllers
         public ICollection<CardRatingDto>? GetByGuid(string guidString)
         {
             var user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
-
-            //_context.BoardModel.Load();
 
             BoardModel? a = _context.BoardModel
                 .Where(board =>

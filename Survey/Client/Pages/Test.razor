@@ -1,20 +1,19 @@
 ﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.test)]
 @attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.test + "/h")]
-
+@using Radzen
 @using Survey.Client.Pages.App.Util
-@foreach (var x in lista)
-{
-    <NumberDataShow radiusPropertion="x"></NumberDataShow>
 
-}
+
+@inject DialogService dialogService
+
+
+<RadzenButton Text=@($"Show OrderID: {OrderID} details") Click="@(
+            args => dialogService.Open<DialogCardPage>($"Order {OrderID}",
+                        new Dictionary<string, object>() { { "OrderID", OrderID } },
+                        new DialogOptions(){ Width = "700px", Height = "530px", Left = "calc(50% - 350px)", Top = "calc(50% - 265px)" }))" />
+
 
 @code {
-
-
-    public List<int> lista { get; set; } = new List<int>()
-    {
-        100,50,75,25
-    };
-
+        int OrderID = 1;
 
 }

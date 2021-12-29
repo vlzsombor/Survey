@@ -12,6 +12,7 @@ namespace Survey.Shared.Model
     {
         [Key]
         public virtual Guid Id { get; set; }
+        public virtual string? Name { get; set; }
         public virtual IdentityUser? OwnerUser { get; set; }
         public virtual IList<CardModel> Cards { get; set; } = new List<CardModel>();
         public virtual DateTime ExpDate { get; set; }

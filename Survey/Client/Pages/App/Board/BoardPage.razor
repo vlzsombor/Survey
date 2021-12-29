@@ -4,20 +4,34 @@
 @using Microsoft.AspNetCore.Authorization
 @using Survey.Shared.Model
 @using System.Linq
+@using Survey.Client.Pages.App
 @inject NavigationManager NavigationManager
+@using Survey.Client.Pages.App.Util
 
 @attribute [Authorize]
+@inject DialogService dialogService
 
 
-        <EditForm Model="boardModel" OnValidSubmit="MakeNewSurveyBoard">
-            <DataAnnotationsValidator />
-            <div class="form-group">
-                <InputDate @bind-Value="@boardModel.ExpDate" class="form-control" id="boardModel.ExpDate"></InputDate>
-                <ValidationMessage For="@(() => boardModel.ExpDate)" />
-            </div>
-            <button class="btn btn-primary" type="submit">Make a new Survey board</button>
-        </EditForm>
 
+    <RadzenButton Text=@($"Show OrderID: 14 details") Click="@(
+            args => 
+{
+                dialogService.Open<DialogEditBoard>
+                        ($"Order 14",
+                        new Dictionary<string, object>(){
+                            {"boardModel", boardModel},
+                            {"BoardPage", this}
+                        },
+                        new DialogOptions()
+                            {
+                            Width = "700px", 
+                            Height = "530px", 
+                            Left = "calc(50% - 350px)", 
+                            Top = "calc(50% - 265px)" 
+                            }
+                        );
+                
+ }                       )" />
 
 @foreach (var board in BoardList ?? Enumerable.Empty<BoardModel>())
 {
@@ -31,6 +45,9 @@
                         </span>
                     </button>
                 </div>
+                <h6>@board.ExpDate</h6>
+                <h6>@board.Name</h6>
+
                 <a @onclick="@(() => {
                        NavigationManager.NavigateTo(Constants.FRONTEND_URL.BOARD_MANAGER +"/"+ board.Id);
                    })" class="btn btn-info" role="button">View board</a>
@@ -40,8 +57,4 @@
             </Authorized>
         </AuthorizeView>
     </div>
-}
-
-
-@code {
 }

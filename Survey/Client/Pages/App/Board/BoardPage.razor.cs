@@ -18,43 +18,42 @@ namespace Survey.Client.Pages.App.Board
             ExpDate = DateTime.Now
         };
 
-    [Inject]
-    private IBoardRepository _boardRepository { get; set; } = default!;
+        [Inject]
+        private IBoardRepository _boardRepository { get; set; } = default!;
 
-    public BoardPage()
-    {
-    }
-    public async void Delete(BoardModel boardModel)
-    {
-        await _boardRepository.DeleteBoard(boardModel);
-        await LoadCard();
-
-    }
-    private async void MakeNewSurveyBoard()
-    {
-
-        bool ifSucceded = await _boardRepository.CreateBoard(boardModel);
-        if (ifSucceded)
+        public BoardPage()
         {
-            BoardList?.Add(boardModel);
         }
-        await LoadCard();
+        public async void Delete(BoardModel boardModel)
+        {
+            await _boardRepository.DeleteBoard(boardModel);
+            await LoadCard();
+
+        }
+
+
+        public List<BoardModel>? BoardList { get; set; } = new List<BoardModel>();
+
+        private async Task LoadCard()
+        {
+            BoardList = await _boardRepository.GetBoardOfUser();
+            StateHasChanged();
+        }
+        protected async override void OnInitialized()
+        {
+            await LoadCard();
+        }
+
+        public async Task MakeNewSurveyBoard()
+        {
+            bool ifSucceded = await _boardRepository.CreateBoard(boardModel);
+            if (ifSucceded)
+            {
+                BoardList?.Add(boardModel);
+            }
+            dialogService.Close();
+            await LoadCard();
+        }
     }
-
-    public List<BoardModel>? BoardList { get; set; } = new List<BoardModel>();
-
-    private async Task LoadCard()
-    {
-        BoardList = await _boardRepository.GetBoardOfUser();
-        StateHasChanged();
-    }
-    protected async override void OnInitialized()
-    {
-        await LoadCard();
-    }
-}
-
-
-
 }
 

@@ -120,7 +120,9 @@ namespace Survey.Server.Controllers
         {
             BoardModel? boardModel =
                 _context.BoardModel.Include(x => x.Cards)
-                .Where(x => x.Id.ToString() == guidString)
+                .Where(x => x.Id.ToString() == guidString &&
+                0 < DateTime.Compare(x.ExpDate, DateTime.Now)
+                )
                 .FirstOrDefault();
 
             boardModel?.Cards?.Add(cardModel);
@@ -143,7 +145,8 @@ namespace Survey.Server.Controllers
             var boardModel = _context.BoardFillers
                 .Include(x => x.BoardModel)
                 .Include(x => x.BoardModel.Cards)
-                .Where(x => x.UserName == user.UserName)
+                .Where(x => x.UserName == user.UserName &&
+                0 < DateTime.Compare(x.BoardModel.ExpDate, DateTime.Now))
                 .FirstOrDefault()?.BoardModel;
 
             boardModel?.Cards?.Add(cardModel);

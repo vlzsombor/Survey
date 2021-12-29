@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Radzen;
 using Survey.Client.Auth;
 using Survey.Client.Repository;
 using Survey.Client.Repository.Interfaces;
@@ -39,7 +40,7 @@ namespace Survey.Client
             services.AddBlazoredLocalStorage();
             services.AddBlazoredToast();
             services.AddBlazoredSessionStorage();
-
+            services.AddScoped<DialogService>();
             //services.AddScoped<IHttpService, HttpService>();
             //services.AddSingleton<IBoardRepository, BoardRepository>();
             
