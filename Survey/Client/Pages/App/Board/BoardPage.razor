@@ -13,24 +13,24 @@
 
 
 
-    <RadzenButton Text=@($"Show OrderID: 14 details") Click="@(
-            args => 
+<RadzenButton Text=@($"Add new Board") Click="@(
+            args =>
 {
                 dialogService.Open<DialogEditBoard>
                         ($"Order 14",
                         new Dictionary<string, object>(){
                             {"boardModel", boardModel},
-                            {"BoardPage", this}
+                            {"MakeNewSurveyBoard", new EventCallbackFactory().CreateInferred(this, MakeNewSurveyBoard, boardModel)}
                         },
                         new DialogOptions()
                             {
-                            Width = "700px", 
-                            Height = "530px", 
-                            Left = "calc(50% - 350px)", 
-                            Top = "calc(50% - 265px)" 
+                            Width = "700px",
+                            Height = "530px",
+                            Left = "calc(50% - 350px)",
+                            Top = "calc(50% - 265px)"
                             }
                         );
-                
+
  }                       )" />
 
 @foreach (var board in BoardList ?? Enumerable.Empty<BoardModel>())
@@ -45,6 +45,28 @@
                         </span>
                     </button>
                 </div>
+                <RadzenButton Text=@($"Update Board") Click="@(
+            args =>
+{
+                dialogService.Open<DialogEditBoard>
+                        ($"Order 14",
+                        new Dictionary<string, object>(){
+                            {"boardModel", board},
+                            {"MakeNewSurveyBoard", new EventCallbackFactory().CreateInferred(this, MakeNewSurveyBoard, board)}
+
+                        },
+                        new DialogOptions()
+                            {
+                                Width = "700px",
+                                Height = "530px",
+                                Left = "calc(50% - 350px)",
+                                Top = "calc(50% - 265px)"
+                            }
+                        );
+
+ }                       )"><i class="fas fa-pen"></i></RadzenButton>
+
+
                 <h6>@board.ExpDate</h6>
                 <h6>@board.Name</h6>
 
@@ -57,4 +79,8 @@
             </Authorized>
         </AuthorizeView>
     </div>
+}
+
+@code {
+
 }

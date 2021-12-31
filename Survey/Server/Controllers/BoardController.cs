@@ -42,6 +42,7 @@ namespace Survey.Server.Controllers
         [HttpGet]
         public List<BoardModel> Get()
         {
+
             return _context.BoardModel
                 .Where(x => x.OwnerUser == ServerHelper.GetIdentityUserByName(_context, HttpContext))
                 .ToList();
@@ -56,9 +57,8 @@ namespace Survey.Server.Controllers
             IdentityUser user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
             //bm.Cards = _context.CardModel.ToList();
             bm.OwnerUser = user;
-            _context.BoardModel.Add(bm);
+            _context.BoardModel.Update(bm);
             _context.SaveChanges();
-
         }
 
         [HttpGet(Constants.BACKEND_URL.ACCESS_GUID + "/{boardFillerGuid}")]

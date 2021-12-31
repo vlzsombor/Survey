@@ -13,6 +13,8 @@ namespace Survey.Client.Pages.App.Board
     public partial class BoardPage : ComponentBase
     {
 
+
+
         private BoardModel boardModel = new BoardModel()
         {
             ExpDate = DateTime.Now
@@ -44,7 +46,7 @@ namespace Survey.Client.Pages.App.Board
             await LoadCard();
         }
 
-        public async Task MakeNewSurveyBoard()
+        public async Task MakeNewSurveyBoard(BoardModel boardModel)
         {
             bool ifSucceded = await _boardRepository.CreateBoard(boardModel);
             if (ifSucceded)

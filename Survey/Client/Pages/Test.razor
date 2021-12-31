@@ -1,16 +1,8 @@
 ﻿@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.test)]
 @attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.test + "/h")]
-@using Radzen
-@using Survey.Client.Pages.App.Util
 
 
-@inject DialogService dialogService
-
-
-<RadzenButton Text=@($"Show OrderID: {OrderID} details") Click="@(
-            args => dialogService.Open<DialogCardPage>($"Order {OrderID}",
-                        new Dictionary<string, object>() { { "OrderID", OrderID } },
-                        new DialogOptions(){ Width = "700px", Height = "530px", Left = "calc(50% - 350px)", Top = "calc(50% - 265px)" }))" />
+<h1><i class="fas fa-pen"></i></h1>
 
 
 @code {
