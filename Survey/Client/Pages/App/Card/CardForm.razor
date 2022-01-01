@@ -4,6 +4,10 @@
         <InputText @bind-Value="@cardModel.Title" class="form-control" id="cardModel.Title" ></InputText>
         <InputTextArea @bind-Value="@cardModel.Text" class="form-control" id="cardModel.Text" rows="3"></InputTextArea>
         <ValidationMessage For="@(() => cardModel.Text)" />
+        <Survey.Client.Pages.App.Util.TagComponenct></Survey.Client.Pages.App.Util.TagComponenct>
     </div>
     <button class="btn btn-success" type="submit">Save changes</button>
 </EditForm>
+@code {
+
+}
