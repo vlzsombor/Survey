@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,8 @@ namespace Survey.Shared.Model
         public virtual IList<RatingModel> Rating { get; set; } = new List<RatingModel>();
 
         public virtual IList<Reply> Replies { get; set; } = new List<Reply>();
+        [NotMapped]
+        public virtual IList<string> Tags { get; set; } = new List<string>();
 
 
     }

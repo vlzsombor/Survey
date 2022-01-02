@@ -1,6 +1,4 @@
-﻿
-
-@using Survey.Client.Auth
+﻿@using Survey.Client.Auth
 @using Survey.Shared.Model
 @using Survey.Shared.Model.Comment
 @using Survey.Shared.DTOs
@@ -17,7 +15,9 @@
 
 <AuthorizeView>
     <Authorized>
-        <Survey.Client.Pages.App.Card.CardForm cardModel="@cardModel" OnValidSubmit="@Create" />
+        <Survey.Client.Pages.App.Card.CardForm cardModel="@cardModel" OnValidSubmit="@Create" 
+        Tags="@(cardModel.Tags)"
+        />
         @foreach (var cardItem in CardList ?? Enumerable.Empty<CardRatingDto>())
         {
             <CardSimple OnDelete="@(OnDelete)"
@@ -32,6 +32,8 @@
 </AuthorizeView>
 
 @code {
+    [Parameter]
+    public IList<string> Tags { get; set; } = new List<string>();
 }
 
 
