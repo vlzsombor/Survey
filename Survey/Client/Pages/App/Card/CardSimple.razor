@@ -14,7 +14,11 @@
         <h5 class="card-title">@CardModel.CardModel.Title</h5>
         <h6 class="card-subtitle mb-2 text-muted">@(CardModel.CardModel.Text.ToUpper())</h6>
         <p class="card-text">@CardModel.CardModel.Text</p>
-        <RadzenRating Stars="7" Change=@(args => OnChange.InvokeAsync((args,CardModel.CardModel))) Value="@(CardModel.RatingValue ?? 0)" />
+        <RadzenRating Stars="7" Change=@(args => OnChange.InvokeAsync((args,CardModel.CardModel))) 
+            Value="@(CardModel.RatingValue ?? 0)" />
+        <Survey.Client.Pages.App.Util.TagShower
+            Tags="@CardModel.CardModel.Tags.Select(x=>x.TagText).ToList()"
+        />
     </div>
 
 

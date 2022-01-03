@@ -21,8 +21,8 @@ namespace Survey.Shared.Model
         public virtual IList<RatingModel> Rating { get; set; } = new List<RatingModel>();
 
         public virtual IList<Reply> Replies { get; set; } = new List<Reply>();
-        [NotMapped]
-        public virtual IList<string> Tags { get; set; } = new List<string>();
+
+        public virtual IList<Tag> Tags { get; set; } = new List<Tag>();
 
 
     }

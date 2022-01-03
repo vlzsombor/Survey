@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using Survey.Server.Model;
+using Survey.Shared.Model;
 using Survey.Shared.Model.Comment;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,15 @@ public class CardService
     }
 
 
+
+    public void RemoveTags(IList<Tag> list)
+    {
+        foreach (var child in list)
+        {
+            _context.Remove(child);
+        }
+    }
+
     public async Task DeleteCard(Guid id)
     {
         var card = _context.CardModel.Include(x => x.Rating).FirstOrDefault(x => x.Id == id);
@@ -40,6 +50,11 @@ public class CardService
         if (card.Replies.Any())
         {
             await RemoveChildren(card.Replies);
+        }
+
+        if (card.Tags.Any())
+        {
+            RemoveTags(card.Tags);
         }
 
         _context.Remove(card);

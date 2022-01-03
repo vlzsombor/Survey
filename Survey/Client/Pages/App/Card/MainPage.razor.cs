@@ -34,7 +34,7 @@ namespace Survey.Client.Pages.App.Card
         public List<CardRatingDto>? CardList { get; set; } = new List<CardRatingDto>();
 
         private CardModel cardModel = new CardModel();
-        
+
         [Parameter]
         public BoardFillerDto BoardFillerDto { get; set; } = new BoardFillerDto();
 
@@ -48,6 +48,9 @@ namespace Survey.Client.Pages.App.Card
         {
             if (Guid != null && cardRepository != null)
             {
+
+                cardModel.Tags = Tags.Select(x => new Tag() { TagText= x }).ToList();
+
                 await cardRepository.CreateCard(cardModel, Guid);
                 await SendMessage.InvokeAsync();
 

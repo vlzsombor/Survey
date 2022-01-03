@@ -126,11 +126,13 @@ namespace Survey.Server.Controllers
                 .FirstOrDefault();
 
             boardModel?.Cards?.Add(cardModel);
+
             if (boardModel != null)
             {
                 _context.Update(boardModel);
             }
 
+            
             await _context.SaveChangesAsync();
 
             return cardModel.Id;

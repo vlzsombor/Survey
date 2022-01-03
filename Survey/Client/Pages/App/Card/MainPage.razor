@@ -16,7 +16,7 @@
 <AuthorizeView>
     <Authorized>
         <Survey.Client.Pages.App.Card.CardForm cardModel="@cardModel" OnValidSubmit="@Create" 
-        Tags="@(cardModel.Tags)"
+            Tags="@(Tags)"
         />
         @foreach (var cardItem in CardList ?? Enumerable.Empty<CardRatingDto>())
         {
