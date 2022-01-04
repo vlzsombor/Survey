@@ -44,7 +44,7 @@ namespace Survey.Server
                 (option => option
                     .UseLazyLoadingProxies()
                     .UseSqlServer(
-                        Configuration.GetConnectionString("DefaultConnection")));
+                        Configuration.GetConnectionString("DefaultConnection")).EnableSensitiveDataLogging());
 
             services.AddScoped<IBoardService, BoardService>();
 
@@ -80,8 +80,13 @@ namespace Survey.Server
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
-            services.AddControllers().AddJsonOptions(x => 
+            services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+
+
+            services.AddControllersWithViews()
+              .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -98,7 +98,12 @@ namespace Survey.Server.Controllers
         [Route(Survey.Shared.Constants.BACKEND_URL.ADD_REPLY)]
         public async Task AddRepy([FromBody] CardModel cardModel)
         {
-            _context.Update(cardModel);
+
+            
+            _context.CardModel.Attach(cardModel);
+            _context.Entry(cardModel).Collection(x => x.Replies).IsModified = true;
+
+
             await _context.SaveChangesAsync();
 
         }
