@@ -34,7 +34,12 @@ public class CardService
     {
         foreach (var child in list)
         {
-            _context.Remove(child);
+
+            if (child.CardModel?.Count() <= 1)
+            {
+                _context.Remove(child);
+            }
+
         }
     }
 

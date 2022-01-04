@@ -12,7 +12,7 @@ namespace Survey.Shared.Model
 
         public virtual string TagText { get; set; }
 
-        //public virtual IList<CardModel>? CardModel { get; set; }
+        public virtual IList<CardModel>? CardModel { get; set; }
 
     }
 }

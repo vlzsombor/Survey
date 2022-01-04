@@ -127,15 +127,34 @@ namespace Survey.Server.Controllers
 
             boardModel?.Cards?.Add(cardModel);
 
+            var a = _context.Tag.Select(x=>x.TagText).Intersect(cardModel.Tags.Select(x=>x.TagText));
+
+            ManyToManyUpdate(_context, cardModel);
+
             if (boardModel != null)
             {
                 _context.Update(boardModel);
             }
-
             
             await _context.SaveChangesAsync();
 
             return cardModel.Id;
+        }
+
+        private void ManyToManyUpdate(SurveyDbContext _context, CardModel cardModel)
+        {
+            foreach (var x in _context.Tag)
+            {
+                for (int i = 0; i < cardModel.Tags.Count; i++)
+                {
+                    if (x.TagText == cardModel.Tags[i].TagText)
+                    {
+                        cardModel.Tags.RemoveAt(i);
+                        x?.CardModel?.Add(cardModel);
+                    }
+                }
+            }
+
         }
 
         [HttpPost]
@@ -143,6 +162,7 @@ namespace Survey.Server.Controllers
         public async Task<Guid> AddCard2([FromBody] CardModel cardModel, string guidString)
         {
             var user = await _userManager.FindByNameAsync(guidString);
+
 
             var boardModel = _context.BoardFillers
                 .Include(x => x.BoardModel)
@@ -152,6 +172,10 @@ namespace Survey.Server.Controllers
                 .FirstOrDefault()?.BoardModel;
 
             boardModel?.Cards?.Add(cardModel);
+
+            ManyToManyUpdate(_context, cardModel);
+
+
             if (boardModel != null)
             {
                 _context.Update(boardModel);

@@ -63,6 +63,7 @@ namespace Survey.Server.Model
                 .WithOne()
                 .OnDelete(DeleteBehavior.ClientCascade);
             base.OnModelCreating(modelBuilder);
+
         }
 
         public DbSet<CardModel> CardModel => Set<CardModel>();
