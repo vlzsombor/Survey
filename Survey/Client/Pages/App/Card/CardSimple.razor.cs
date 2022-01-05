@@ -26,6 +26,11 @@ namespace Survey.Client.Pages.App.Card
 
         [Parameter]
         public EventCallback<(string, IRepliable)> AddReply { get; set; }
+        
+        [Parameter]
+        public EventCallback<string> NavigateCommand { get; set; }
+
+
 
         public Reply ReplyModel { get; set; } = new Reply();
 

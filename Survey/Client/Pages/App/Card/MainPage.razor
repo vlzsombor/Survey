@@ -18,12 +18,16 @@
         <Survey.Client.Pages.App.Card.CardForm cardModel="@cardModel" OnValidSubmit="@Create" 
             Tags="@(Tags)"
         />
-        @foreach (var cardItem in CardList ?? Enumerable.Empty<CardRatingDto>())
+
+        @foreach (var cardItem in CardListToShow ?? Enumerable.Empty<CardRatingDto>())
         {
+
             <CardSimple OnDelete="@(OnDelete)"
                         OnChange="@((args) => UpdateCardRating(((int, CardModel))args))"
                         CardModel="cardItem"
-                        AddReply="@((args) => AddReply(((string, IRepliable))args))"></CardSimple>
+                        AddReply="@((args) => AddReply(((string, IRepliable))args))"
+                        NavigateCommand="NavigateCommand"
+            ></CardSimple>
         }
     </Authorized>
     <NotAuthorized>

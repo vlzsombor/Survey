@@ -13,6 +13,7 @@ using Survey.Shared.DTOs;
 using Survey.Client.Shared;
 using Survey.Shared.Model.Comment;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Survey.Client.Pages.App.Card
 {
@@ -32,6 +33,7 @@ namespace Survey.Client.Pages.App.Card
 
         [Parameter, EditorRequired]
         public List<CardRatingDto>? CardList { get; set; } = new List<CardRatingDto>();
+        public List<CardRatingDto>? CardListToShow { get; set; } = new List<CardRatingDto>();
 
         private CardModel cardModel = new CardModel();
 
@@ -43,7 +45,23 @@ namespace Survey.Client.Pages.App.Card
 
         [Parameter, EditorRequired]
         public EventCallback<Task> SendMessage { get; set; }
+        public string? SearchTag { get; set; }
 
+
+
+        public async void NavigateCommand(string tagText)
+        {
+            var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+
+            if (!QueryHelpers.ParseQuery(uri.Query).TryGetValue("tag", out var param) || param != tagText)
+            {
+                var query = new Dictionary<string, string> { { "tag", tagText } };
+                navigationManager.NavigateTo(navigationManager.GetUriWithQueryParameter("tag",tagText));
+            }
+            SearchTag = tagText;
+            await LoadCard();
+
+        }
         private async void Create()
         {
             if (Guid != null && cardRepository != null)
@@ -90,12 +108,22 @@ namespace Survey.Client.Pages.App.Card
 
         public async Task LoadCard()
         {
+            var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
 
             if (Guid != null)
             {
                 try
                 {
-                    CardList = await boardRepository.GetAllCardsOfUser(Guid);
+                    if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("tag", out var param))
+                    {
+                        CardListToShow = CardList.Where(x => x.CardModel.Tags.All(x => x.TagText == param)).ToList();
+                    }
+                    else
+                    {
+                        SearchTag = null;
+                        CardList = await boardRepository.GetAllCardsOfUser(Guid);
+                        CardListToShow = CardList;
+                    }
                 }
                 catch (ApplicationException ex)
                 {

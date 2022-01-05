@@ -6,9 +6,9 @@
             @foreach (var tag in Tags)
             {
                 <span class="tag">
-                    <span class="tag-text">@tag</span>
+                    <a @onclick="@(()=>NavigateLocal(tag))" class="tag-text">@tag</a>
                     @if (DeleteVisible)
-                    {                       
+                    {
                         <span class="tag-remove" @onclick="() => DeleteTag(tag)" />
                     }
                 </span>
@@ -23,7 +23,10 @@
     [Parameter]
     public bool DeleteVisible { get; set; } = false;
 
-
+    private async void NavigateLocal(string tag)
+    {
+        await NavigateCommand.InvokeAsync(tag);
+    }
 
     protected void DeleteTag(string value)
     {
@@ -34,6 +37,11 @@
 
         Tags.Remove(tag);
     }
+
+    [Parameter]
+    public EventCallback<string> NavigateCommand { get; set; }
+
+
 }
 
 <style>

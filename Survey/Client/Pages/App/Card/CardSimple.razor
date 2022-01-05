@@ -18,6 +18,7 @@
             Value="@(CardModel.RatingValue ?? 0)" />
         <Survey.Client.Pages.App.Util.TagShower
             Tags="@CardModel.CardModel.Tags.Select(x=>x.TagText).ToList()"
+            NavigateCommand="NavigateCommand"
         />
     </div>
 
