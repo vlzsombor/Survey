@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace Survey.Client.Pages.App.Card
 {
-    public partial class MainPage : ComponentBase
+    public partial class MainPage : ComponentBase, IDisposable
     {
         [Parameter, EditorRequired]
         public ICardRepository? cardRepository { get; set; }
@@ -33,7 +33,6 @@ namespace Survey.Client.Pages.App.Card
 
         [Parameter, EditorRequired]
         public List<CardRatingDto>? CardList { get; set; } = new List<CardRatingDto>();
-        public List<CardRatingDto>? CardListToShow { get; set; } = new List<CardRatingDto>();
 
         private CardModel cardModel = new CardModel();
 
@@ -45,21 +44,14 @@ namespace Survey.Client.Pages.App.Card
 
         [Parameter, EditorRequired]
         public EventCallback<Task> SendMessage { get; set; }
-        public string? SearchTag { get; set; }
-
-
 
         public async void NavigateCommand(string tagText)
         {
             var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
 
-            if (!QueryHelpers.ParseQuery(uri.Query).TryGetValue("tag", out var param) || param != tagText)
-            {
-                var query = new Dictionary<string, string> { { "tag", tagText } };
-                navigationManager.NavigateTo(navigationManager.GetUriWithQueryParameter("tag",tagText));
-            }
-            SearchTag = tagText;
-            await LoadCard();
+
+
+            navigationManager.NavigateTo(navigationManager.GetUriWithQueryParameter("tag", tagText));
 
         }
         private async void Create()
@@ -73,6 +65,26 @@ namespace Survey.Client.Pages.App.Card
                 await SendMessage.InvokeAsync();
 
             }
+            await LoadCard();
+        }
+
+
+
+        protected async override Task OnInitializedAsync()
+        {
+
+            navigationManager.LocationChanged += NavigationManager_LocationChanged;
+
+            base.OnInitialized();
+        }
+
+
+        protected async override Task OnParametersSetAsync()
+        {
+            await LoadCard();
+        }
+        private async void NavigationManager_LocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+        {
             await LoadCard();
         }
 
@@ -114,16 +126,14 @@ namespace Survey.Client.Pages.App.Card
             {
                 try
                 {
+                    CardList = await boardRepository.GetAllCardsOfUser(Guid);
+
                     if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("tag", out var param))
                     {
-                        CardListToShow = CardList.Where(x => x.CardModel.Tags.All(x => x.TagText == param)).ToList();
+                        CardList = CardList.Where(x => x.CardModel.Tags.Any(x => x.TagText == param)).ToList();
                     }
-                    else
-                    {
-                        SearchTag = null;
-                        CardList = await boardRepository.GetAllCardsOfUser(Guid);
-                        CardListToShow = CardList;
-                    }
+
+
                 }
                 catch (ApplicationException ex)
                 {
@@ -134,6 +144,9 @@ namespace Survey.Client.Pages.App.Card
             StateHasChanged();
         }
 
-
+        public void Dispose()
+        {
+            navigationManager.LocationChanged -= NavigationManager_LocationChanged;
+        }
     }
 }
