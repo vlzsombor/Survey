@@ -45,13 +45,23 @@ namespace Survey.Client.Pages.App.Card
         [Parameter, EditorRequired]
         public EventCallback<Task> SendMessage { get; set; }
 
-        public async void NavigateCommand(string tagText)
+        public void NavigateCommand(string tagText)
         {
             var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
 
 
+            navigationManager.NavigateTo(navigationManager.GetUriWithQueryParameters(
+                new Dictionary<string, object?>() {
+                    { "tag", new []{tagText,"fasdf" } }
+                }));
 
-            navigationManager.NavigateTo(navigationManager.GetUriWithQueryParameter("tag", tagText));
+            var query = new Dictionary<string, string> {
+                { "tag", tagText }
+            };
+
+            navigationManager.NavigateTo(QueryHelpers
+                .AddQueryString(navigationManager.Uri,query));
+
 
         }
         private async void Create()
@@ -130,7 +140,7 @@ namespace Survey.Client.Pages.App.Card
 
                     if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("tag", out var param))
                     {
-                        CardList = CardList.Where(x => x.CardModel.Tags.Any(x => x.TagText == param)).ToList();
+                        CardList = CardList.Where(z => z.CardModel.Tags.Any(x => param.Any(y => y == x.TagText))).ToList();
                     }
 
 
