@@ -15,7 +15,6 @@
         <div class="@(IsContainSpecialCharacter ? "tag-tooltip" : string.Empty)">
             <BlazoredTypeahead SearchMethod="SearchFilms"
                                @bind-Value="Value"
-                               @bind-Value:event="oninput"
                                @onkeyup="AddTags"
                                AddItemOnEmptyResultMethod="testAdding">
                 <SelectedTemplate>
@@ -64,8 +63,6 @@
 
     }
 
-
-
     protected void AddTags(KeyboardEventArgs eventArgs)
     {
         IsContainSpecialCharacter = false;
@@ -74,7 +71,6 @@
         {
             if (eventArgs.Key.Equals(" "))
             {
-
                 var regex = new Regex(@"[^a-zA-Z0-9\s]");
                 if (!regex.IsMatch(Value))
                 {
@@ -93,17 +89,16 @@
         }
     }
 
-
-
-
-
     protected override void OnInitialized()
     {
     }
 
+    [Parameter]
+    public Func<string, Task<IEnumerable<string>>> SearchMethod { get; set; }
+
     private async Task<IEnumerable<string>> SearchFilms(string searchText)
     {
-        return await Task.FromResult(Tags.Where(x => x.ToLower().Contains(searchText.ToLower())).ToList());
+         return await SearchMethod.Invoke(searchText);
     }
 
 

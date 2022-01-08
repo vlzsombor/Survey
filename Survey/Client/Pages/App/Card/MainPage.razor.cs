@@ -50,10 +50,10 @@ namespace Survey.Client.Pages.App.Card
             var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
 
 
-            navigationManager.NavigateTo(navigationManager.GetUriWithQueryParameters(
-                new Dictionary<string, object?>() {
-                    { "tag", new []{tagText,"fasdf" } }
-                }));
+            //navigationManager.NavigateTo(navigationManager.GetUriWithQueryParameters(
+            //    new Dictionary<string, object?>() {
+            //        { "tag", new []{tagText,"fasdf" } }
+            //    }));
 
             var query = new Dictionary<string, string> {
                 { "tag", tagText }
@@ -87,7 +87,14 @@ namespace Survey.Client.Pages.App.Card
 
             base.OnInitialized();
         }
-
+        private async Task<IEnumerable<string>> SearchMethod(string searchText)
+        {
+            var a = CardList
+                .SelectMany(x=>
+                x.CardModel.Tags.Select(x=>x.TagText)
+                .Where(x=>x.ToLower().Contains(searchText.ToLower()))).Distinct();
+            return a;
+        }
 
         protected async override Task OnParametersSetAsync()
         {
