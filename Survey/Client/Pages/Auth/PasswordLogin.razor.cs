@@ -19,16 +19,31 @@ namespace Survey.Client.Pages.Auth
         [Parameter]
         public BoardFillerDto BoardFillerDto { get; set; } = new BoardFillerDto();
 
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
         [Parameter]
         public EventCallback LoadCardEventCallBack { get; set; }
         private async Task LoginUser()
         {
+
+            BoardFillerDto.AccessGuid = Guid;
+
+
             userToken = await accountsRepository.Login(BoardFillerDto);
             if (userToken?.Token != null)
             {
-                await loginService.Login(userToken.Token);
+
+                var a = await loginService.Login(userToken.Token);
+
+                if (a.User != null)
+                {
+                    
+                    NavigationManager.NavigateTo(NavigationManager.BaseUri +
+                        Survey.Shared.Constants.FRONTEND_URL.BOARD + "/"+ Guid);
+                }
+
             }
-            await LoadCardEventCallBack.InvokeAsync();
         }
     }
 }

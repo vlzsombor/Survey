@@ -44,7 +44,7 @@ namespace Survey.Server
                 (option => option
                     .UseLazyLoadingProxies()
                     .UseSqlServer(
-                        Configuration.GetConnectionString("DefaultConnection")).EnableSensitiveDataLogging());
+                        Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IBoardService, BoardService>();
 

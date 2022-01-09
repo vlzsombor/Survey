@@ -14,8 +14,6 @@
     <div id="@($"{Id}_addTag")">
         <div class="@(IsContainSpecialCharacter ? "tag-tooltip" : string.Empty)">
             <BlazoredTypeahead SearchMethod="SearchFilms"
-                               @onkeyup="AddTags"
-                               @onclick="AddTagsClick"
                                AddItemOnEmptyResultMethod="testAdding"
                                TValue="string"
                                TItem="string"
@@ -30,15 +28,6 @@
                 </ResultTemplate>
                 <NotFoundTemplate>@context</NotFoundTemplate>
             </BlazoredTypeahead>
-
-            @*<input id="@($"{Id}_tag")"
-                class="tag-input"
-                placeholder="Add tags"
-                autocomplete="off"
-                @bind-value="Value"
-                @bind-value:event="oninput"
-                @onkeyup="AddTags" />*@
-
             @if (IsContainSpecialCharacter)
             {
                 <div class="error-right d-inline-flex p-2">
@@ -60,59 +49,47 @@
     [Parameter]
     public IList<string> Tags { get; set; } = new List<string>();
 
-    private async Task SelectedResultChanged(string result)
-    {
-        Tags.Add(result);
-    }
-
-    public async Task<string> testAdding(string s)
-    {
-        Tags.Add(s);
-        return await Task.FromResult(s);
-
-    }
-
-    protected void AddTags(KeyboardEventArgs eventArgs)
+    private void SelectedResultChanged(string result)
     {
         IsContainSpecialCharacter = false;
-
-        if (!String.IsNullOrEmpty(Value))
+        result = result.ToLower();
+        if (!String.IsNullOrEmpty(result))
         {
 
             var regex = new Regex(@"[^a-zA-Z0-9\s]");
-            if (!regex.IsMatch(Value))
+            if (!regex.IsMatch(result))
             {
-                if (!Tags.Any(t => t.Equals(Value, StringComparison.CurrentCultureIgnoreCase)))
+                if (!Tags.Any(t => t.Equals(result, StringComparison.CurrentCultureIgnoreCase)))
                 {
-                    Tags.Add(Value);
+                    Tags.Add(result);
                 }
-
-                Value = string.Empty;
             }
             else
             {
                 IsContainSpecialCharacter = true;
             }
         }
-    }
-    protected void AddTagsClick()
-    {
-        Console.WriteLine("AddtagsClick");
-    }
-    protected void AddTagsOnChange(ChangeEventArgs c)
-    {
-        var a = c.Value;
 
 
-        Console.WriteLine("change event rgs");
-        Console.WriteLine(a);
-        Console.WriteLine(stringSearchedText);
+
     }
 
-    protected override void OnInitialized()
+    public async Task<string> testAdding(string s)
     {
+        return await Task.FromResult(s);
+
     }
-    private string stringSearchedText;
+
+
+
+
+
+    protected void AddTags(KeyboardEventArgs eventArgs)
+    {
+
+    }
+
+    private string? stringSearchedText;
     [Parameter]
     public Func<string, Task<IEnumerable<string>>> SearchMethod { get; set; }
 
@@ -120,16 +97,7 @@
     {
         return await SearchMethod.Invoke(searchText);
     }
-
-
-
-
-
-
 }
-
-
-
 <style>
 
     .suggestion-container {

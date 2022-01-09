@@ -56,12 +56,12 @@ namespace Survey.Client.Auth
             return claims;
         }
 
-        public async Task Login(string token)
+        public async Task<AuthenticationState?> Login(string token)
         {
             await _sessionStorageService.SetItemAsStringAsync(TOKENKEY, token);
             var authState = BuildAuthenticationState(token);
             NotifyAuthenticationStateChanged(Task.FromResult(authState));
-
+            return authState;
         }
 
         public async Task Logout()
