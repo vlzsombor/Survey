@@ -14,6 +14,7 @@ namespace Survey.Client.Repository.Interfaces
         Task<List<CardRatingDto>?> GetAllCardsOfUser(string guid);
         Task<List<BoardModel>?> GetBoardOfUser();
         Task<HttpResponseMessage?> DeleteBoard(BoardModel boardModel);
+        Task<DateTime> GetExpTime(string guid);
 
 
     }

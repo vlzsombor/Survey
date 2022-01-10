@@ -1,4 +1,5 @@
-﻿@using Survey.Client.Auth
+﻿@using Microsoft.AspNetCore.Authorization
+@using Survey.Client.Auth
 @using Survey.Shared.Model
 @using Survey.Shared.Model.Comment
 @using Survey.Shared.DTOs
@@ -6,31 +7,41 @@
 @using System.Linq
 
 @using Survey.Client.Pages.Auth
+@attribute [Authorize]
 
 
 <h3>MainPage</h3>
-<AuthorizeView Roles="Admin, BoardAdmin">
-    <a @onclick="@(() => {navigationManager.NavigateTo(Constants.FRONTEND_URL.ADD_BOARDFILLERS + "/" + Guid);})" class="btn btn-info" role="button">Add Board filler</a>
-</AuthorizeView>
+@if (0 >= DateTime.Compare(ExpTime, DateTime.Now))
+{
+    <h1>Voting time is over</h1>
+}
+else
+{
+    <AuthorizeView Roles="Admin, BoardAdmin">
+        <a @onclick="@(() => {navigationManager.NavigateTo(Constants.FRONTEND_URL.ADD_BOARDFILLERS + "/" + Guid);})" class="btn btn-info" role="button">Add Board filler</a>
+    </AuthorizeView>
 
-<AuthorizeView>
-    <Authorized>
-        <Survey.Client.Pages.App.Card.CardForm cardModel="@cardModel" OnValidSubmit="@Create"
+    <AuthorizeView>
+        <Authorized>
+            <Survey.Client.Pages.App.Card.CardForm cardModel="@cardModel" OnValidSubmit="@Create"
                                                Tags="@(Tags)"
                                                SearchMethod="SearchMethod" />
-        @foreach (var cardItem in CardList ?? Enumerable.Empty<CardRatingDto>())
-        {
-            <CardSimple OnDelete="@(OnDelete)"
+            @foreach (var cardItem in CardList ?? Enumerable.Empty<CardRatingDto>())
+            {
+                <CardSimple OnDelete="@(OnDelete)"
                     OnChange="@((args) => UpdateCardRating(((int, CardModel))args))"
                     CardModel="cardItem"
                     AddReply="@((args) => AddReply(((string, IRepliable))args))"
                     NavigateCommand="NavigateCommand"></CardSimple>
-        }
-    </Authorized>
-@*    <NotAuthorized>
-        <PasswordLogin LoadCardEventCallBack="@(LoadCard)" BoardFillerDto="BoardFillerDto"></PasswordLogin>
-    </NotAuthorized>*@
-</AuthorizeView>
+            }
+        </Authorized>
+        @*    <NotAuthorized>
+            <PasswordLogin LoadCardEventCallBack="@(LoadCard)" BoardFillerDto="BoardFillerDto"></PasswordLogin>
+            </NotAuthorized>*@
+    </AuthorizeView>
+
+}
+
 
 @code {
     [Parameter]

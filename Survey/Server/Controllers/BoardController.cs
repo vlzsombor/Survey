@@ -49,6 +49,19 @@ namespace Survey.Server.Controllers
         }
 
 
+        [HttpGet(Constants.FRONTEND_URL.GET_EXP_TIME + "/"+"{guid}")]
+        public DateTime GetExpTime(string guid)
+        {
+
+            return _context.BoardModel.Where(x => x.Id.ToString()== guid).First().ExpDate;
+        }
+        [HttpGet(Constants.BACKEND_URL.ACCESS_GUID +"/"+Constants.FRONTEND_URL.GET_EXP_TIME + "/"+"{guid}")]
+        public DateTime GetExpTimeAccessGuid(string guid)
+        {
+
+            return _context.BoardFillers.Where(x => x.UserName == guid).Select(x => x.BoardModel.ExpDate).First();
+        }
+
         // create
         // POST api/<BoardController>
         [HttpPost]
@@ -97,7 +110,7 @@ namespace Survey.Server.Controllers
         {
             var user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
 
-            BoardModel? a = _context.BoardModel
+            BoardModel? boardModel = _context.BoardModel
                 .Where(board =>
                     board.OwnerUser == user &&
                     board.Id.ToString() == guidString &&
@@ -107,9 +120,9 @@ namespace Survey.Server.Controllers
 
 
             List<CardRatingDto> cardRatingDto = new List<CardRatingDto>();
-            if (a != null)
+            if (boardModel != null)
             {
-                foreach (var item in a.Cards)
+                foreach (var item in boardModel.Cards)
                 {
                     if (item != null)
                     {
@@ -128,10 +141,6 @@ namespace Survey.Server.Controllers
         public async Task<string?> GenerateTempUserId([FromBody] BoardFillerGenerationDto boardFillerGenerationDto)
         {
             return await boardService.HandleBoardFillerGeneration(boardFillerGenerationDto);
-
-            // tick generate a random guid (lets call this G) and password (P)
-            // this G,P should be saved to the db !alert P should definetily be hashed
-            // if a request comes in with the G and corret password typed, then the page is shown
         }
 
         [HttpDelete(Constants.BACKEND_URL.DELETE_BOARD + "/{guid}")]

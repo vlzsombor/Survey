@@ -53,11 +53,21 @@ namespace Survey.Client.Repository
             }
             return JsonConvert.DeserializeObject<List<CardRatingDto>?>(await response.Content.ReadAsStringAsync());
         }
+        public async Task<DateTime> GetExpTime(string guid)
+        {
+
+            var response = await _httpClient.GetAsync(_baseUrl + "/"+Constants.FRONTEND_URL.GET_EXP_TIME + "/" + guid);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApplicationException(response.StatusCode.ToString());
+            }
+            return JsonConvert.DeserializeObject<DateTime>(await response.Content.ReadAsStringAsync());
+        }
 
 
         public async Task<HttpResponseMessage?> GenerateByEmail(BoardFillerGenerationDto boardFillerGenerationDto)
         {
-            var response = await _httpClient.PostAsJsonAsync(_baseUrl + "/" + Constants.BACKEND_URL.GENERATE_BOARD_FILLER, 
+            var response = await _httpClient.PostAsJsonAsync(_baseUrl + "/" + Constants.BACKEND_URL.GENERATE_BOARD_FILLER,
                 boardFillerGenerationDto);
             if (!response.IsSuccessStatusCode)
             {
@@ -77,6 +87,9 @@ namespace Survey.Client.Repository
 
             return response;
         }
+
+
+
 
 
     }

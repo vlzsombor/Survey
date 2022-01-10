@@ -5,34 +5,36 @@
 
 
 @implements IAsyncDisposable
+@using Microsoft.AspNetCore.Authorization
 @using Survey.Shared.DTOs
 @using Survey.Shared.Model
 @using Microsoft.AspNetCore.SignalR.Client
+@attribute [Authorize]
 
 
-@if  (BOARD_MANAGER_boardId != null || AccessGuid != null)
-{
-    <Survey.Client.Pages.App.Card.MainPage 
-        cardRepository="cardRepository"
-        boardRepository="boardRepository"
-        BoardFillerDto="BoardFillerDto"
-        CardList="CardList"
-        Guid="@Guid"
-        SendMessage="@(SendMessage)"
-    ></Survey.Client.Pages.App.Card.MainPage>
-}
+<AuthorizeView>
+    <Authorized>
+        @if (BOARD_MANAGER_boardId != null || AccessGuid != null)
+        {
+            <Survey.Client.Pages.App.Card.MainPage cardRepository="cardRepository"
+                                               boardRepository="boardRepository"
+                                               BoardFillerDto="BoardFillerDto"
+                                               CardList="CardList"
+                                               Guid="@Guid"
+                                               SendMessage="@(SendMessage)"
+                                               ExpTime="ExpTime"></Survey.Client.Pages.App.Card.MainPage>
+        }
 
-else if  (Summary!=null)
-{
-    <Survey.Client.Pages.App.Board.Summary
-            CardList="CardList"
+        else if (Summary!=null)
+        {
+            <Survey.Client.Pages.App.Board.Summary CardList="CardList"></Survey.Client.Pages.App.Board.Summary>
+        }
 
-    ></Survey.Client.Pages.App.Board.Summary>
-}
+        </Authorized>
+
+</AuthorizeView>
 
 
-
-<h3>BoardModelLoader</h3>
 @code {
     public List<CardRatingDto>? CardList { get; set; } = new List<CardRatingDto>();
     public string? Guid { get; set; }
@@ -56,8 +58,6 @@ else if  (Summary!=null)
     public CardRepository CardRepository { get; set; } = default!;
     [Inject]
     public CardBoardFillerRepository CardBoardFillerRepository { get; set; } = default!;
-
-
     [Inject]
     public NavigationManager navigationManager { get; set; } = default!;
 
@@ -65,6 +65,8 @@ else if  (Summary!=null)
 
     [CascadingParameter]
     public Error Error { get; set; } = default!;
+
+    private DateTime ExpTime { get; set; }
 
     private HubConnection hubConnection = default!;
 
@@ -86,7 +88,7 @@ else if  (Summary!=null)
             {
                 Guid = Summary;
             }
-            else if(BOARD_MANAGER_boardId != null)
+            else if (BOARD_MANAGER_boardId != null)
             {
                 Guid = BOARD_MANAGER_boardId;
             }
@@ -119,11 +121,11 @@ else if  (Summary!=null)
             try
             {
                 CardList = await boardRepository.GetAllCardsOfUser(Guid);
+                ExpTime = await boardRepository.GetExpTime(Guid);
             }
             catch (ApplicationException ex)
             {
-                Error.ProcessError(ex);
-                return;
+                throw ex;
             }
         }
         StateHasChanged();

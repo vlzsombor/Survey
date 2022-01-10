@@ -1,8 +1,6 @@
 ﻿@page "/DialogEditBoard/"
 @using Survey.Shared.Model
 @using Survey.Client.Unit
-<h3>DialogEditBoard</h3>
-
 
 <EditForm Model="boardModel" OnValidSubmit="OnChaningSurveyBoard">
     <DataAnnotationsValidator />
@@ -12,7 +10,7 @@
         <InputText @bind-Value="@boardModel.Name" class="form-control" id="boardModel.Name"></InputText>
         <ValidationMessage For="@(() => boardModel.Name)" />
     </div>
-    <button class="btn btn-primary" type="submit">Make a new Survey board</button>
+    <button class="btn btn-primary" type="submit">Edit board</button>
 </EditForm>
 
 @using Survey.Client.Pages.App.Board

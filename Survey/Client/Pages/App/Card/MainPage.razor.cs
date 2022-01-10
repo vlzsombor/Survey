@@ -23,7 +23,9 @@ namespace Survey.Client.Pages.App.Card
         public ICardRepository? cardRepository { get; set; }
         [Parameter, EditorRequired]
         public IBoardRepository boardRepository { get; set; } = default!;
-
+        
+        [Parameter]
+        public DateTime ExpTime { get; set; }
 
         [Parameter, EditorRequired]
         public string Guid { get; set; } = default!;

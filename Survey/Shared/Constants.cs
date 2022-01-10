@@ -53,6 +53,7 @@ namespace Survey.Shared
             public const string BOARD_MANAGER = BOARD + "/manager";
             public const string SUMMARY = BOARD + "/summary";
             public const string ADD_BOARDFILLERS = BOARD + "/add-boardfillers";
+            public const string GET_EXP_TIME = "get-exp-time";
         }
 
 
