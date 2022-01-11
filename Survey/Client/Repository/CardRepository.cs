@@ -58,7 +58,7 @@ namespace Survey.Client.Repository
             if (a != null)
             {
                 var response = await _httpClient.PutAsJsonAsync<CardModel>(_baseUrl + "/" + Constants.BACKEND_URL.ADD_REPLY, a);
-                if (!response.IsSuccessStatusCode)
+                if (!response?.IsSuccessStatusCode ?? true)
                 {
                     throw new ApplicationException(await response.Content.ReadAsStringAsync());
                 }

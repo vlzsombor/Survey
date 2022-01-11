@@ -1,10 +1,19 @@
-﻿<AuthorizeView Roles="Admin, BoardAdmin">
+﻿<a href="/" class="nav-link btn btn-link">surWee</a>
+<AuthorizeView Roles="Admin, BoardAdmin">
     <Authorized>
-        <span>Hello @context.User.Identity?.Name</span>
+        <div>
+            <span>You are logged in as @context.User.Identity?.Name</span>
+        </div>
         <a href="logout" class="nav-link" btn btn-link">Logout</a>
     </Authorized>
     <NotAuthorized>
         <a href="register">Register</a>
         <a href="login" class="nav-link btn btn-link">Login</a>
     </NotAuthorized>
+</AuthorizeView>
+
+<AuthorizeView Roles="BoardFiller">
+    <Authorized>
+        test
+    </Authorized>
 </AuthorizeView>

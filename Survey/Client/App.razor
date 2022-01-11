@@ -1,8 +1,11 @@
+@inject NavigationManager NavManager
 <Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
             <NotAuthorized>
                 <p>You are not authenticated. Please log in.</p>
+                @*<button type="button"></button>You are not authenticated. Please log in.</p>*@
+                <button @onclick="@(()=>NavManager.NavigateTo(NavManager.BaseUri + "/" +  Constants.FRONTEND_URL.LOGIN))">Login</button>
             </NotAuthorized>
             <Authorizing>
                 <p>Checking your state</p>

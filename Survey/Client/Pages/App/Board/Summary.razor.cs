@@ -22,10 +22,6 @@ namespace Survey.Client.Pages.App.Board
         [Inject]
         public Microsoft.JSInterop.IJSRuntime JS { get; set; } = null!;
 
-        public void test2()
-        {
-        }
-
         public void ExportToPdf()
         {
             int paragraphAfterSpacing = 8;

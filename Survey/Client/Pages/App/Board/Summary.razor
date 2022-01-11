@@ -2,8 +2,10 @@
 @using Survey.Shared.Model
 @using Microsoft.AspNetCore.SignalR.Client
 @using Survey.Client.Pages.App.Card
+@using Microsoft.AspNetCore.Authorization;
 
 @using Survey.Client.Pages.App.Util
+@attribute [Authorize]
 
 <AuthorizeView>
     <Authorized>
@@ -76,9 +78,6 @@
     </Authorized>
 </AuthorizeView>
 <button class="btn btn-primary" @onclick="@ExportToPdf">Export to PDF</button>
-
-<a @onclick="test2" class="btn btn-info" role="button">test2</a>
-
 
 <h1>summary</h1>
 @code {

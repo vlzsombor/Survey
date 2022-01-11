@@ -1,7 +1,15 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+<AuthorizeView>
+    <Authorized>
+        <button>
+            <NavLink class="nav-link" href="board/manager">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Board
+            </NavLink>
+        </button>
+    </Authorized>
+    <NotAuthorized>
+        <h1>Make your awesome anonymous survey</h1>
+    </NotAuthorized>
+</AuthorizeView>

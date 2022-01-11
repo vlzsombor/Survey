@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @using Blazored.Toast.Configuration
- <RadzenDialog />
+<RadzenDialog />
 
 <BlazoredToasts Position="ToastPosition.BottomRight"
                 Timeout="5"
@@ -8,12 +8,11 @@
                 SuccessClass="success-toast-override"
                 SuccessIcon="fa fa-thumbs-up"
                 ErrorIcon="fa fa-bug"
-                RemoveToastsOnNavigation ="true"
-                />
+                RemoveToastsOnNavigation="true" />
 <div class="page">
-    <div class="sidebar">
+    @*<div class="sidebar">
         <NavMenu />
-    </div>
+        </div>*@
     <div class="main">
         <div class="top-row px-4">
             <LoginLinks />

@@ -22,7 +22,8 @@
                                                CardList="CardList"
                                                Guid="@Guid"
                                                SendMessage="@(SendMessage)"
-                                               ExpTime="ExpTime"></Survey.Client.Pages.App.Card.MainPage>
+                                               ExpTime="ExpTime"
+            ></Survey.Client.Pages.App.Card.MainPage>
         }
 
         else if (Summary!=null)
@@ -66,7 +67,7 @@
     [CascadingParameter]
     public Error Error { get; set; } = default!;
 
-    private DateTime ExpTime { get; set; }
+    private DateTime? ExpTime { get; set; }
 
     private HubConnection hubConnection = default!;
 

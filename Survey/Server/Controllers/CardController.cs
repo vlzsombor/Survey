@@ -99,13 +99,21 @@ namespace Survey.Server.Controllers
         public async Task AddRepy([FromBody] CardModel cardModel)
         {
 
-            
-            _context.CardModel.Attach(cardModel);
-            _context.Entry(cardModel).Collection(x => x.Replies).IsModified = true;
 
+            CardModel cardModel1 = _context.CardModel.Where(x => x.Id == cardModel.Id).First();
+
+
+            cardModel1.Replies = cardModel.Replies;
+
+            //_context.CardModel.Attach(cardModel);
+            //_context.Entry(cardModel).Collection(x=>x.Tags).IsModified = false;
+            //_context.Entry(cardModel).Collection(x => x.Replies).IsModified = true;
+
+            //_context.Entry(cardModel).CurrentValues.SetValues(cardModel);
+
+            //_context.CardModel.Update(cardModel);
 
             await _context.SaveChangesAsync();
-
         }
 
         [HttpPut]

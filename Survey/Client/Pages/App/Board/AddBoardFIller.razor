@@ -1,8 +1,11 @@
 ﻿@using Survey.Shared.DTOs
 @attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.ADD_BOARDFILLERS + "/{BoardId}")]
 @using System.Linq
+@using Microsoft.AspNetCore.Authorization;
 
 @inject BoardRepository boardRepository
+@inject NavigationManager navManager
+@attribute [Authorize]
 
 <EditForm Model="boardFillerGenerationDto">
     <DataAnnotationsValidator />
@@ -74,7 +77,9 @@
 
         if (a != null)
         {
-            content = await a.Content.ReadAsStringAsync();
+            string accessGuid = await a.Content.ReadAsStringAsync();
+
+            content = accessGuid;
         }
 
 

@@ -81,7 +81,7 @@ namespace Survey.Server.Services
 
             }
 
-            return "Unsuccessful adding";
+            return "Adding was successful";
 
         }
 
