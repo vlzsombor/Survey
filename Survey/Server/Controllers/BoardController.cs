@@ -102,7 +102,7 @@ namespace Survey.Server.Controllers
 
             List<CardRatingDto> cardRatingDto = new List<CardRatingDto>();
 
-            foreach (var item in boardFiller?.BoardModel?.Cards ?? Enumerable.Empty<CardModel?>())
+            foreach (var item in boardFiller?.BoardModel?.Cards.OrderByDescending(x=>x.Rating.Average(x=>x.RatingNumber)) ?? Enumerable.Empty<CardModel?>())
             {
                 if (item != null)
                 {
@@ -124,16 +124,16 @@ namespace Survey.Server.Controllers
             BoardModel? boardModel = _context.BoardModel
                 .Where(board =>
                     board.OwnerUser == user &&
-                    board.Id.ToString() == guidString &&
-                    0 < DateTime.Compare(board.ExpDate, DateTime.Now))
+                    board.Id.ToString() == guidString)
                 .FirstOrDefault();
 
 
 
             List<CardRatingDto> cardRatingDto = new List<CardRatingDto>();
+
             if (boardModel != null)
             {
-                foreach (var item in boardModel.Cards)
+                foreach (var item in boardModel.Cards.OrderByDescending(x=>x.Rating.Average(y=>y.RatingNumber)))
                 {
                     if (item != null)
                     {

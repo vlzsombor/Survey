@@ -14,7 +14,7 @@
     <div id="@($"{Id}_addTag")">
         <div class="@(IsContainSpecialCharacter ? "tag-tooltip" : string.Empty)">
             <BlazoredTypeahead SearchMethod="SearchFilms"
-                               AddItemOnEmptyResultMethod="testAdding"
+                               AddItemOnEmptyResultMethod="Adding"
                                TValue="string"
                                TItem="string"
                                Value="Value"
@@ -74,18 +74,9 @@
 
     }
 
-    public async Task<string> testAdding(string s)
+    public async Task<string> Adding(string s)
     {
         return await Task.FromResult(s);
-
-    }
-
-
-
-
-
-    protected void AddTags(KeyboardEventArgs eventArgs)
-    {
 
     }
 
@@ -95,7 +86,12 @@
 
     private async Task<IEnumerable<string>> SearchFilms(string searchText)
     {
-        return await SearchMethod.Invoke(searchText);
+
+        var a = (await SearchMethod.Invoke(searchText)).ToList();
+
+        a.Add(searchText);
+
+        return a;
     }
 }
 <style>
