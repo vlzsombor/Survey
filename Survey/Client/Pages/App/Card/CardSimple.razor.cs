@@ -19,17 +19,19 @@ namespace Survey.Client.Pages.App.Card
         public CardRatingDto CardModel { get; set; } = default!;
 
         [Parameter]
-        public EventCallback<(int, CardModel)> OnChange { get; set; }
+        public EventCallback<(int?, bool?, CardModel)> OnChange { get; set; }
 
         [Parameter]
         public EventCallback<CardModel> OnDelete { get; set; }
 
         [Parameter]
         public EventCallback<(string, IRepliable)> AddReply { get; set; }
-        
+
         [Parameter]
         public EventCallback<string> NavigateCommand { get; set; }
+        public string myStyle { get; set; } = "color:grey";
 
+        public bool smileyOnOff { get; set; } = false;
 
 
         public Reply ReplyModel { get; set; } = new Reply();
@@ -45,6 +47,9 @@ namespace Survey.Client.Pages.App.Card
 
         protected override void OnInitialized()
         {
+
+            smileyOnOff = !CardModel.Smiley ?? false;
+
 
             if (CardModel.CardModel.Rating.Any())
             {
@@ -65,6 +70,22 @@ namespace Survey.Client.Pages.App.Card
             {
                 AddReply.InvokeAsync((ReplyModel.Text, repliable));
             }
+        }
+
+
+        public void test()
+        {
+            smileyOnOff = !smileyOnOff;
+            if (smileyOnOff)
+            {
+                myStyle = "color:yellow";
+            }
+            else
+            {
+                myStyle = "color:grey";
+            }
+
+            OnChange.InvokeAsync((null, smileyOnOff, CardModel.CardModel));
         }
 
     }

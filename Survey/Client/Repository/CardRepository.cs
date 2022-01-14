@@ -42,9 +42,9 @@ namespace Survey.Client.Repository
 
         }
 
-        public async Task UpdateCardRating(int value, CardModel cardmodel)
+        public async Task UpdateCardRating(int? value, bool? vote, CardModel cardmodel)
         {
-            var response = await _httpClient.PutAsJsonAsync<CardRatingDto>(_baseUrl + "/" + Constants.BACKEND_URL.UPDATE_CARD_RATING, new CardRatingDto(value, cardmodel));
+            var response = await _httpClient.PutAsJsonAsync<CardRatingDto>(_baseUrl + "/" + Constants.BACKEND_URL.UPDATE_CARD_RATING, new CardRatingDto(value, vote, cardmodel));
             if (!response.IsSuccessStatusCode)
             {
                 throw new ApplicationException(await response.Content.ReadAsStringAsync());
@@ -93,5 +93,6 @@ namespace Survey.Client.Repository
             }
 
         }
+
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Survey.Server.Model;
 
@@ -11,9 +12,10 @@ using Survey.Server.Model;
 namespace Survey.Server.Migrations
 {
     [DbContext(typeof(SurveyDbContext))]
-    partial class SurveyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220114180506_asfsagfga")]
+    partial class asfsagfga
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -327,8 +329,8 @@ namespace Survey.Server.Migrations
                     b.Property<int>("RatingNumber")
                         .HasColumnType("int");
 
-                    b.Property<bool>("SmileyVote")
-                        .HasColumnType("bit");
+                    b.Property<int>("SmileyVote")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

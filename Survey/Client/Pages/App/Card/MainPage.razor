@@ -32,10 +32,11 @@
                 @foreach (var cardItem in CardList ?? Enumerable.Empty<CardRatingDto>())
                 {
                     <CardSimple OnDelete="@(OnDelete)"
-                    OnChange="@((args) => UpdateCardRating(((int, CardModel))args))"
+                    OnChange="@((args) => UpdateCardRating(((int?, bool?,CardModel))args))"
                     CardModel="cardItem"
                     AddReply="@((args) => AddReply(((string, IRepliable))args))"
-                    NavigateCommand="NavigateCommand"></CardSimple>
+                    NavigateCommand="NavigateCommand"
+                    ></CardSimple>
                 }
             </Authorized>
             @*    <NotAuthorized>

@@ -10,8 +10,9 @@ namespace Survey.Client.Repository.Interfaces
     public interface ICardRepository
     {
         public Task CreateCard(CardModel card, string guid);
-        public Task UpdateCardRating(int value, CardModel cardmodel);
+        public Task UpdateCardRating(int? value, bool? smiley, CardModel cardmodel);
         public Task AddReply(string reply, IRepliable cardmodel);
         public Task DeleteCard(CardModel card);
+
     }
 }

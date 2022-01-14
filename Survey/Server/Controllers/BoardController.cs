@@ -106,7 +106,9 @@ namespace Survey.Server.Controllers
             {
                 if (item != null)
                 {
-                    cardRatingDto.Add(new CardRatingDto(item.Rating.Where(x => x.IdentityUser == user).FirstOrDefault()?.RatingNumber ?? 0, item));
+                    var rating = item.Rating.Where(x => x.IdentityUser == user).FirstOrDefault();
+
+                    cardRatingDto.Add(new CardRatingDto(rating?.RatingNumber ?? 0, rating?.SmileyVote ?? false, item));
 
                 }
 
@@ -137,7 +139,10 @@ namespace Survey.Server.Controllers
                 {
                     if (item != null)
                     {
-                        cardRatingDto.Add(new CardRatingDto(item.Rating.Where(x => x.IdentityUser == user).FirstOrDefault()?.RatingNumber ?? 0, item));
+
+                        var rating = item.Rating.Where(x => x.IdentityUser == user).FirstOrDefault();
+
+                        cardRatingDto.Add(new CardRatingDto(rating?.RatingNumber ?? 0,rating?.SmileyVote ?? false, item));
                     }
 
                 }

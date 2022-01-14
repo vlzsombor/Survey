@@ -117,17 +117,16 @@ namespace Survey.Client.Pages.App.Card
             }
         }
 
-
-        public async void UpdateCardRating((int value, CardModel cm) args)
+        public async Task UpdateCardRating((int? value, bool? vote, CardModel cm) args)
         {
             if (cardRepository != null)
             {
-                await cardRepository.UpdateCardRating(args.value, args.cm);
+                await cardRepository.UpdateCardRating(args.value, args.vote, args.cm);
                 await LoadCard();
             }
         }
 
-        public async void AddReply((string comment, IRepliable cm) args)
+        public async Task AddReply((string comment, IRepliable cm) args)
         {
             if (cardRepository != null)
             {

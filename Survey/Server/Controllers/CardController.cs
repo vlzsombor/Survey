@@ -77,6 +77,12 @@ namespace Survey.Server.Controllers
                     var toDeleteScore = cm.Rating.Where(x => x.IdentityUser == user).First();
                     _context.Remove(toDeleteScore);
                 }
+
+                if (cardRatingDto.Smiley.HasValue)
+                {
+                    cm.Rating.Where(x => x.IdentityUser == user).First().SmileyVote = cardRatingDto.Smiley.Value;
+                }
+
             }
             else
             {
@@ -84,13 +90,22 @@ namespace Survey.Server.Controllers
                 {
                     cm.Rating.Add(new RatingModel() { RatingNumber = cardRatingDto.RatingValue.Value, IdentityUser = user });
                 }
+
+                if (cardRatingDto.Smiley.HasValue)
+                {
+                    cm.Rating.Add(new RatingModel { SmileyVote = cardRatingDto.Smiley.Value, IdentityUser = user });
+                }
+
+
+
             }
+
+
 
             _context.Update(cm);
             await _context.SaveChangesAsync();
             return cardRatingDto.RatingValue ?? 0;
         }
-
 
 
         [HttpPut]
@@ -140,7 +155,7 @@ namespace Survey.Server.Controllers
 
             boardModel?.Cards?.Add(cardModel);
 
-            var a = _context.Tag.Select(x=>x.TagText).Intersect(cardModel.Tags.Select(x=>x.TagText));
+            var a = _context.Tag.Select(x => x.TagText).Intersect(cardModel.Tags.Select(x => x.TagText));
 
             ManyToManyUpdate(_context, cardModel);
 
@@ -148,7 +163,7 @@ namespace Survey.Server.Controllers
             {
                 _context.Update(boardModel);
             }
-            
+
             await _context.SaveChangesAsync();
 
             return cardModel.Id;
