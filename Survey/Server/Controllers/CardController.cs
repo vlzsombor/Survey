@@ -67,12 +67,16 @@ namespace Survey.Server.Controllers
 
             if (cm.Rating.Any(x => x.IdentityUser == user))
             {
-
+                RatingModel rm = cm.Rating.Where(x => x.IdentityUser == user).First();
                 if (cardRatingDto.RatingValue.HasValue)
                 {
                     cm.Rating.Where(x => x.IdentityUser == user).First().RatingNumber = cardRatingDto.RatingValue.Value;
                 }
-                else
+                else if (cardRatingDto.Smiley.HasValue)
+                {
+                    cm.Rating.Where(x => x.IdentityUser == user).First().SmileyVote = cardRatingDto.Smiley.Value;
+                }
+                else 
                 {
                     var toDeleteScore = cm.Rating.Where(x => x.IdentityUser == user).First();
                     _context.Remove(toDeleteScore);
@@ -80,7 +84,6 @@ namespace Survey.Server.Controllers
 
                 if (cardRatingDto.Smiley.HasValue)
                 {
-                    cm.Rating.Where(x => x.IdentityUser == user).First().SmileyVote = cardRatingDto.Smiley.Value;
                 }
 
             }

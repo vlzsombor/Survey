@@ -15,7 +15,7 @@ namespace Survey.Shared.Model
 
         public virtual IdentityUser? IdentityUser { get; set; } = default!;
 
-        public virtual int RatingNumber { get; set; }
+        public virtual int? RatingNumber { get; set; }
 
         public virtual bool SmileyVote { get; set; }
 

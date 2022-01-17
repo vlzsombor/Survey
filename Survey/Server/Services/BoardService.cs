@@ -37,8 +37,7 @@ namespace Survey.Server.Services
         {
             string boardGuid = boardFillerGenerationDto.BoardGuid.ToString();
 
-            string pinCode2 = ServerHelper.GenerateRandomNo(_random) + "Aa123456!";
-            string pinCode = "Bb123456!";
+            string pinCode = ServerHelper.RandomString(_userManager);
 
 
             BoardModel? boardModel = _context.BoardModel.Where(x => x.Id.ToString() == boardGuid).FirstOrDefault();

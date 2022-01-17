@@ -48,7 +48,6 @@ namespace Survey.Client.Pages.App.Card
         protected override void OnInitialized()
         {
 
-            smileyOnOff = !CardModel.Smiley ?? false;
 
 
             if (CardModel.CardModel.Rating.Any())
@@ -56,6 +55,22 @@ namespace Survey.Client.Pages.App.Card
                 var a = CardModel.CardModel.Rating.Average(x => x.RatingNumber);
             }
             base.OnInitialized();
+        }
+
+
+        protected override void OnParametersSet()
+        {
+            smileyOnOff = CardModel.Smiley ?? false;
+
+            if (smileyOnOff)
+            {
+                myStyle = "color:yellow";
+            }
+            else
+            {
+                myStyle = "color:grey";
+            }
+            StateHasChanged();
         }
 
         private async void Delete()

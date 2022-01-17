@@ -1,8 +1,8 @@
 ﻿
 <div class="suggestion-container w-75">
-    <div class="tagsinput">
-        @if (Tags != null && Tags.Any())
-        {
+    @if (Tags != null && Tags.Any())
+    {
+        <div class="tagsinput">
             @foreach (var tag in Tags)
             {
                 <span class="tag">
@@ -13,9 +13,10 @@
                     }
                 </span>
             }
-        }
-    </div>
+        </div>
+    }
 </div>
+
 
 @code {
     [Parameter]

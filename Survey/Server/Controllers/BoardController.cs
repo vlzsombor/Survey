@@ -66,7 +66,7 @@ namespace Survey.Server.Controllers
         [HttpPost]
         public void Post([FromBody] BoardModel bm)
         {
-            if(bm.Id == null)
+            if(bm.Id == Guid.Empty)
             {
                 IdentityUser user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
                 //bm.Cards = _context.CardModel.ToList();            
@@ -77,12 +77,11 @@ namespace Survey.Server.Controllers
             else
             {
                 var dbBoardModel = _context.BoardModel.Where(x => x.Id == bm.Id).First();
+
                 dbBoardModel.Name = bm.Name;
                 dbBoardModel.ExpDate = bm.ExpDate;
             }
             _context.SaveChanges();
-
-
         }
 
         [HttpGet(Constants.BACKEND_URL.ACCESS_GUID + "/{boardFillerGuid}")]
@@ -102,7 +101,7 @@ namespace Survey.Server.Controllers
 
             List<CardRatingDto> cardRatingDto = new List<CardRatingDto>();
 
-            foreach (var item in boardFiller?.BoardModel?.Cards.OrderByDescending(x=>x.Rating.Average(x=>x.RatingNumber)) ?? Enumerable.Empty<CardModel?>())
+            foreach (var item in boardFiller?.BoardModel?.Cards ?? Enumerable.Empty<CardModel?>())
             {
                 if (item != null)
                 {
@@ -135,18 +134,19 @@ namespace Survey.Server.Controllers
 
             if (boardModel != null)
             {
-                foreach (var item in boardModel.Cards.OrderByDescending(x=>x.Rating.Average(y=>y.RatingNumber)))
-                {
-                    if (item != null)
+                    foreach (var item in boardModel.Cards)
                     {
+                        if (item != null)
+                        {
 
-                        var rating = item.Rating.Where(x => x.IdentityUser == user).FirstOrDefault();
+                            var rating = item.Rating.Where(x => x.IdentityUser == user).FirstOrDefault();
 
-                        cardRatingDto.Add(new CardRatingDto(rating?.RatingNumber ?? 0,rating?.SmileyVote ?? false, item));
+                            cardRatingDto.Add(new CardRatingDto(rating?.RatingNumber ?? 0, rating?.SmileyVote ?? false, item));
+                        }
+
                     }
-
                 }
-            }
+
             return cardRatingDto;
         }
 

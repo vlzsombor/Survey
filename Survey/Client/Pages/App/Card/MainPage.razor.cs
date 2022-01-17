@@ -82,7 +82,7 @@ namespace Survey.Client.Pages.App.Card
 
 
 
-        protected async override Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
 
             navigationManager.LocationChanged += NavigationManager_LocationChanged;
@@ -91,11 +91,11 @@ namespace Survey.Client.Pages.App.Card
         }
         private async Task<IEnumerable<string>> SearchMethod(string searchText)
         {
-            var a = CardList
+            var a = CardList?
                 .SelectMany(x=>
                 x.CardModel.Tags.Select(x=>x.TagText)
                 .Where(x=>x.ToLower().Contains(searchText.ToLower()))).Distinct();
-            return a;
+            return a ?? Enumerable.Empty<string>();
         }
 
         protected async override Task OnParametersSetAsync()
@@ -148,15 +148,15 @@ namespace Survey.Client.Pages.App.Card
 
                     if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("tag", out var param))
                     {
-                        CardList = CardList.Where(z => z.CardModel.Tags.Any(x => param.Any(y => y == x.TagText))).ToList();
+                        CardList = CardList?.Where(z => z.CardModel.Tags.Any(x => param.Any(y => y == x.TagText))).ToList();
                     }
 
 
                 }
                 catch (ApplicationException ex)
                 {
-                    Error.ProcessError(ex);
-                    return;
+                    //Error.ProcessError(ex);
+                    throw ex;
                 }
             }
             StateHasChanged();

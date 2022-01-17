@@ -4,6 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Web;
+using Microsoft.AspNetCore.Http.Extensions;
+using Survey.Shared;
+
 namespace Survey.Server.Services
 {
     public class EmailService
@@ -24,7 +28,7 @@ namespace Survey.Server.Services
 
             foreach (var x in toEmail)
             {
-                htmlContents.Add($"<strong>and easy to do anywhere, even with C# your access guid: {x.accessguid} <br> your pin {x.pin}</strong>");
+                htmlContents.Add("Your credentials for voting on the surWee board");
                 emails.Add(new EmailAddress(x.email, "anyone"));
                 a.Add(new Dictionary<string, string>()
                     {
@@ -34,7 +38,7 @@ namespace Survey.Server.Services
             }
 
 
-
+            //$"This is your access datas your link: <a href=\"{Constants.FRONTEND_URL.BOARD_LOGIN + "\\" + x.accessguid  }\"></a> <br> your pin {x.pin}"
 
             //var msg2 = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             var msg = MailHelper.CreateMultipleEmailsToMultipleRecipients(

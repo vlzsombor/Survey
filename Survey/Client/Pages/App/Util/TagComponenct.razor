@@ -5,21 +5,24 @@
 @*https://stackoverflow.com/questions/65744610/blazor-autocomplete-tagging/65748719*@
 
 
-<div id="@($"{Id}_tagsinput")" class="tagsinput">
+<div id="@($"{Id}_tagsinput")">
 
     <Survey.Client.Pages.App.Util.TagShower Tags="Tags"
                                             DeleteVisible="true">
     </Survey.Client.Pages.App.Util.TagShower>
 
     <div id="@($"{Id}_addTag")">
-        <div class="@(IsContainSpecialCharacter ? "tag-tooltip" : string.Empty)">
-            <BlazoredTypeahead SearchMethod="SearchFilms"
+        <div>
+            <BlazoredTypeahead @onkeypress="KeyPressHandler"
+                               @onkeydown="KeyDownHandler"
+                               SearchMethod="SearchFilms"
                                AddItemOnEmptyResultMethod="Adding"
                                TValue="string"
                                TItem="string"
                                Value="Value"
                                ValueExpression="@(() => Value)"
-                               ValueChanged="SelectedResultChanged">
+                               ValueChanged="SelectedResultChanged"
+                               DisableClear="true">
                 <SelectedTemplate>
                     @context
                 </SelectedTemplate>
@@ -49,6 +52,22 @@
     [Parameter]
     public IList<string> Tags { get; set; } = new List<string>();
 
+
+    void KeyDownHandler(KeyboardEventArgs args)
+    {
+        if (args.Key == "enter")
+        {
+        }
+    }
+
+    void KeyPressHandler(KeyboardEventArgs args)
+    {
+        if (args.Key == "enter")
+        {
+
+        }
+    }
+
     private void SelectedResultChanged(string result)
     {
         IsContainSpecialCharacter = false;
@@ -77,7 +96,6 @@
     public async Task<string> Adding(string s)
     {
         return await Task.FromResult(s);
-
     }
 
     private string? stringSearchedText;
@@ -88,8 +106,10 @@
     {
 
         var a = (await SearchMethod.Invoke(searchText)).ToList();
-
-        a.Add(searchText);
+        if (!a.Contains(searchText))
+        {
+            a.Add(searchText);
+        }
 
         return a;
     }

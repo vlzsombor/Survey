@@ -10,35 +10,43 @@
 
 <h3></h3>
 
-<EditForm Model="userInfo" OnValidSubmit="CreateUser">
-    <DataAnnotationsValidator />
-    <div class="form-group my-3">
-        <label for="password">Email</label>
-        <InputText @bind-Value="userInfo.Email" type="email" id="email" class="form-control" />
-        <ValidationMessage For="@(()=>userInfo.Email)" />
+
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col-sm-4 align-self-center">
+            <EditForm Model="userInfo" OnValidSubmit="CreateUser">
+                <DataAnnotationsValidator />
+                <div class="form-group my-3">
+                    <label for="password">Email</label>
+                    <InputText @bind-Value="userInfo.Email" type="email" id="email" class="form-control" />
+                    <ValidationMessage For="@(()=>userInfo.Email)" />
+                </div>
+
+                <div class="form-group my-3">
+                    <label for="password">Password</label>
+                    <InputText @bind-Value="userInfo.Password" type="password" id="password" class="form-control" />
+                    <ValidationMessage For="@(()=>userInfo.Password)" />
+                </div>
+                <ValidationSummary />
+
+                <button type="submit" class="btn btn-primary">Login</button>
+                @if (userToken?.ErrorDict != null)
+                {
+                    @foreach (var x in userToken.ErrorDict)
+                    {
+
+                        <div class="alert alert-danger" role="alert">
+                            @x.Value
+                        </div>
+                    }
+                }
+            </EditForm>
+        </div>
     </div>
+</div>
 
-    <div class="form-group my-3">
-        <label for="password">Password</label>
-        <InputText @bind-Value="userInfo.Password" type="password" id="password" class="form-control" />
-        <ValidationMessage For="@(()=>userInfo.Password)" />
-    </div>
-    <ValidationSummary />
 
-    <button type="submit" class="btn btn-primary">Login</button>
-    @if (userToken?.ErrorDict != null)
-    {
-        @foreach (var x in userToken.ErrorDict)
-        {
-
-            <div class="alert alert-danger" role="alert">
-                @x.Value
-            </div>
-        }
-    }
-</EditForm>
-
-@code{
+@code {
     private UserInfo userInfo = new UserInfo();
     private UserToken? userToken;
 

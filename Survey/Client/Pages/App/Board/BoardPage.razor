@@ -17,7 +17,7 @@
             args =>
 {
                 dialogService.Open<DialogEditBoard>
-                        ($"Edit board",
+                        ($"Add new Board",
                         new Dictionary<string, object>(){
                             {"boardModel", boardModel},
                             {"MakeNewSurveyBoard", new EventCallbackFactory().CreateInferred(this, MakeNewSurveyBoard, boardModel)}
