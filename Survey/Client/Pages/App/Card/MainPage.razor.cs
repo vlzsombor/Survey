@@ -14,6 +14,9 @@ using Survey.Client.Shared;
 using Survey.Shared.Model.Comment;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.AspNetCore.Authorization;
+using System.Net.Http;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Survey.Client.Pages.App.Card
 {
@@ -43,6 +46,16 @@ namespace Survey.Client.Pages.App.Card
 
         [Inject]
         public NavigationManager navigationManager { get; set; } = default!;
+
+
+        [Inject] 
+        private IAuthorizationService AuthorizationService { get; set; }
+
+        [Inject]
+        private AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
+        [Inject]
+        private ILoginService LoginService { get; set; }
 
         [Parameter, EditorRequired]
         public EventCallback<Task> SendMessage { get; set; }
@@ -162,9 +175,19 @@ namespace Survey.Client.Pages.App.Card
             StateHasChanged();
         }
 
-        public void Dispose()
+        public async void Dispose()
         {
             navigationManager.LocationChanged -= NavigationManager_LocationChanged;
+
+
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.IsInRole("BoardFiller"))
+            {
+                await LoginService.Logout();
+            }
+
         }
     }
 }

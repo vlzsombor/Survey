@@ -37,8 +37,14 @@ namespace Survey.Server.Services
         {
             string boardGuid = boardFillerGenerationDto.BoardGuid.ToString();
 
-            string pinCode = ServerHelper.RandomString(_userManager);
+            string pinCode = "Bb123456!";
 
+
+            if (await _featureManager.IsEnabledAsync("FeatureActuallySendEmail"))
+            {
+                pinCode = ServerHelper.RandomString(_userManager);
+
+            }
 
             BoardModel? boardModel = _context.BoardModel.Where(x => x.Id.ToString() == boardGuid).FirstOrDefault();
             if (boardModel == null)

@@ -45,8 +45,8 @@ namespace Survey.Server.Services
                 from,
                 emails,
                 htmlContents,
-      "jojooj {pin} -pin- <br> -accessguid- accessguid",
-      "jojooj {pin} -pin- <br> -accessguid- accessguid",
+      $"Your link to the board: {Constants.FRONTEND_URL.BOARD_LOGIN}/accessguid \n your password: pin",
+      $"Your link to the board: {Constants.FRONTEND_URL.BOARD_LOGIN}/accessguid <br> your password:  pin",
                 a
                 );
 
