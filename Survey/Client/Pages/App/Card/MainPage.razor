@@ -14,7 +14,7 @@
 
 @if (ExpTime != null)
 {
-    @if (0 >= DateTime.Compare(ExpTime??DateTime.Now, DateTime.Now))
+    @if (0 >= DateTime.Compare(ExpTime ?? DateTime.Now, DateTime.Now))
     {
         <h1>Voting time is over</h1>
     }
@@ -22,22 +22,35 @@
     {
         <AuthorizeView Roles="Admin, BoardAdmin">
             <a @onclick="@(() => {navigationManager.NavigateTo(Constants.FRONTEND_URL.ADD_BOARDFILLERS + "/" + Guid);})" class="btn btn-info" role="button">Add Board filler</a>
+
         </AuthorizeView>
 
         <AuthorizeView>
             <Authorized>
-                <Survey.Client.Pages.App.Card.CardForm cardModel="@cardModel" OnValidSubmit="@Create"
-                                               Tags="@(Tags)"
-                                               SearchMethod="SearchMethod" />
-                @foreach (var cardItem in CardList ?? Enumerable.Empty<CardRatingDto>())
-                {
-                    <CardSimple OnDelete="@(OnDelete)"
-                    OnChange="@((args) => UpdateCardRating(((int?, bool?,CardModel))args))"
-                    CardModel="cardItem"
-                    AddReply="@((args) => AddReply(((string, IRepliable))args))"
-                    NavigateCommand="NavigateCommand"
-                    ></CardSimple>
-                }
+
+                <div class="container">
+                    <div class="row justify-content-md-center">
+                        <div class="col-sm-6 align-self-center">
+                            <Survey.Client.Pages.App.Card.CardForm cardModel="@cardModel" OnValidSubmit="@Create"
+                                                           Tags="@(Tags)"
+                                                           SearchMethod="SearchMethod" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row mx-auto">
+                    @foreach (var cardItem in CardList ?? Enumerable.Empty<CardRatingDto>())
+                    {
+                        <div class="col-sm-2">
+
+                            <CardSimple OnDelete="@(OnDelete)"
+                            OnChange="@((args) => UpdateCardRating(((int?, bool?,CardModel))args))"
+                            CardModel="cardItem"
+                            AddReply="@((args) => AddReply(((string, IRepliable))args))"
+                            NavigateCommand="NavigateCommand"></CardSimple>
+                        </div>
+
+                    }
+                </div>
             </Authorized>
             @*    <NotAuthorized>
                 <PasswordLogin LoadCardEventCallBack="@(LoadCard)" BoardFillerDto="BoardFillerDto"></PasswordLogin>

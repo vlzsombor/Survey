@@ -48,14 +48,14 @@ namespace Survey.Server.Controllers
         }
 
 
-        [HttpGet(Constants.FRONTEND_URL.GET_EXP_TIME + "/"+"{guid}")]
+        [HttpGet(Constants.FRONTEND_URL.GET_EXP_TIME + "/" + "{guid}")]
         public DateTime GetExpTime(string guid)
         {
 
-            return _context.BoardModel.Where(x => x.Id.ToString()== guid).First().ExpDate;
+            return _context.BoardModel.Where(x => x.Id.ToString() == guid).First().ExpDate;
         }
 
-        [HttpGet(Constants.BACKEND_URL.ACCESS_GUID +"/"+Constants.FRONTEND_URL.GET_EXP_TIME + "/"+"{guid}")]
+        [HttpGet(Constants.BACKEND_URL.ACCESS_GUID + "/" + Constants.FRONTEND_URL.GET_EXP_TIME + "/" + "{guid}")]
         public DateTime GetExpTimeAccessGuid(string guid)
         {
             return _context.BoardFillers.Where(x => x.UserName == guid).Select(x => x.BoardModel.ExpDate).First();
@@ -66,7 +66,7 @@ namespace Survey.Server.Controllers
         [HttpPost]
         public void Post([FromBody] BoardModel bm)
         {
-            if(bm.Id == Guid.Empty)
+            if (bm.Id == Guid.Empty)
             {
                 IdentityUser user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
                 //bm.Cards = _context.CardModel.ToList();            
@@ -88,8 +88,7 @@ namespace Survey.Server.Controllers
         public List<CardRatingDto>? GenerateTempUserId(string boardFillerGuid)
         {
             BoardFiller? boardFiller = _context.BoardFillers
-                .Where(x => x.UserName == boardFillerGuid &&
-                0 < DateTime.Compare(x.BoardModel.ExpDate, DateTime.Now))
+                .Where(x => x.UserName == boardFillerGuid )
                 .FirstOrDefault();
 
             IdentityUser user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
@@ -101,7 +100,7 @@ namespace Survey.Server.Controllers
 
             List<CardRatingDto> cardRatingDto = new List<CardRatingDto>();
 
-            foreach (var item in boardFiller?.BoardModel?.Cards ?? Enumerable.Empty<CardModel?>())
+            foreach (var item in boardFiller?.BoardModel?.Cards.OrderByDescending(x => x.Rating?.Average(y => y.RatingNumber) ?? 0) ?? Enumerable.Empty<CardModel?>())
             {
                 if (item != null)
                 {
@@ -134,18 +133,18 @@ namespace Survey.Server.Controllers
 
             if (boardModel != null)
             {
-                    foreach (var item in boardModel.Cards)
+                foreach (var item in boardModel.Cards.OrderByDescending(x => x.Rating?.Average(y => y.RatingNumber) ?? 0) ?? Enumerable.Empty<CardModel?>())
+                {
+                    if (item != null)
                     {
-                        if (item != null)
-                        {
 
-                            var rating = item.Rating.Where(x => x.IdentityUser == user).FirstOrDefault();
+                        var rating = item.Rating.Where(x => x.IdentityUser == user).FirstOrDefault();
 
-                            cardRatingDto.Add(new CardRatingDto(rating?.RatingNumber ?? 0, rating?.SmileyVote ?? false, item));
-                        }
-
+                        cardRatingDto.Add(new CardRatingDto(rating?.RatingNumber ?? 0, rating?.SmileyVote ?? false, item));
                     }
+
                 }
+            }
 
             return cardRatingDto;
         }
