@@ -1,4 +1,4 @@
-﻿@page "/counter"
+﻿@page "/counter/{alma:int?}"
 
 <h1>Counter</h1>
 
@@ -8,7 +8,9 @@
 
 @code {
     private int currentCount = 0;
-
+    
+    [Parameter]
+    public int? alma { get; set; }
     private void IncrementCount()
     {
         currentCount++;

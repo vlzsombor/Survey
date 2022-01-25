@@ -10,29 +10,23 @@
     <PackageReference Include="Blazored.SessionStorage" Version="2.2.0" />
     <PackageReference Include="Blazored.Toast" Version="3.2.2" />
     <PackageReference Include="Blazored.Typeahead" Version="4.6.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.1" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Radzen.Blazor" Version="3.13.3" />
-    <PackageReference Include="Syncfusion.Blazor" Version="19.4.0.38" />
-    <PackageReference Include="Syncfusion.Blazor.Core" Version="19.4.0.38" />
-    <PackageReference Include="Syncfusion.Pdf.Net.Core" Version="19.4.0.38" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.14.1" />
+    <PackageReference Include="Radzen.Blazor" Version="3.14.7" />
+    <PackageReference Include="Syncfusion.Blazor" Version="19.4.0.47" />
+    <PackageReference Include="Syncfusion.Blazor.Core" Version="19.4.0.47" />
+    <PackageReference Include="Syncfusion.Pdf.Net.Core" Version="19.4.0.47" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.15.1" />
     <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Shared\Survey.Shared.csproj" />
+	<ProjectReference Include="..\Shared\Survey.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
