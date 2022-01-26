@@ -8,9 +8,13 @@
 
 @code {
     private int currentCount = 0;
-    
+
     [Parameter]
     public int? alma { get; set; }
+
+    [Parameter]
+    public EventCallback OnBtnClick { get; set; }
+
     private void IncrementCount()
     {
         currentCount++;
