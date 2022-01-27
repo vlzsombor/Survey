@@ -5,22 +5,26 @@
 <EditForm Model="boardModel" OnValidSubmit="OnChaningSurveyBoard">
     <DataAnnotationsValidator />
     <div class="form-group">
+        <label for="boardModel.ExpDate">Set expiration date</label>
         <InputDate @bind-Value="@boardModel.ExpDate" class="form-control" id="boardModel.ExpDate"></InputDate>
         <ValidationMessage For="@(() => boardModel.ExpDate)" />
+        <label for="boardModel.Name">Set the name of the board</label>
         <InputText @bind-Value="@boardModel.Name" class="form-control" id="boardModel.Name"></InputText>
         <ValidationMessage For="@(() => boardModel.Name)" />
     </div>
-    <button class="btn btn-primary" type="submit">Submit</button>
+    <button class="btn btn-primary" type="submit">@ButtonText</button>
 </EditForm>
 
 @using Survey.Client.Pages.App.Board
 
 @code {
     [Parameter]
-    public BoardModel boardModel { get; set; } = null!;    
-
-    [Parameter] 
+    public BoardModel boardModel { get; set; } = null!;
+    [Parameter]
     public EventCallback<BoardModel> MakeNewSurveyBoard { get; set; }
+
+    [Parameter]
+    public string ButtonText { get; set; } = "Submit";
 
     protected override void OnInitialized()
     {

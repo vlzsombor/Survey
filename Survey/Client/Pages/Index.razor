@@ -1,13 +1,10 @@
 ﻿@page "/"
+@inject NavigationManager navigationManager
 
 
 <AuthorizeView>
     <Authorized>
-        <button>
-            <NavLink class="nav-link" href="board/manager">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Board
-            </NavLink>
-        </button>
+        <Survey.Client.Pages.App.Board.BoardPage></Survey.Client.Pages.App.Board.BoardPage>
     </Authorized>
     <NotAuthorized>
         <div class="container">
@@ -19,3 +16,5 @@
         </div>
     </NotAuthorized>
 </AuthorizeView>
+@code {
+}
