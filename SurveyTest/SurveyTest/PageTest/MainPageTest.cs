@@ -12,7 +12,7 @@ namespace SurveyTest.PageTest
     public class MainPageTest
     {
         [Fact]
-        public void NotAuthorized()
+        public void HtmlAssertion()
         {
             using var ctx = new TestContext();
             ctx.AddTestAuthorization();
@@ -20,7 +20,7 @@ namespace SurveyTest.PageTest
 
             var component = ctx.RenderComponent<Index>();
             Assert.Equal("Make your awesome anonymous survey", component.Find($"h1").TextContent);
-
+                
         }       
         
         [Fact]
@@ -45,5 +45,6 @@ namespace SurveyTest.PageTest
             Assert.Contains("Board", component.Find($".nav-link").TextContent);
 
         }
+
     }
 }
