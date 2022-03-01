@@ -47,11 +47,9 @@ namespace Survey.Server.Controllers
                 .ToList();
         }
 
-
         [HttpGet(Constants.FRONTEND_URL.GET_EXP_TIME + "/" + "{guid}")]
         public DateTime GetExpTime(string guid)
         {
-
             return _context.BoardModel.Where(x => x.Id.ToString() == guid).First().ExpDate;
         }
 
@@ -70,7 +68,6 @@ namespace Survey.Server.Controllers
             {
                 IdentityUser user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
                 //bm.Cards = _context.CardModel.ToList();            
-
                 bm.OwnerUser = user;
                 _context.BoardModel.Update(bm);
             }

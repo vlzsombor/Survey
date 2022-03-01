@@ -66,7 +66,11 @@ namespace Survey.Server.Controllers
         [HttpPost(Survey.Shared.Constants.BACKEND_URL.LOGIN)]
         public async Task<ActionResult<UserToken>> Login([FromBody] UserInfo userInfo)
         {
-            var result = await _signInManager.PasswordSignInAsync(userInfo.Email, userInfo.Password, isPersistent: false, lockoutOnFailure: false);
+            var result = await _signInManager.PasswordSignInAsync(
+                userInfo.Email,
+                userInfo.Password,
+                isPersistent: false,
+                lockoutOnFailure: false);
 
             if (result.Succeeded)
             {
@@ -77,14 +81,11 @@ namespace Survey.Server.Controllers
             else
             {
                 Dictionary<string, string> errorsDictionary = new Dictionary<string, string>();
-
                 errorsDictionary.Add("Bad credentials", "Please give correct credentials");
                 //string errorsDictionarySerialized = JsonConvert.SerializeObject(errorsDictionary);
                 return BadRequest(errorsDictionary);
             }
         }
-
-
         [HttpPost(Survey.Shared.Constants.BACKEND_URL.BOARD_FILLER_LOGIN)]
         public async Task<ActionResult<UserToken>> Logintest([FromBody] BoardFillerDto boardFillerDto)
         {
@@ -133,7 +134,6 @@ namespace Survey.Server.Controllers
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(token)
             };
-
         }
         private async Task<UserToken> BuildToken2(IdentityUser identityUser)
         {

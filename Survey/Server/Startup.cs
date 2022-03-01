@@ -46,10 +46,11 @@ namespace Survey.Server
                     .UseSqlServer(
                         Configuration.GetConnectionString("DefaultConnection")));
 
+
+
             services.AddScoped<IBoardService, BoardService>();
 
             services.AddFeatureManagement();
-
 
             services.AddScoped<IAccountService, AccountService>();
 
