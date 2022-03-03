@@ -9,7 +9,7 @@ namespace Survey.Server.Data
 {
     public static class SeedAdministratorAndUser
     {
-        internal async static Task Seed(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
+        public async static Task Seed(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
         {
             await SeedRoles(roleManager);
             await SeedAdministratorUser(userManager);

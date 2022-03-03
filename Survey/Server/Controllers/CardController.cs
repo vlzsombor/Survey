@@ -64,7 +64,6 @@ namespace Survey.Server.Controllers
                 return 0;
             }
 
-
             if (cm.Rating.Any(x => x.IdentityUser == user))
             {
                 RatingModel rm = cm.Rating.Where(x => x.IdentityUser == user).First();
@@ -85,7 +84,6 @@ namespace Survey.Server.Controllers
                 if (cardRatingDto.Smiley.HasValue)
                 {
                 }
-
             }
             else
             {
@@ -99,11 +97,7 @@ namespace Survey.Server.Controllers
                     cm.Rating.Add(new RatingModel { SmileyVote = cardRatingDto.Smiley.Value, IdentityUser = user });
                 }
 
-
-
             }
-
-
 
             _context.Update(cm);
             await _context.SaveChangesAsync();

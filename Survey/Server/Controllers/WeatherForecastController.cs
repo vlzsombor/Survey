@@ -27,7 +27,7 @@ namespace Survey.Server.Controllers
         }
 
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme )]
+        [AllowAnonymous]
         public IEnumerable<WeatherForecast> Get()
         { 
             var rng = new Random();
