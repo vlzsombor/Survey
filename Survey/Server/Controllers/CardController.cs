@@ -33,23 +33,11 @@ namespace Survey.Server.Controllers
 
         }
 
-        //read
-        [HttpGet]
-        [Route(Survey.Shared.Constants.BACKEND_URL.CARDS)]
-        [AllowAnonymous]
-        public List<CardModel> GetCardsAsync(string? boardGuid)
-        {
-
-            return _context.CardModel.ToList();
-        }
-
-
-
         //update, partly
         [HttpPut]
         [Route(Survey.Shared.Constants.BACKEND_URL.UPDATE_CARD_RATING)]
         [Route(Survey.Shared.Constants.BACKEND_URL.ACCESS_GUID + "/" + Survey.Shared.Constants.BACKEND_URL.UPDATE_CARD_RATING)]
-        public async Task<int> OnChangeMethod([FromBody] CardRatingDto cardRatingDto)
+        public async Task<int> UpdateCardModel([FromBody] CardRatingDto cardRatingDto)
         {
             IdentityUser user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
 
@@ -81,11 +69,6 @@ namespace Survey.Server.Controllers
                     var toDeleteScore = cm.Rating.Where(x => x.IdentityUser == user).First();
                     _context.Remove(toDeleteScore);
                 }
-
-                if (cardRatingDto.Smiley.HasValue)
-                {
-                }
-
             }
             else
             {
@@ -93,23 +76,15 @@ namespace Survey.Server.Controllers
                 {
                     cm.Rating.Add(new RatingModel() { RatingNumber = cardRatingDto.RatingValue.Value, IdentityUser = user });
                 }
-
                 if (cardRatingDto.Smiley.HasValue)
                 {
                     cm.Rating.Add(new RatingModel { SmileyVote = cardRatingDto.Smiley.Value, IdentityUser = user });
                 }
-
-
-
             }
-
-
-
             _context.Update(cm);
             await _context.SaveChangesAsync();
             return cardRatingDto.RatingValue ?? 0;
         }
-
 
         [HttpPut]
         [Route(Survey.Shared.Constants.BACKEND_URL.ACCESS_GUID + "/" + Survey.Shared.Constants.BACKEND_URL.ADD_REPLY)]
@@ -137,9 +112,9 @@ namespace Survey.Server.Controllers
         [HttpPut]
         [Route(Survey.Shared.Constants.BACKEND_URL.ACCESS_GUID + "/" + Survey.Shared.Constants.BACKEND_URL.ADD_REPLY_TO_REPLY)]
         [Route(Survey.Shared.Constants.BACKEND_URL.ADD_REPLY_TO_REPLY)]
-        public async Task AddRepy([FromBody] Reply cardModel)
+        public async Task AddRepy([FromBody] Reply reply)
         {
-            _context.Update(cardModel);
+            _context.Update(reply);
             await _context.SaveChangesAsync();
 
         }

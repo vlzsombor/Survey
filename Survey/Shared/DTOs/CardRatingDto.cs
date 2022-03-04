@@ -12,9 +12,9 @@ namespace Survey.Shared.DTOs
         public int? RatingValue { get; set; }
 
         public CardModel CardModel { get; set; }
-        public bool? Smiley{ get; set; }
+        public bool? Smiley { get; set; }
 
-        public CardRatingDto(int? ratingValue,bool? smileyVote,CardModel cardModel)
+        public CardRatingDto(int? ratingValue, bool? smileyVote, CardModel cardModel)
         {
             RatingValue = ratingValue;
             CardModel = cardModel;
