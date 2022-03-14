@@ -62,6 +62,10 @@ namespace TestSurveyServer
             var b = await a.ReadAsStringAsync();
         }
 
+        [Fact]
+        public void Test1()
+        {
 
+        }
     }
 }
