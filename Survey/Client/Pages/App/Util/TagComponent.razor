@@ -75,7 +75,6 @@
         result = result.ToLower();
         if (!String.IsNullOrEmpty(result))
         {
-
             var regex = new Regex(@"[^a-zA-Z0-9\s]");
             if (!regex.IsMatch(result))
             {
@@ -89,9 +88,6 @@
                 IsContainSpecialCharacter = true;
             }
         }
-
-
-
     }
 
     public async Task<string> Adding(string s)
