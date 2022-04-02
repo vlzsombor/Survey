@@ -15,15 +15,12 @@ namespace Survey.Server.Services
         //Execute().Wait();
         public static async Task SendEmail(List<(string email, string pin, string accessguid)> toEmail)
         {
-
-
             var apiKey = Environment.GetEnvironmentVariable("emailTest");
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress("vl.zsombor@hotmail.com", "Zsombor");
 
             List<string> htmlContents = new List<string>();
             List<EmailAddress> emails = new List<EmailAddress>();
-
             var a = new List<Dictionary<string, string>>();
 
             foreach (var x in toEmail)
@@ -36,10 +33,7 @@ namespace Survey.Server.Services
                         { "accessguid",x.accessguid}
                     });
             }
-
-
             //$"This is your access datas your link: <a href=\"{Constants.FRONTEND_URL.BOARD_LOGIN + "\\" + x.accessguid  }\"></a> <br> your pin {x.pin}"
-
             //var msg2 = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             var msg = MailHelper.CreateMultipleEmailsToMultipleRecipients(
                 from,
@@ -49,8 +43,6 @@ namespace Survey.Server.Services
       $"Your link to the board: {Constants.FRONTEND_URL.BOARD_LOGIN}/accessguid <br> your password:  pin",
                 a
                 );
-
-
             var response = await client.SendEmailAsync(msg);
         }
     }

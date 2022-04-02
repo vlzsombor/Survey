@@ -1,8 +1,8 @@
 ﻿<EditForm Model="cardModel" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     <div class="form-group">
-        <InputText @bind-Value="@cardModel.Title" class="form-control" id="cardModel.Title"></InputText>
-        <InputTextArea @bind-Value="@cardModel.Text" class="form-control" id="cardModel.Text" rows="3"></InputTextArea>
+        <InputText placeholder="Title of the card" @bind-Value="@cardModel.Title" class="form-control" id="cardModel.Title"></InputText>
+        <InputTextArea placeholder="Text of the card" @bind-Value="@cardModel.Text" class="form-control" id="cardModel.Text" rows="3"></InputTextArea>
         <ValidationMessage For="@(() => cardModel.Text)" />
         <Survey.Client.Pages.App.Util.TagComponenct Tags="Tags"
                                                     SearchMethod="SearchMethod"></Survey.Client.Pages.App.Util.TagComponenct>

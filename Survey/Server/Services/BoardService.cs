@@ -36,9 +36,7 @@ namespace Survey.Server.Services
         public async Task<string> HandleBoardFillerGeneration(BoardFillerGenerationDto boardFillerGenerationDto)
         {
             string boardGuid = boardFillerGenerationDto.BoardGuid.ToString();
-
             string pinCode = "Bb123456!";
-
 
             if (await _featureManager.IsEnabledAsync("FeatureActuallySendEmail"))
             {
@@ -64,30 +62,20 @@ namespace Survey.Server.Services
 
                 }
             }
-
-
             if (await _featureManager.IsEnabledAsync("FeatureActuallySendEmail"))
             {
                 var emailRow = emailUserList.Select(x => x.Item1);
                 var pinRow = emailUserList.Select(x => x.Item2);
                 var usersList = emailUserList.Select(x => x.Item3);
-
-
                 await EmailService.SendEmail(emailUserList);
             }
             else
             {
-
-
                 var a = string.Join(Environment.NewLine +" ", emailUserList.Select(x=>x.Item3).ToArray());
-
-
                 return a ?? "not found";
-
             }
 
             return "Adding was successful";
-
         }
 
     }

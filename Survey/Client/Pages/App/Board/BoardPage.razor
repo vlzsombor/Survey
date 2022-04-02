@@ -10,17 +10,16 @@
 
 @attribute [Authorize]
 @inject DialogService dialogService
-
-
-
-<RadzenButton Text=@($"Add new Board") Click="@(
+<div class="form-group">
+    <RadzenButton Text=@($"Add new Board ") id="add-new-button" Click="@(
             args =>
 {
                 dialogService.Open<DialogEditBoard>
                         ($"Add new Board",
                         new Dictionary<string, object>(){
                             {"boardModel", boardModel},
-                            {"MakeNewSurveyBoard", new EventCallbackFactory().CreateInferred(this, MakeNewSurveyBoard, boardModel)}
+                            {"MakeNewSurveyBoard", new EventCallbackFactory().CreateInferred(this, MakeNewSurveyBoard, boardModel)},
+                            {"ButtonText", "Add board"}
                         },
                         new DialogOptions()
                             {
@@ -29,31 +28,33 @@
                             Left = "calc(50% - 350px)",
                             Top = "calc(50% - 265px)"
                             }
-                        );
-
+                         );
  }                       )" />
+</div>
+<div class="row mx-auto">
 
-@foreach (var board in BoardList ?? Enumerable.Empty<BoardModel>())
-{
-    <div class="card" style="width: 18rem;">
+    @foreach (var board in BoardList ?? Enumerable.Empty<BoardModel>())
+    {
         <AuthorizeView Roles="Admin, BoardAdmin">
             <Authorized>
-                <div class="float-right">
-                    <button @onclick="@(()=>Delete(board))" class="close" aria-label="Close">
-                        <span aria-hidden="true">
-                            &times;
-                        </span>
-                    </button>
-                </div>
-                <RadzenButton Text=@($"Update Board") Click="@(
-            args =>
-{
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <div class="float-right">
+                            <button @onclick="@(()=>Delete(board))" class="close" aria-label="Close">
+                                <span aria-hidden="true">
+                                    &times;
+                                </span>
+                            </button>
+                        </div>
+                        <RadzenButton Text=@($"Update Board") Click="@(
+                args =>
+                {
                 dialogService.Open<DialogEditBoard>
                         ($"Edit board",
                         new Dictionary<string, object>(){
                             {"boardModel", board},
-                            {"MakeNewSurveyBoard", new EventCallbackFactory().CreateInferred(this, MakeNewSurveyBoard, board)}
-
+                            {"MakeNewSurveyBoard", new EventCallbackFactory().CreateInferred(this, MakeNewSurveyBoard, board)},
+                            {"ButtonText", "Edit board"}
                         },
                         new DialogOptions()
                             {
@@ -63,24 +64,22 @@
                                 Top = "calc(50% - 265px)"
                             }
                         );
+                })">Edit board  <i class="fas fa-pen"></i></RadzenButton>
+                        <h6>@board.ExpDate.ToString("dd/MM/yyyy")</h6>
+                        <h6>@board.Name</h6>
 
- }                       )"><i class="fas fa-pen"></i></RadzenButton>
-
-
-                <h6>@board.ExpDate.ToString("dd/MM/yyyy")</h6>
-                <h6>@board.Name</h6>
-
-                <a @onclick="@(() => {
+                        <a @onclick="@(() => {
                        NavigationManager.NavigateTo(Constants.FRONTEND_URL.BOARD_MANAGER +"/"+ board.Id);
                    })" class="btn btn-info" role="button">View board</a>
-                <a @onclick="@(() => {
+                        <a @onclick="@(() => {
                        NavigationManager.NavigateTo(Constants.FRONTEND_URL.SUMMARY +"/"+ board.Id);
                    })" class="btn btn-info" role="button">Summary</a>
+                    </div>
+                </div>
             </Authorized>
         </AuthorizeView>
-    </div>
-}
-
+    }
+</div>
 @code {
 
-}
+    }

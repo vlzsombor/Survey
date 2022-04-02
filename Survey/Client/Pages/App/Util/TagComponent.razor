@@ -13,7 +13,9 @@
 
     <div id="@($"{Id}_addTag")">
         <div>
-            <BlazoredTypeahead @onkeypress="KeyPressHandler"
+            <BlazoredTypeahead 
+                               placeholder="Tag of the card"                    
+                               @onkeypress="KeyPressHandler"
                                @onkeydown="KeyDownHandler"
                                SearchMethod="SearchFilms"
                                AddItemOnEmptyResultMethod="Adding"
@@ -36,7 +38,6 @@
                 <div class="error-right d-inline-flex p-2">
                     <i class="oi oi-warning text-warning p-1"></i>
                     <p class="text-left m-0 p-1">Special characters not allowed.</p>
-                    <i></i>
                 </div>
             }
         </div>
@@ -74,7 +75,6 @@
         result = result.ToLower();
         if (!String.IsNullOrEmpty(result))
         {
-
             var regex = new Regex(@"[^a-zA-Z0-9\s]");
             if (!regex.IsMatch(result))
             {
@@ -88,9 +88,6 @@
                 IsContainSpecialCharacter = true;
             }
         }
-
-
-
     }
 
     public async Task<string> Adding(string s)

@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace Survey.Shared.DTOs
 {
-    public class CardRatingDto
+public class CardRatingDto
+{
+    public int? RatingValue { get; set; }
+
+    public CardModel CardModel { get; set; }
+    public bool? Smiley { get; set; }
+
+    public CardRatingDto(int? ratingValue, bool? smileyVote, CardModel cardModel)
     {
-        public int? RatingValue { get; set; }
-
-        public CardModel CardModel { get; set; }
-        public bool? Smiley{ get; set; }
-
-        public CardRatingDto(int? ratingValue,bool? smileyVote,CardModel cardModel)
-        {
-            RatingValue = ratingValue;
-            CardModel = cardModel;
-            Smiley = smileyVote;
-        }
-
+        RatingValue = ratingValue;
+        CardModel = cardModel;
+        Smiley = smileyVote;
     }
+
+}
 }

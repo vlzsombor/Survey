@@ -1,4 +1,4 @@
-﻿@using Survey.Shared.DTOs
+﻿    @using Survey.Shared.DTOs
 @using Survey.Shared.Model
 @using Microsoft.AspNetCore.SignalR.Client
 @using Survey.Client.Pages.App.Card
@@ -6,7 +6,6 @@
 
 @using Survey.Client.Pages.App.Util
 @attribute [Authorize]
-
 <AuthorizeView>
     <Authorized>
         @{
@@ -71,15 +70,11 @@
                     }
                 </tbody>
             </table>
-
-
-
         }
     </Authorized>
 </AuthorizeView>
-<button class="btn btn-primary" @onclick="@ExportToPdf">Export to PDF</button>
+<button class="btn btn-primary" @onclick="@ExportToPdf">Export as PDF</button>
 
-<h1>summary</h1>
 @code {
     [Parameter, EditorRequired]
     public List<CardRatingDto>? CardList { get; set; } = new List<CardRatingDto>();

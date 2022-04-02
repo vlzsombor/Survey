@@ -29,11 +29,9 @@ namespace Survey.Server.Controllers
     {
         private readonly SurveyDbContext _context;
         private readonly IBoardService boardService;
-        private readonly UserManager<IdentityUser> _userManager;
 
         public BoardController(UserManager<IdentityUser> userManager, SurveyDbContext surveyDbContext, IBoardService boardService)
         {
-            _userManager = userManager;
             _context = surveyDbContext;
             this.boardService = boardService;
         }
@@ -45,20 +43,6 @@ namespace Survey.Server.Controllers
             return _context.BoardModel
                 .Where(x => x.OwnerUser == ServerHelper.GetIdentityUserByName(_context, HttpContext))
                 .ToList();
-        }
-
-
-        [HttpGet(Constants.FRONTEND_URL.GET_EXP_TIME + "/" + "{guid}")]
-        public DateTime GetExpTime(string guid)
-        {
-
-            return _context.BoardModel.Where(x => x.Id.ToString() == guid).First().ExpDate;
-        }
-
-        [HttpGet(Constants.BACKEND_URL.ACCESS_GUID + "/" + Constants.FRONTEND_URL.GET_EXP_TIME + "/" + "{guid}")]
-        public DateTime GetExpTimeAccessGuid(string guid)
-        {
-            return _context.BoardFillers.Where(x => x.UserName == guid).Select(x => x.BoardModel.ExpDate).First();
         }
 
         // create
@@ -85,10 +69,10 @@ namespace Survey.Server.Controllers
         }
 
         [HttpGet(Constants.BACKEND_URL.ACCESS_GUID + "/{boardFillerGuid}")]
-        public List<CardRatingDto>? GenerateTempUserId(string boardFillerGuid)
+        public List<CardRatingDto>? GetBoardBoardFiller(string boardFillerGuid)
         {
             BoardFiller? boardFiller = _context.BoardFillers
-                .Where(x => x.UserName == boardFillerGuid )
+                .Where(x => x.UserName == boardFillerGuid)
                 .FirstOrDefault();
 
             IdentityUser user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
@@ -105,11 +89,8 @@ namespace Survey.Server.Controllers
                 if (item != null)
                 {
                     var rating = item.Rating.Where(x => x.IdentityUser == user).FirstOrDefault();
-
                     cardRatingDto.Add(new CardRatingDto(rating?.RatingNumber ?? 0, rating?.SmileyVote ?? false, item));
-
                 }
-
             }
 
             return cardRatingDto;
@@ -126,9 +107,6 @@ namespace Survey.Server.Controllers
                     board.OwnerUser == user &&
                     board.Id.ToString() == guidString)
                 .FirstOrDefault();
-
-
-
             List<CardRatingDto> cardRatingDto = new List<CardRatingDto>();
 
             if (boardModel != null)
@@ -137,19 +115,13 @@ namespace Survey.Server.Controllers
                 {
                     if (item != null)
                     {
-
                         var rating = item.Rating.Where(x => x.IdentityUser == user).FirstOrDefault();
-
                         cardRatingDto.Add(new CardRatingDto(rating?.RatingNumber ?? 0, rating?.SmileyVote ?? false, item));
                     }
-
                 }
             }
-
             return cardRatingDto;
         }
-
-
 
         [HttpPost(Constants.BACKEND_URL.GENERATE_BOARD_FILLER)]
         [AllowAnonymous]
@@ -180,5 +152,19 @@ namespace Survey.Server.Controllers
 
             return true;
         }
+
+
+        [HttpGet(Constants.FRONTEND_URL.GET_EXP_TIME + "/" + "{guid}")]
+        public DateTime GetExpTime(string guid)
+        {
+            return _context.BoardModel.Where(x => x.Id.ToString() == guid).First().ExpDate;
+        }
+
+        [HttpGet(Constants.BACKEND_URL.ACCESS_GUID + "/" + Constants.FRONTEND_URL.GET_EXP_TIME + "/" + "{guid}")]
+        public DateTime GetExpTimeAccessGuid(string guid)
+        {
+            return _context.BoardFillers.Where(x => x.UserName == guid).Select(x => x.BoardModel.ExpDate).First();
+        }
+
     }
 }

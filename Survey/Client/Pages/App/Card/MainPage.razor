@@ -8,10 +8,6 @@
 
 @using Survey.Client.Pages.Auth
 @attribute [Authorize]
-
-
-<h3>MainPage</h3>
-
 @if (ExpTime != null)
 {
     @if (0 >= DateTime.Compare(ExpTime ?? DateTime.Now, DateTime.Now))
@@ -20,14 +16,18 @@
     }
     else
     {
-        <AuthorizeView Roles="Admin, BoardAdmin">
-            <a @onclick="@(() => {navigationManager.NavigateTo(Constants.FRONTEND_URL.ADD_BOARDFILLERS + "/" + Guid);})" class="btn btn-info" role="button">Add Board filler</a>
-
-        </AuthorizeView>
-
+        <div class="container">
+            <div class="row">
+                 <div class="col-sm-3"></div>
+                 <div class="col-sm-6">
+                    <AuthorizeView Roles="Admin, BoardAdmin">
+                        <a @onclick="@(() => {navigationManager.NavigateTo(Constants.FRONTEND_URL.ADD_BOARDFILLERS + "/" + Guid);})" class="btn btn-info" role="button">Add Board filler user</a>
+                    </AuthorizeView>
+                </div>
+            </div>
+        </div>
         <AuthorizeView>
             <Authorized>
-
                 <div class="container">
                     <div class="row justify-content-md-center">
                         <div class="col-sm-6 align-self-center">
@@ -41,20 +41,17 @@
                     @foreach (var cardItem in CardList ?? Enumerable.Empty<CardRatingDto>())
                     {
                         <div class="col-sm-2">
-
-                            <CardSimple OnDelete="@(OnDelete)"
-                            OnChange="@((args) => UpdateCardRating(((int?, bool?,CardModel))args))"
-                            CardModel="cardItem"
-                            AddReply="@((args) => AddReply(((string, IRepliable))args))"
-                            NavigateCommand="NavigateCommand"></CardSimple>
+                            <div class="card" style="width: 18rem;">
+                                    <CardSimple OnDelete="@(OnDelete)"
+                                    OnChange="@((args) => UpdateCardRating(((int?, bool?,CardModel))args))"
+                                    CardModel="cardItem"
+                                    AddReply="@((args) => AddReply(((string, IRepliable))args))"
+                                    NavigateCommand="NavigateCommand"></CardSimple>
+                            </div>
                         </div>
-
                     }
                 </div>
             </Authorized>
-            @*    <NotAuthorized>
-                <PasswordLogin LoadCardEventCallBack="@(LoadCard)" BoardFillerDto="BoardFillerDto"></PasswordLogin>
-                </NotAuthorized>*@
         </AuthorizeView>
     }
 }
