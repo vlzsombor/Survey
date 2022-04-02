@@ -226,4 +226,20 @@ namespace Survey.Server.Controllers
 
 
     }
+
+    [ApiController]
+    public class Static: ControllerBase
+    {
+
+
+        [HttpGet]
+        [Route("ifAlive")]
+        [AllowAnonymous]
+        public string IfAlive()
+        {
+            return "true";
+        }
+    }
+
+
 }

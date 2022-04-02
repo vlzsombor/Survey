@@ -37,9 +37,10 @@ namespace TestSurveyServer
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<SurveyDbContext>()
+                .AddDefaultTokenProviders();
             services.AddControllers().AddApplicationPart(Assembly.Load("Survey.Server")).AddControllersAsServices();
-
             services.AddDbContext<SurveyDbContext>();
             services.AddSignalR();
             services.AddScoped<IBoardService, BoardService>();
