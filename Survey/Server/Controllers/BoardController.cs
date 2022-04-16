@@ -164,18 +164,5 @@ namespace Survey.Server.Controllers
             return true;
         }
 
-
-        [HttpGet(Constants.FRONTEND_URL.GET_EXP_TIME + "/" + "{guid}")]
-        public DateTime GetExpTime(string guid)
-        {
-            return _context.BoardModel.Where(x => x.Id.ToString() == guid).First().ExpDate;
-        }
-
-        [HttpGet(Constants.BACKEND_URL.ACCESS_GUID + "/" + Constants.FRONTEND_URL.GET_EXP_TIME + "/" + "{guid}")]
-        public DateTime GetExpTimeAccessGuid(string guid)
-        {
-            return _context.BoardFillers.Where(x => x.UserName == guid).Select(x => x.BoardModel.ExpDate).First();
-        }
-
     }
 }
