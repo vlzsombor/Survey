@@ -1,32 +1,25 @@
 ﻿@using Microsoft.AspNetCore.WebUtilities
-@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.test)]
-@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.test + "/id")]
+@page "/testfasz"
 
-@inject NavigationManager navManager
+@*@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.test)]*@
+@*@attribute [Microsoft.AspNetCore.Components.RouteAttribute(Constants.FRONTEND_URL.test + "/id")]*@
 
-<h3>Query Paramter Demo</h3>
-
-<button @onclick="Navigate">Click</button>
-
-<div>Id = @Id</div>
+<EditForm OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+        <InputText placeholder="Title of the card" @bind-Value="stringObject" class="form-control" id="cardModel.Title"></InputText>
+    <button class="btn btn-success" type="submit">Save changes</button>
+</EditForm>
 
 @code {
     string Id { get; set; }
 
-    void Navigate()
+    string? stringObject;
+
+    public void OnValidSubmit()
     {
-        var query = new Dictionary<string, string> { { "Id", "1001" } };
+        Console.WriteLine(stringObject);
+        
+    }
 
-        navManager.NavigateTo(QueryHelpers.AddQueryString(navManager.Uri, query));
-
-        var uri = navManager.ToAbsoluteUri(navManager.Uri);
-
-        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("Id", out var param))
-        {
-            Id = param.First();
-        }
-
-        Console.WriteLine(Id +"hier");
-    }    
 
 }

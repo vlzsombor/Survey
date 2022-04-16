@@ -45,6 +45,18 @@ namespace Survey.Server.Controllers
                 .ToList();
         }
 
+        [HttpGet(Constants.FRONTEND_URL.GET_EXP_TIME + "/" + "{guid}")]
+        public DateTime GetExpTime(string guid)
+        {
+            return _context.BoardModel.Where(x => x.Id.ToString() == guid).First().ExpDate;
+        }
+
+        [HttpGet(Constants.BACKEND_URL.ACCESS_GUID + "/" + Constants.FRONTEND_URL.GET_EXP_TIME + "/" + "{guid}")]
+        public DateTime GetExpTimeAccessGuid(string guid)
+        {
+            return _context.BoardFillers.Where(x => x.UserName == guid).Select(x => x.BoardModel.ExpDate).First();
+        }
+
         // create
         // POST api/<BoardController>
         [HttpPost]
@@ -54,7 +66,6 @@ namespace Survey.Server.Controllers
             {
                 IdentityUser user = ServerHelper.GetIdentityUserByName(_context, HttpContext);
                 //bm.Cards = _context.CardModel.ToList();            
-
                 bm.OwnerUser = user;
                 _context.BoardModel.Update(bm);
             }
