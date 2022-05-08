@@ -34,7 +34,7 @@ namespace Survey.Client.Pages.App.Board
             PdfStandardFont font = new PdfStandardFont(PdfFontFamily.TimesRoman, 16);
 
             //Create a text element to draw a text in PDF page.
-            PdfTextElement title = new PdfTextElement("Weather Forecast", font, PdfBrushes.Black);
+            PdfTextElement title = new PdfTextElement("PDF:", font, PdfBrushes.Black);
             PdfLayoutResult result = title.Draw(page, new PointF(0, 0));
 
 
