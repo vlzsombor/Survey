@@ -39,7 +39,7 @@ namespace Survey.Client.Pages.App.Board
 
 
             PdfStandardFont contentFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 12);
-            PdfTextElement content = new PdfTextElement("This component demonstrates fetching data from a client side and Exporting the data to PDF document using Syncfusion .NET PDF library.", contentFont, PdfBrushes.Black);
+            PdfTextElement content = new PdfTextElement("Result:", contentFont, PdfBrushes.Black);
             PdfLayoutFormat format = new PdfLayoutFormat();
             format.Layout = PdfLayoutType.Paginate;
 
